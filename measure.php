@@ -1,6 +1,7 @@
 <?php
 $aux = $_REQUEST["json"];
 
+
 die("teste:".md5("123blc"));
 
 echo json_encode($_SERVER);
