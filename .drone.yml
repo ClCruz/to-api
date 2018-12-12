@@ -1,0 +1,24 @@
+kind: 
+name: api
+
+steps:
+- name: install
+  image: blcoccaro/linuxphpsql:v4
+  volumes:
+  - name: wl
+    path: /tmp/host
+  commands:
+  - rsync -vr /tmp/host/teste/api/* /tmp/host/bk/api
+  - rsync -vrR --exclude='.git' * /tmp/host/teste/api
+  - chmod -R 777 /tmp/host/teste/api
+  
+volumes:
+- name: wl
+  host:
+    path: /var/www/unique
+
+trigger:
+  branch:
+  - master
+  event:
+  - tag
