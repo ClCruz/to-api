@@ -3,14 +3,15 @@ name: api
 
 steps:
 - name: install
-  image: blcoccaro/linuxphpsql:v4
+  image: blcoccaro/to-deploy:v1
   volumes:
   - name: wl
     path: /tmp/host
   commands:
-  - rsync -vr /tmp/host/teste/api/ /tmp/host/bk/api
-  - rsync -vrR --exclude='.git' * /tmp/host/teste/api
-  - chmod -R 777 /tmp/host/teste/api
+  - rsync -vr /tmp/host/api/ /tmp/host/bk/api
+  - rsync -vrR --exclude='.git' * /tmp/host/api
+  - rsync -vrR .htaccess /tmp/host/api
+  - chmod -R 777 /tmp/host/api
   
 volumes:
 - name: wl
