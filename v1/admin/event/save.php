@@ -61,11 +61,11 @@
                 $imagelog = $imagelog."saved";
                                 
                 $imageResizer = new ImageResize('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName());
-                $imageResizer->resizeToBestFit(255, 170);
+                $imageResizer->resizeToWidth(255);
                 $imageResizer->save('/var/www/media/evento/'.$id_evento.'/'.getDefaultCardImageName());
 
                 $imageResizer = new \Gumlet\ImageResize('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName());
-                $imageResizer->resizeToBestFit(707, 350);
+                $imageResizer->resizeToWidth(960);
                 $imageResizer->save('/var/www/media/evento/'.$id_evento.'/'.getBigCardImageName());
             }
             $json["msg"] = $imagelog;
