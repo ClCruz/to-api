@@ -11,8 +11,9 @@
         $json = array();
         foreach ($result as &$row) {
             $cardImage = $row["cardimage"];
-            $imagePath = str_replace("{default_card}",getDefaultCardImageName(),str_replace("{id}",$row["id_evento"],$cardImage));
-            $imageURI = getDefaultMediaHost().$imagePath;
+            $imageOriginalURI = getDefaultMediaHost().str_replace("{default_card}",getOriginalCardImageName(),str_replace("{id}",$row["id_evento"],$cardImage));
+            $imageBigURI = getDefaultMediaHost().str_replace("{default_card}",getBigCardImageName(),str_replace("{id}",$row["id_evento"],$cardImage));
+            $imageURI = getDefaultMediaHost().str_replace("{default_card}",getDefaultCardImageName(),str_replace("{id}",$row["id_evento"],$cardImage));
             //$imageBase64 = base64_encode(file_get_contents($imageURI));
 
             $json = array(
@@ -23,6 +24,8 @@
                 ,"address" => $row["address"]
                 ,"description" => $row["description"]
                 ,"uri" => $row["uri"]
+                ,"imageOriginalURI" => $imageOriginalURI
+                ,"imageBigURI" => $imageBigURI
                 ,"imageURI" => $imageURI
                 ,"imageBase64" => ""//$imageBase64
                 ,"ticketsPerPurchase" => $row["ticketsPerPurchase"]
@@ -30,6 +33,8 @@
                 ,"meta_description" => $row["meta_description"]
                 ,"meta_keyword" => $row["meta_keyword"]
                 ,"id_genre" => $row["id_genre"]
+                ,"showInBanner" => $row["showInBanner"]
+                ,"bannerDescription" => $row["bannerDescription"]
             );
         }
 

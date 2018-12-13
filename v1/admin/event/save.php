@@ -1,11 +1,14 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
+    require_once($_SERVER['DOCUMENT_ROOT']."/lib/php-image-resize/ImageResize.php");
 
-    function get($api, $id_evento, $description, $address,$meta_description, $meta_keyword, $id_genre, $imageChanged, $imageBase64) {
+    use \Gumlet\ImageResize;
+
+    function get($api, $id_evento, $description, $address,$meta_description, $meta_keyword, $id_genre, $showInBanner, $bannerDescription, $imageChanged, $imageBase64) {
         //sleep(5);
-        $query = "EXEC pr_admin_event_save ?, ?, ?, ?, ?, ?, ?";
+        $query = "EXEC pr_admin_event_save ?, ?, ?, ?, ?, ?, ?, ?, ?";
         //die("aaa.".print_r(db_param($startAt),true));
-        $params = array($api, $id_evento, $description, $address, $meta_description, $meta_keyword, $id_genre);
+        $params = array($api, $id_evento, $description, $address, $meta_description, $meta_keyword, $id_genre, $showInBanner, $bannerDescription);
         $result = db_exec($query, $params);
 
         foreach ($result as &$row) {
@@ -15,7 +18,8 @@
 
         $imagelog = "";
 
-        if ($imageChanged || $imageChanged == 1 || $imageChanged == "1") {
+        if ($imageChanged || $imageChanged == 1 || $imageChanged == "1") {            
+
             $imagelog = $imagelog."altered image|";
             if (preg_match('/^data:image\/(\w+);base64,/', $imageBase64, $type)) {
                 $imagelog = $imagelog."recovering info|";
@@ -29,16 +33,24 @@
                     $imagelog = $imagelog."created folder|";
                 }
                 
-                $imagelog = $imagelog."looking for image: ".'/var/www/media/evento/'.$id_evento.'/'.getDefaultCardImageName().'|';
-                if (file_exists('/var/www/media/evento/'.$id_evento.'/'.getDefaultCardImageName())) {
+                $imagelog = $imagelog."looking for image: ".'/var/www/media/evento/'.$id_evento.'/'.getOriginalCardImageName().'|';
+                if (file_exists('/var/www/media/evento/'.$id_evento.'/'.getOriginalCardImageName())) {
                     $imagelog = $imagelog."image exist|";
-                    unlink('/var/www/media/evento/'.$id_evento.'/'.getDefaultCardImageName());
+                    unlink('/var/www/media/evento/'.$id_evento.'/'.getOriginalCardImageName());
                     $imagelog = $imagelog."deleted image|";
                 }
 
                 $imagelog = $imagelog."saving|";
-                file_put_contents('/var/www/media/evento/'.$id_evento.'/'.getDefaultCardImageName(), $img);
+                file_put_contents('/var/www/media/evento/'.$id_evento.'/'.getOriginalCardImageName(), $img);
                 $imagelog = $imagelog."saved";
+                                
+                $imageResizer = new ImageResize('/var/www/media/evento/'.$id_evento.'/'.getOriginalCardImageName());
+                $imageResizer->resizeToBestFit(255, 170);
+                $imageResizer->save('/var/www/media/evento/'.$id_evento.'/'.getDefaultCardImageName());
+
+                $imageResizer = new \Gumlet\ImageResize('/var/www/media/evento/'.$id_evento.'/'.getOriginalCardImageName());
+                $imageResizer->resizeToBestFit(707, 350);
+                $imageResizer->save('/var/www/media/evento/'.$id_evento.'/'.getBigCardImageName());
             }
             $json["msg"] = $imagelog;
         }
@@ -48,5 +60,5 @@
         die();    
     }
 
-get($_REQUEST["apikey"], $_POST["id"], $_POST["description"], $_POST["address"], $_POST["meta_description"], $_POST["meta_keyword"], $_POST["id_genre"], $_POST["imageChanged"], $_POST["base64"]);
+get($_REQUEST["apikey"], $_POST["id"], $_POST["description"], $_POST["address"], $_POST["meta_description"], $_POST["meta_keyword"], $_POST["id_genre"], $_POST["showInBanner"], $_POST["bannerDescription"], $_POST["imageChanged"], $_POST["base64"]);
 ?>

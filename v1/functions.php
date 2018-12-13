@@ -8,11 +8,17 @@ $log = true;
 function getDefaultCardImageName() {
     return "card.jpg";
 }
+function getOriginalCardImageName() {
+    return "original.jpg";
+}
+function getBigCardImageName() {
+    return "big.jpg";
+}
 function getDefaultMap() {
     return "https://media.tixs.me/palco.png";
 }
 function getDefaultMediaHost() {
-    //return "http://localhost:1003";
+    //return "http://localhost:2003";
     return "https://media.tixs.me";
 }
 function purchaseMinutesToExpireReservation() {
@@ -83,7 +89,12 @@ function logme() {
     $file = $_SERVER["PHP_SELF"];
     $start = $_SERVER["REQUEST_TIME"];
     $agent = $_SERVER["HTTP_USER_AGENT"];
-    $ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+    $ip = "";
+
+    if (array_key_exists("HTTP_X_FORWARDED_FOR", $_SERVER)) {
+        $ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+    }
+
     $ip2 = $_SERVER['REMOTE_ADDR'];
     $host = $_SERVER['HTTP_HOST'];
 
