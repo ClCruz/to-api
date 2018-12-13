@@ -11,3 +11,13 @@ meanings
 /var/www/tixsme/api - where is the source of api
 /var/www/tixsme/media - where is the images
 /var/www/tixsme/site - where is the build of site (dist)
+
+.htaccess:
+
+<IfModule mod_rewrite.c>
+RedirectMatch 404 \.json
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+</IfModule>
+
