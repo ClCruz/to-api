@@ -26,6 +26,12 @@
                 $imageBase64 = substr($imageBase64, strpos($imageBase64, ',') + 1);
                 $type = strtolower($type[1]); // jpg, png, gif
                 $img = base64_decode($imageBase64);
+                $imagelog = $imagelog."looking for directory: ".'/var/www/media/ori/'.$id_evento.'|';
+                if (!file_exists('/var/www/media/ori/'.$id_evento)) {
+                    $imagelog = $imagelog."folder not exist|";
+                    mkdir('/var/www/media/ori/'.$id_evento, 0777, true);
+                    $imagelog = $imagelog."created folder|";
+                }
                 $imagelog = $imagelog."looking for directory: ".'/var/www/media/evento/'.$id_evento.'|';
                 if (!file_exists('/var/www/media/evento/'.$id_evento)) {
                     $imagelog = $imagelog."folder not exist|";
@@ -33,22 +39,32 @@
                     $imagelog = $imagelog."created folder|";
                 }
                 
-                $imagelog = $imagelog."looking for image: ".'/var/www/media/evento/'.$id_evento.'/'.getOriginalCardImageName().'|';
-                if (file_exists('/var/www/media/evento/'.$id_evento.'/'.getOriginalCardImageName())) {
+                $imagelog = $imagelog."looking for image: ".'/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName().'|';
+                if (file_exists('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName())) {
                     $imagelog = $imagelog."image exist|";
-                    unlink('/var/www/media/evento/'.$id_evento.'/'.getOriginalCardImageName());
+                    unlink('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName());
+                    $imagelog = $imagelog."deleted image|";
+                }
+                if (file_exists('/var/www/media/evento/'.$id_evento.'/'.getDefaultCardImageName())) {
+                    $imagelog = $imagelog."image exist|";
+                    unlink('/var/www/media/evento/'.$id_evento.'/'.getDefaultCardImageName());
+                    $imagelog = $imagelog."deleted image|";
+                }
+                if (file_exists('/var/www/media/evento/'.$id_evento.'/'.getBigCardImageName())) {
+                    $imagelog = $imagelog."image exist|";
+                    unlink('/var/www/media/evento/'.$id_evento.'/'.getBigCardImageName());
                     $imagelog = $imagelog."deleted image|";
                 }
 
                 $imagelog = $imagelog."saving|";
-                file_put_contents('/var/www/media/evento/'.$id_evento.'/'.getOriginalCardImageName(), $img);
+                file_put_contents('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName(), $img);
                 $imagelog = $imagelog."saved";
                                 
-                $imageResizer = new ImageResize('/var/www/media/evento/'.$id_evento.'/'.getOriginalCardImageName());
+                $imageResizer = new ImageResize('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName());
                 $imageResizer->resizeToBestFit(255, 170);
                 $imageResizer->save('/var/www/media/evento/'.$id_evento.'/'.getDefaultCardImageName());
 
-                $imageResizer = new \Gumlet\ImageResize('/var/www/media/evento/'.$id_evento.'/'.getOriginalCardImageName());
+                $imageResizer = new \Gumlet\ImageResize('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName());
                 $imageResizer->resizeToBestFit(707, 350);
                 $imageResizer->save('/var/www/media/evento/'.$id_evento.'/'.getBigCardImageName());
             }

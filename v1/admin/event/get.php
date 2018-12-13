@@ -10,10 +10,9 @@
 
         $json = array();
         foreach ($result as &$row) {
-            $cardImage = $row["cardimage"];
-            $imageOriginalURI = getDefaultMediaHost().str_replace("{default_card}",getOriginalCardImageName(),str_replace("{id}",$row["id_evento"],$cardImage));
-            $imageBigURI = getDefaultMediaHost().str_replace("{default_card}",getBigCardImageName(),str_replace("{id}",$row["id_evento"],$cardImage));
-            $imageURI = getDefaultMediaHost().str_replace("{default_card}",getDefaultCardImageName(),str_replace("{id}",$row["id_evento"],$cardImage));
+            $imageOriginalURI = getDefaultMediaHost().str_replace("{default_ori}",getOriginalCardImageName(),str_replace("{id}",$row["id_evento"],$row["imageoriginal"]));
+            $imageBigURI = getDefaultMediaHost().str_replace("{default_big}",getBigCardImageName(),str_replace("{id}",$row["id_evento"],$row["cardbigimage"]));
+            $imageURI = getDefaultMediaHost().str_replace("{default_card}",getDefaultCardImageName(),str_replace("{id}",$row["id_evento"],$row["cardimage"]));
             //$imageBase64 = base64_encode(file_get_contents($imageURI));
 
             $json = array(
