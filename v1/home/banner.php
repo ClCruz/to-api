@@ -18,7 +18,7 @@
                 "sg_estado" => $row["sg_estado"],
                 "datas" => $row["datas"],
                 "bannerDescription" => $row["bannerDescription"],
-                "imgBanner" => getDefaultMediaHost() . str_replace("{id}", $row["id_evento"],str_replace("{default_card}", getDefaultCardImageName(),$row["cardimage"])),
+                "imgcard" => getDefaultMediaHost() . str_replace("{id}", $row["id_evento"],str_replace("{default_card}", getDefaultCardImageName(),$row["cardimage"])),
                 "img" => getDefaultMediaHost() . str_replace("{id}", $row["id_evento"],str_replace("{default_big}", getBigCardImageName(),$row["cardbigimage"])),
                 "uri" => $row["uri"],
                 "badge"=> splitBadge($row["badges"]),
