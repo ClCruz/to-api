@@ -61,7 +61,7 @@
                 $imagelog = $imagelog."saved";
                                 
                 $imageResizer = new ImageResize('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName());
-                $imageResizer->resizeToWidth(255);
+                $imageResizer->resizeToWidth(500);
                 $imageResizer->save('/var/www/media/evento/'.$id_evento.'/'.getDefaultCardImageName());
 
                 $imageResizer = new \Gumlet\ImageResize('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName());
