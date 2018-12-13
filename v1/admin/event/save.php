@@ -59,14 +59,16 @@
                 $imagelog = $imagelog."saving|";
                 file_put_contents('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName(), $img);
                 $imagelog = $imagelog."saved";
+                file_put_contents('/var/www/media/evento/'.$id_evento.'/'.getDefaultCardImageName(), $img);
+                file_put_contents('/var/www/media/evento/'.$id_evento.'/'.getBigCardImageName(), $img);
                                 
-                $imageResizer = new ImageResize('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName());
-                $imageResizer->resizeToWidth(500);
-                $imageResizer->save('/var/www/media/evento/'.$id_evento.'/'.getDefaultCardImageName());
+//                $imageResizer = new ImageResize('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName());
+//                $imageResizer->resizeToWidth(500);
+//                $imageResizer->save('/var/www/media/evento/'.$id_evento.'/'.getDefaultCardImageName());
 
-                $imageResizer = new \Gumlet\ImageResize('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName());
-                $imageResizer->resizeToWidth(960);
-                $imageResizer->save('/var/www/media/evento/'.$id_evento.'/'.getBigCardImageName());
+//                $imageResizer = new \Gumlet\ImageResize('/var/www/media/ori/'.$id_evento.'/'.getOriginalCardImageName());
+//                $imageResizer->resizeToWidth(960);
+//                $imageResizer->save('/var/www/media/evento/'.$id_evento.'/'.getBigCardImageName());
             }
             $json["msg"] = $imagelog;
         }
