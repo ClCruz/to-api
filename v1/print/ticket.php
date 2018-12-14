@@ -350,8 +350,8 @@ $count = 0;
 <?php } ?>
 <div class="pagebreak"></div>
 <script lang="javascript">
-    //window.print();
-    //window.close();
+    window.print();
+    window.close();
 </script>
 </body>
 </html>
