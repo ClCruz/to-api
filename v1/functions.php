@@ -98,6 +98,16 @@ function logme() {
     $ip2 = $_SERVER['REMOTE_ADDR'];
     $host = $_SERVER['HTTP_HOST'];
 
+
+    $HTTP_ORIGIN = '';
+    if (array_key_exists("HTTP_ORIGIN", $_SERVER)) {
+        $HTTP_ORIGIN = $_SERVER['HTTP_ORIGIN'];
+    }
+    $HTTP_REFERER = '';
+    if (array_key_exists("HTTP_REFERER", $_SERVER)) {
+        $HTTP_REFERER = $_SERVER['HTTP_REFERER'];
+    }
+
     $end = time();
 
     $duration = $end-$start;
@@ -111,7 +121,7 @@ function logme() {
     $isios = $detect->isiOS();
 
     $query = "EXEC pr_logme ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?";
-    $params = array($uri, $file, json_encode($_REQUEST), json_encode($_POST), $start,$end, $seconds, $ismobile, $isandroid, $isios, json_encode($agent), json_encode($ip), json_encode($ip2),$host);
+    $params = array($uri, $file, json_encode($_REQUEST), json_encode($_POST), $start,$end, $seconds, $ismobile, $isandroid, $isios, json_encode($agent), json_encode($ip), json_encode($ip2),$host, $HTTP_ORIGIN, $HTTP_REFERER);
     $result = db_exec($query, $params);
 }
 function modifyDate($value) {
