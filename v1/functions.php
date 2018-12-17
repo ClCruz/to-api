@@ -120,7 +120,7 @@ function logme() {
     $isandroid = $detect->isAndroidOS();
     $isios = $detect->isiOS();
 
-    $query = "EXEC pr_logme ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?";
+    $query = "EXEC pr_logme ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?";
     $params = array($uri, $file, json_encode($_REQUEST), json_encode($_POST), $start,$end, $seconds, $ismobile, $isandroid, $isios, json_encode($agent), json_encode($ip), json_encode($ip2),$host, $HTTP_ORIGIN, $HTTP_REFERER);
     $result = db_exec($query, $params);
 }
