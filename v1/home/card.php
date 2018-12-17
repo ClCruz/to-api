@@ -1,6 +1,8 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
+//    stopIfApiNotExist();
+
     function getCardUP($city = null, $state = null, $api = null) {
         //die("teste: ".getwhitelabeldb()["host"]);
         //createTimer("getCardUP","Creating query...");

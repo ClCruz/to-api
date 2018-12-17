@@ -24,6 +24,34 @@ function getDefaultMediaHost() {
 function purchaseMinutesToExpireReservation() {
     return 15;
 }
+function stopIfApiNotPresent() {
+    if (!array_key_exists("apikey", $_REQUEST) && !array_key_exists("apikey", $_POST)) {
+        die(json_encode(array("error"=>true, "msg"=>"api key is not present")));
+    }
+}
+function stopIfApiNotExist() {
+    stopIfApiNotPresent();
+    $query = "EXEC pr_apikey ?";
+    $api = $_REQUEST["apikey"];
+    if ($api == "" || $api == null) {
+        $api = $_POST["apikey"];
+    }
+    if ($api == "")
+        die(json_encode(array("error"=>true, "msg"=>"api key is not present")));
+
+    $params = array($api);
+    $result = db_exec($query, $params);
+
+    $json = array("error"=>true, "msg"=> "api key is not valid.");
+
+    foreach ($result as &$row) {
+        if ($row["success"] == true) {
+            return;
+        }
+    }
+    die(json_encode($json));
+}
+
 function createTimer($name, $info) {
     global $profilerPerfTimer;
     $before = microtime(true);
