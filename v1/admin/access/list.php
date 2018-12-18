@@ -3,7 +3,7 @@
 
     function get($api) {
         //sleep(5);
-        $query = "EXEC pr_producer ?";
+        $query = "EXEC pr_to_admin_user ?";
         //die("aaa.".print_r(db_param($startAt),true));
         $params = array($api);
         $result = db_exec($query, $params);

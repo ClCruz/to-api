@@ -19,7 +19,6 @@
                 $login = $row["login"];
                 $id = $row["id"];
                 $tokenValidUntil = row["tokenValidUntil"];
-                $operator = $row["operator"];
             }
         }
 
@@ -32,7 +31,6 @@
                         ,"login"=>$login
                         ,"tokenValidUntil"=>$tokenValidUntil
                         ,"id"=>$id
-                        ,"operator"=>$operator
                         ,"lastLogin"=>$lastLogin);
 
             $query = "EXEC pr_login_admin_successfully ?, ?";
@@ -50,6 +48,6 @@
         die();    
     }
 
-token($_REQUEST["id"]);
+token($_REQUEST["token"]);
 
 ?>

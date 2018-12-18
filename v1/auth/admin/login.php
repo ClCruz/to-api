@@ -72,6 +72,6 @@
         die();    
     }
 
-login($_POST["login"], $_POST["password"]);
+login($_REQUEST["login"], $_POST["pass"]);
 
 ?>

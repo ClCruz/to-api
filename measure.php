@@ -1,8 +1,9 @@
 <?php
+//die("dd");
 $aux = $_REQUEST["json"];
 
-
-die("teste:".md5("123blc"));
+$passwordHash = hash('ripemd160', '123');
+die("teste: ".$passwordHash);
 
 echo json_encode($_SERVER);
 echo "<br /><br /><br /><br />";
