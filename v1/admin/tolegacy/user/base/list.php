@@ -3,7 +3,7 @@
 
     function get($id) {
         //sleep(5);
-        $query = "EXEC pr_to_admin_user_base_list ?";
+        $query = "EXEC pr_ticketoffice_user_base_list ?";
         $params = array($id);
         $result = db_exec($query, $params);
 

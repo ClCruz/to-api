@@ -3,7 +3,7 @@
 
     function execute($api, $id) {
         //sleep(5);
-        $query = "EXEC pr_adm_ticketoffice_users_resetpass ?, ?, ?";
+        $query = "EXEC pr_to_admin_user_resetpass ?, ?, ?";
         //die("aaa.".print_r(db_param($startAt),true));
         $params = array($api, $id, hash('ripemd160', "@2018."));
         $result = db_exec($query, $params);
