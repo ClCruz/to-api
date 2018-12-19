@@ -3,21 +3,18 @@
 
     function get($id) {
         //sleep(5);
-        $query = "EXEC pr_adm_ticketoffice_users_get ?";
-        //die("aaa.".print_r(db_param($startAt),true));
+        $query = "EXEC pr_to_admin_user_auth_list ?";
         $params = array($id);
         $result = db_exec($query, $params);
 
         $json = array();
         foreach ($result as &$row) {
-            $json = array(
+            $json[] = array(
                 "id" => $row["id"]
+                ,"code" => $row["code"]
                 ,"name" => $row["name"]
-                ,"login" => $row["login"]
-                ,"email" => $row["email"]
+                ,"description" => $row["description"]
                 ,"active" => $row["active"]
-                ,"created" => $row["created"]
-                ,"updated" => $row["updated"]
             );
         }
 

@@ -1,11 +1,11 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function get($api) {
+    function get($api, $name, $currentPage, $perPage) {
         //sleep(5);
-        $query = "EXEC pr_adm_ticketoffice_users ?";
+        $query = "EXEC pr_adm_ticketoffice_users ?, ?, ?, ?";
         //die("aaa.".print_r(db_param($startAt),true));
-        $params = array($api);
+        $params = array($api, $name, $currentPage, $perPage);
         $result = db_exec($query, $params);
 
         $json = array();
@@ -18,6 +18,9 @@
                 ,"active" => $row["active"]
                 ,"created" => $row["created"]
                 ,"updated" => $row["updated"]
+
+                ,"totalCount" => $row["totalCount"]
+                ,"currentPage" => $row["currentPage"]
             );
         }
 
@@ -26,5 +29,5 @@
         die();    
     }
 
-get($_REQUEST["id_base"], $_REQUEST["apikey"]);
+get($_REQUEST["apikey"], $_REQUEST["name"], $_REQUEST["__currentPage"], $_REQUEST["__perPage"]);
 ?>

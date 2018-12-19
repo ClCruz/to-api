@@ -3,7 +3,7 @@
 
     function get($id) {
         //sleep(5);
-        $query = "EXEC pr_adm_ticketoffice_users_get ?";
+        $query = "EXEC pr_to_admin_user_get ?";
         //die("aaa.".print_r(db_param($startAt),true));
         $params = array($id);
         $result = db_exec($query, $params);
@@ -13,6 +13,7 @@
             $json = array(
                 "id" => $row["id"]
                 ,"name" => $row["name"]
+                ,"document" => $row["document"]
                 ,"login" => $row["login"]
                 ,"email" => $row["email"]
                 ,"active" => $row["active"]

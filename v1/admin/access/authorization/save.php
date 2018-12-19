@@ -1,9 +1,9 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function get($id, $id_base, $loggedId) {
-        $query = "EXEC pr_to_admin_user_add_base ?, ?, ?, NULL";
-        $params = array($loggedId, $id, $id_base);
+    function get($id, $id_auth, $loggedId) {
+        $query = "EXEC pr_to_admin_user_add_auth ?,?,?";
+        $params = array($loggedId, $id, $id_auth);
 
         $result = db_exec($query, $params);
 
@@ -15,5 +15,5 @@
         die();    
     }
 
-get($_POST["id"], $_POST["id_base"], $_POST["loggedId"]);
+get($_POST["id"], $_POST["id_auth"], $_POST["loggedId"]);
 ?>
