@@ -16,6 +16,7 @@
             $json = array(
                 "CodPeca" => $row["CodPeca"]
                 ,"id_produtor" => $row["id_produtor"]
+                ,"id_base" => $row["id_base"]
                 ,"NomPeca" => $row["NomPeca"]
                 ,"CodTipPeca" => $row["CodTipPeca"]
                 ,"id_genre" => $row["id_genre"]
