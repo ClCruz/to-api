@@ -69,6 +69,18 @@ function performance() {
     $params = array(json_encode($profilerPerfTimer), json_encode($_REQUEST), json_encode($_POST));
     $result = db_exec($query, $params);
 }
+function get_id_base_from_id_evento($id_evento) {
+    $query = "EXEC pr_admin_event_getbase ??";
+    $params = array($id_evento);
+    $result = db_exec($query, $params);
+
+    $id_base = 0;
+    foreach ($result as &$row) {
+        $id_base = $row["id_base"];
+    }
+
+    return $id_base;
+}
 function sendonemail($from, $fromName, $to, $toName, $subject, $msg) {	
     if (getwhitelabelemail()["config"]["type"] != "api") {
         return false;
@@ -159,5 +171,24 @@ function modifyDate($value) {
         return $ret;
     }
     return null;
+}
+function mask($val, $mask)
+{
+    $maskared = '';
+    $k = 0;
+    for($i = 0; $i<=strlen($mask)-1; $i++)
+    {
+        if($mask[$i] == '#')
+        {
+            if(isset($val[$k]))
+            $maskared .= $val[$k++];
+        }
+        else
+        {
+            if(isset($mask[$i]))
+            $maskared .= $mask[$i];
+        }
+    }
+    return $maskared;
 }
 ?>
