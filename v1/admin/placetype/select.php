@@ -1,18 +1,20 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function get($id_state) {
+    function get() {
         //sleep(5);
-        $query = "EXEC pr_city ?";
+        $query = "EXEC pr_placetype_select";
         //die("aaa.".print_r(db_param($startAt),true));
-        $params = array($id_state);
+        $params = array();
         $result = db_exec($query, $params);
 
         $json = array();
         foreach ($result as &$row) {
             $json[] = array(
-                "id_municipio" => $row["id_municipio"]
-                ,"ds_municipio" => $row["ds_municipio"]
+                "id_tipo_local" => $row["id_tipo_local"]
+                ,"ds_tipo_local" => $row["ds_tipo_local"]
+                ,"value"=>$row["id_tipo_local"]
+                ,"text"=>$row["ds_tipo_local"]
             );
         }
 
@@ -21,5 +23,5 @@
         die();    
     }
 
-get($_REQUEST["id_state"]);
+get();
 ?>
