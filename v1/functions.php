@@ -18,8 +18,8 @@ function getDefaultMap() {
     return "https://media.tixs.me/palco.png";
 }
 function getDefaultMediaHost() {
-    return "http://localhost:2003";
-    //return "https://media.tixs.me";
+    //return "http://localhost:2003";
+    return "https://media.tixs.me";
 }
 function purchaseMinutesToExpireReservation() {
     return 15;
