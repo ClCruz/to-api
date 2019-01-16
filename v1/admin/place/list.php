@@ -1,11 +1,11 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function get($search, $id_state, $id_city, $in_ativo, $currentPage, $perPage) {
+    function get($apikey, $search, $id_state, $id_city, $in_ativo, $currentPage, $perPage) {
         //sleep(5);
-        $query = "EXEC pr_place ?, ?, ?, ?, ?, ?";
+        $query = "EXEC pr_place ?, ?, ?, ?, ?, ?, ?";
         //die("aaa.".print_r(db_param($startAt),true));
-        $params = array($search, $id_state, $id_city, $in_ativo, $currentPage, $perPage);
+        $params = array($apikey, $search, $id_state, $id_city, $in_ativo, $currentPage, $perPage);
         $result = db_exec($query, $params);
 
         $json = array();
@@ -19,6 +19,7 @@
                 ,"sg_estado" => $row["sg_estado"]
                 ,"ds_estado" => $row["ds_estado"]
                 ,"ds_tipo_local" => $row["ds_tipo_local"]
+                ,"linked" => $row["linked"]
 
                 ,"totalCount" => $row["totalCount"]
                 ,"currentPage" => $row["currentPage"]
@@ -30,5 +31,5 @@
         die();    
     }
 
-get($_REQUEST["search"],$_REQUEST["id_state"],$_REQUEST["id_city"], $_REQUEST["in_ativo"], $_REQUEST["__currentPage"], $_REQUEST["__perPage"]);
+get($_REQUEST["apikey"], $_REQUEST["search"],$_REQUEST["id_state"],$_REQUEST["id_city"], $_REQUEST["in_ativo"], $_REQUEST["__currentPage"], $_REQUEST["__perPage"]);
 ?>

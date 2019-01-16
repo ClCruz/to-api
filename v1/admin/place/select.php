@@ -1,11 +1,11 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function get($id_city) {
+    function get($apikey, $id_city) {
         //sleep(5);
-        $query = "EXEC pr_place_select ?";
+        $query = "EXEC pr_place_select ?, ?";
         //die("aaa.".print_r(db_param($startAt),true));
-        $params = array($id_city);
+        $params = array($apikey, $id_city);
         $result = db_exec($query, $params);
 
         $json = array();
@@ -24,5 +24,5 @@
         die();    
     }
 
-get($_REQUEST["id_city"]);
+get($_REQUEST["apikey"], $_REQUEST["id_city"]);
 ?>
