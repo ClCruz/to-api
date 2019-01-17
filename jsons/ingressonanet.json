@@ -1,10 +1,10 @@
 {
   "env": "production",
   "host": "ingressonanet.tk",
-  "uri": "https://www.ingressonanet.tk",
-  "api": "https://api.ingressonanet.tk",
+  "uri": "https://www.ingressonanetdemo.tk",
+  "api": "https://api.ingressonanetdemo.tk",
   "pinpad": "http://localhost:7001/api",
-  "legacy": "https://compra.ingressonanet.tk",
+  "legacy": "https://compra.ingressonanetdemo.tk",
   "apikey": "live_0aeae6ff88784a9bb0a704359699051677c08991c03d46759ec943ec415a71e8",
   "geokey": "AIzaSyCH0_IkJUiB8TLRuIJFvnI-JKLvuKx1zl8",
   "ga": "",
