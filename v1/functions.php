@@ -191,4 +191,37 @@ function mask($val, $mask)
     }
     return $maskared;
 }
+function isuservalidordie($id) {
+    if (isuservalid($id) == false) {
+        $json = array("success"=>false
+                    ,"msg"=>"Login invalido.");
+        echo json_encode($json);
+        logme();
+        die();    
+    }
+}
+function isuservalid($id) {
+    if ($id == '' || $id == null)
+        return false;
+
+    $query = "EXEC pr_admin_user_isvalid ?";
+    $params = array($id);
+    $result = db_exec($query, $params);
+    $json = array();
+    foreach ($result as &$row) {
+        $json = array(
+            "hasuser" => $row["hasuser"]
+            ,"valid" => $row["valid"]
+        );
+    }
+    return $json["valid"] == 1 && $json["hasuser"] == 1;
+}
+function userrevalid($id) {
+    if ($id == '' || $id == null)
+        return;
+
+    $query = "EXEC pr_admin_user_revalid ?";
+    $params = array($id);
+    $result = db_exec($query, $params);
+}
 ?>

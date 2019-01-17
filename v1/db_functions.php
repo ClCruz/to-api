@@ -40,7 +40,12 @@ function db_param2($param) {
         return "null";
 }
 
-
+function db_paramid($param) {
+    if (isset($param) && $param != 'null' && $param != 'NULL' && $param != '') 
+        return $param;
+    else
+        return "00000000-0000-0000-0000-000000000000";
+}
 function db_param($param) {
     if (isset($param)) 
         if ($param != "null")
