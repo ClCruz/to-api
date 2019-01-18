@@ -23,7 +23,8 @@
                 ,"key" => $row["key"]
                 ,"key_test" => $row["key_test"]
                 ,"name" => $row["name"]
-
+                ,"uniquename" => $row["uniquename"]
+                
                 ,"totalCount" => $row["totalCount"]
                 ,"currentPage" => $row["currentPage"]
             );
