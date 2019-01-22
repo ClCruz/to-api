@@ -23,3 +23,4 @@ trigger:
   - master
   event:
   - push
+  - promote
