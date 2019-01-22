@@ -10,11 +10,10 @@
         $query = "EXEC pr_admin_partner_whitelabelcontent_save ?,?,?,?,?,?,?,?,?,?,?,?";
         $params = array($id_partner,$json_ga,$json_meta_description,$json_meta_keywords
         ,$json_template,$json_info_title,$json_info_description
-        ,$json_info_cnpj,$json_info_companyname,$scss_colors_primary
+        ,$json_info_cnpj, $json_info_companyaddress,$json_info_companyname,$scss_colors_primary
         ,$scss_colors_secondary);
         $result = db_exec($query, $params);
-
-        if ($generate== true || $generate == 1) {
+        if ($generate == 1) {
             doall($id_partner);
         }
 

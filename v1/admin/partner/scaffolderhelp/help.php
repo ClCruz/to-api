@@ -1,7 +1,7 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function get($id) {
+    function getinfofromdb($id) {
         $query = "EXEC pr_admin_partner_get_wl ?";
         $params = array($id);
         $result = db_exec($query, $params);
@@ -178,7 +178,7 @@
         execshell($dir, "git clone $urltoclone", false);
     }
     function git_config($dir) {
-        execshell($dir, 'git config user.email "blcoccaro@gmail.com"', false);
+        execshell($dir, 'git config user.email "blcoccaro@gmail.com" && git config push.default simple', false);
         //execshell($dir, 'git config user.email "blcoccaro+ticketoffice@gmail.com" && git config user.name "ticketofficedeploy"', false);
     }
     function git_pull($dir) {
@@ -198,9 +198,10 @@
         execshell($dir, 'git checkout -b '.$branchname.' && git add -A . && git commit -m "'.date("d-m-Y h:i:s").' <> [[automatically generated]] - '.$name.'" && git push '.$branchname, false);
         execshell($dir, 'git push -u origin '.$branchname, false);
     }
-    function git_mergetomaster($dir, $name) {
+    function git_mergetomaster($dir, $name, $idexec) {
+        $branchname = "wl_".$name."_".$idexec;
         git_config($dir);
-        execshell($dir, 'git checkout wl_'.$name.' && git checkout master && git merge -q -m "'.date("d-m-Y h:i:s").' <> [[automatically generated]] - '.$name.'" --no-edit wl_'.$name.' && git push', false);
+        execshell($dir, 'git checkout master && git merge -q -m "'.date("d-m-Y h:i:s").' <> [[automatically generated]] - '.$name.'" --no-edit '.$branchname.' && git push', false);
     }
 
     function git_clone_scaffolder($dir) {
@@ -286,6 +287,7 @@
             }
         }
         git_createbranch_push($currentgit, $db["uniquename"], $idexec);
+        git_mergetomaster($currentgit, $db["uniquename"], $idexec);
     }
     function replaceindomain($db, $replacement, $jsonFile) {
         $aux = json_decode(file_get_contents($jsonFile), true);
@@ -312,6 +314,7 @@
         replaceindomain($db, $replacement, $dir."to-api/jsons/domains.json");         
 
         git_createbranch_push($currentgit, $db["uniquename"], $idexec);
+        git_mergetomaster($currentgit, $db["uniquename"], $idexec);
     }
     function do_legacy($db, $replacement, $idexec) {
         $doecho = false;
@@ -324,6 +327,7 @@
         replaceindomain($db, $replacement, $dir."to-legacy/jsons/domains.json");         
 
         git_createbranch_push($currentgit, $db["uniquename"], $idexec);
+        git_mergetomaster($currentgit, $db["uniquename"], $idexec);
     }
     function do_site($db, $replacement, $idexec) {
         $doecho = false;
@@ -336,15 +340,16 @@
         replaceindomain($db, $replacement, $dir."to-site/src/jsons/domains.json");         
 
         git_createbranch_push($currentgit, $db["uniquename"], $idexec);
+        git_mergetomaster($currentgit, $db["uniquename"], $idexec);
     }
     function doall($id) {
         $idexec = date("Ymdhis");
-        $db = get($id);
+        $db = getinfofromdb($id);
         $replacement = getReplacement($db);
 
         doScaffolder($db, $replacement, $idexec);
-        do_toapi($db, $replacement, $idexec);
-        do_legacy($db, $replacement, $idexec);
+       // do_toapi($db, $replacement, $idexec);
+       // do_legacy($db, $replacement, $idexec);
         do_site($db, $replacement, $idexec);
 
         echo json_encode(array("success"=>true, "msg"=>"Criado com sucesso."));

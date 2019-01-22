@@ -18,7 +18,7 @@
                 $lastLogin = $row["lastLogin"];
                 $login = $row["login"];
                 $id = $row["id"];
-                $tokenValidUntil = row["tokenValidUntil"];
+                $tokenValidUntil = $row["tokenValidUntil"];
             }
         }
 
