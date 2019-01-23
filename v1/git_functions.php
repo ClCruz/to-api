@@ -37,7 +37,7 @@
             break;
         }
 
-        execshell($dir, "git clone $urltoclone", false);
+        execshell($dir, "git clone $urltoclone --quiet", false);
     }
     function git_config($dir) {
         execshell($dir, 'git config user.email "blcoccaro@gmail.com" && git config push.default simple', false);

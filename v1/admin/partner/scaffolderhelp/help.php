@@ -45,7 +45,7 @@
         return null;
     }
 
-    function getReplacement($db) {
+    function getReplacement($db, $logoext) {
         $domain = $db["domain"];
         $domainwithwww = $domain;
         $domainwithoutwww = strpos($domain, 'www') === 0 ? str_replace("www.", "", $domain) : $domain;
@@ -54,7 +54,7 @@
         $legacyURI = "https://compra.".$domainwithoutwww;
         $pinpadURI = "http://localhost:7001/api";
         $logomedia = "https://media.tixs.me/logos/logo-".$db["uniquename"].".jpg";
-        $logo = "/assets/logo-".$db["uniquename"].".jpg";
+        $logo = "/assets/logo-".$db["uniquename"].".".$logoext;
         $db_user = "api.".$db["uniquename"];
         $db_pass = "!".$db["uniquename"]."@api#$";
         $db_host = "172.30.5.3";
@@ -90,6 +90,7 @@
         $ret[] = array("from"=>"__wl-db-pass__", "to"=>$db_pass);
         $ret[] = array("from"=>"__wl-db-ip__", "to"=>$db_host);
         $ret[] = array("from"=>"__wl-db-port__", "to"=>$db_port);
+        $ret[] = array("from"=>"__wl-logoext__", "to"=>$logoext);
         $ret[] = array("from"=>"__wl-gateway-pagarme-api__", "to"=>"ak_live_pcYp3eGXxpOBHqViOLfBQ61NQ4433y");
         $ret[] = array("from"=>"__wl-gateway-pagarme-cryptkey__", "to"=>"ek_live_QSMMW6WD1Bgio5K9aB0IIPL656ctjE");
         return $ret;
@@ -201,7 +202,7 @@
         //production
         //git_createbranch_push($currentgit, $db["uniquename"], $idexec);
         //dev
-        git_reset($currentgit);
+        // git_reset($currentgit);
     }
     function replaceindomain($db, $replacement, $jsonFile) {
         $aux = json_decode(file_get_contents($jsonFile), true);
@@ -223,7 +224,7 @@
         git_clone_toapi($dir);
         $currentgit = $dir."to-api";
 
-        execshell($dir."scaffolder/to-api/", "rsync -rR * ".$dir."to-api/");
+        execshell($dir."scaffolder/to-api/", "rsync -rR * ".$dir."to-api/", false);
 
         replaceindomain($db, $replacement, $dir."to-api/jsons/domains.json");         
 
@@ -231,15 +232,16 @@
         //git_createbranch_push($currentgit, $db["uniquename"], $idexec);
         //git_mergetomaster($currentgit, $db["uniquename"], $idexec);
         //dev
-        git_reset($currentgit);
+        //git_reset($currentgit);
     }
-    function do_legacy($db, $replacement, $idexec) {
+    function do_legacy($db, $replacement, $idexec,$logoext) {
         $doecho = false;
         $dir = '/var/www/gitauto/';
         git_clone_tolegacy($dir);
         $currentgit = $dir."to-legacy";
 
-        execshell($dir."scaffolder/to-legacy/", "rsync -rR * ".$dir."to-legacy/");
+        execshell($dir."scaffolder/to-legacy/", "rsync -rR * ".$dir."to-legacy/", false);
+        execshell("/var/www/media/logos/", "rsync -rR logo-".$db["uniquename"].".".$logoext." ".$dir."to-legacy/images/", false);
 
         replaceindomain($db, $replacement, $dir."to-legacy/jsons/domains.json");         
 
@@ -247,15 +249,16 @@
         // git_createbranch_push($currentgit, $db["uniquename"], $idexec);
         // git_mergetomaster($currentgit, $db["uniquename"], $idexec);
         //dev
-        git_reset($currentgit);
+        //git_reset($currentgit);
     }
-    function do_site($db, $replacement, $idexec) {
+    function do_site($db, $replacement, $idexec,$logoext) {
         $doecho = false;
         $dir = '/var/www/gitauto/';
         git_clone_tosite($dir);
         $currentgit = $dir."to-site";
 
-        execshell($dir."scaffolder/to-site/", "rsync -rR * ".$dir."to-site/");
+        execshell($dir."scaffolder/to-site/", "rsync -rR * ".$dir."to-site/", false);
+        execshell("/var/www/media/logos/", "rsync -rR logo-".$db["uniquename"].".".$logoext." ".$dir."to-site/public/assets/", false);
 
         replaceindomain($db, $replacement, $dir."to-site/src/jsons/domains.json");         
 
@@ -263,19 +266,19 @@
         // git_createbranch_push($currentgit, $db["uniquename"], $idexec);
         // git_mergetomaster($currentgit, $db["uniquename"], $idexec);
         //dev
-        git_reset($currentgit);
+        //git_reset($currentgit);
     }
-    function doall($id, $do_site, $do_legacy, $do_api) {
+    function doall($id, $do_site, $do_legacy, $do_api, $logoext) {
         $idexec = date("Ymdhis");
         $db = getinfofromdb($id);
-        $replacement = getReplacement($db);
+        $replacement = getReplacement($db,$logoext);
 
         doScaffolder($db, $replacement, $idexec);
         if ($do_site) {
-            do_site($db, $replacement, $idexec);
+            do_site($db, $replacement, $idexec, $logoext);
         }
         if ($do_legacy) {
-            do_legacy($db, $replacement, $idexec);
+            do_legacy($db, $replacement, $idexec, $logoext);
         }
         if ($do_api) {
             do_toapi($db, $replacement, $idexec);

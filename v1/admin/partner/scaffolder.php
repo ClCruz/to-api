@@ -41,12 +41,29 @@
                 $imagelog = $imagelog."saved";
             }
         }
+        else {
+            if (file_exists('/var/www/media/logos/logo-'.$aux["uniquename"].'.png')) {
+                $type = "png";
+            }
+            if (file_exists('/var/www/media/logos/logo-'.$aux["uniquename"].'.jpg')) {
+                $type = "jpg";
+            }
+            if (file_exists('/var/www/media/logos/logo-'.$aux["uniquename"].'.jpeg')) {
+                $type = "jpeg";
+            }
+            if (file_exists('/var/www/media/logos/logo-'.$aux["uniquename"].'.svg')) {
+                $type = "svg";
+            }
+            if (file_exists('/var/www/media/logos/logo-'.$aux["uniquename"].'.gif')) {
+                $type = "gif";
+            }
+        }
 
         if ($generate > 0) {
             $do_site = $generate == 1 || $generate == 2;
             $do_legacy = $generate == 1 || $generate == 4;
             $do_api = $generate == 1 || $generate == 3;
-            doall($id_partner, $do_site, $do_legacy, $do_api);
+            doall($id_partner, $do_site, $do_legacy, $do_api, $type);
         }
 
         $json = array("success"=>true

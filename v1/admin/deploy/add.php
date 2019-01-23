@@ -67,8 +67,8 @@
             file_put_contents($jsonFile, $content);
         }
         
-        execshell($currentgit, "echo >> dodeploy");
-        execshell($currentgit, 'echo "'.date("Ymdhis").'" >> dodeploy');
+        execshell($currentgit, "echo >> dodeploy", false);
+        execshell($currentgit, 'echo "'.date("Ymdhis").'" >> dodeploy', false);
 
         //production
         if ($isdiff) {
@@ -102,8 +102,8 @@
         git_clone_toapi($dir);
         $currentgit = $dir."to-api";
 
-        execshell($currentgit, "echo >> dodeploy");
-        execshell($currentgit, 'echo "'.date("Ymdhis").'" >> dodeploy');
+        execshell($currentgit, "echo >> dodeploy", false);
+        execshell($currentgit, 'echo "'.date("Ymdhis").'" >> dodeploy', false);
 
         //production
         git_dodeploy($currentgit);
@@ -117,8 +117,8 @@
         git_clone_tolegacy($dir);
         $currentgit = $dir."to-legacy";
 
-        execshell($currentgit, "echo >> dodeploy");
-        execshell($currentgit, 'echo "'.date("Ymdhis").'" >> dodeploy');
+        execshell($currentgit, "echo >> dodeploy", false);
+        execshell($currentgit, 'echo "'.date("Ymdhis").'" >> dodeploy',false);
 
         //production
         git_dodeploy($currentgit);
@@ -132,8 +132,8 @@
         git_clone_tosite($dir);
         $currentgit = $dir."to-site";
 
-        execshell($currentgit, "echo >> dodeploy");
-        execshell($currentgit, 'echo "'.date("Ymdhis").'" >> dodeploy');
+        execshell($currentgit, "echo >> dodeploy", false);
+        execshell($currentgit, 'echo "'.date("Ymdhis").'" >> dodeploy', false);
 
         //production
         git_dodeploy($currentgit);
