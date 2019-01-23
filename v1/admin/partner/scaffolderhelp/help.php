@@ -1,5 +1,6 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
+    require_once($_SERVER['DOCUMENT_ROOT']."/v1/git_functions.php");
 
     function getinfofromdb($id) {
         $query = "EXEC pr_admin_partner_get_wl ?";
@@ -52,7 +53,8 @@
         $apiURI = "https://api.".$domainwithoutwww;
         $legacyURI = "https://compra.".$domainwithoutwww;
         $pinpadURI = "http://localhost:7001/api";
-        $logo = "https://media.tixs.me/logos/logo-".$db["uniquename"].".jpg";
+        $logomedia = "https://media.tixs.me/logos/logo-".$db["uniquename"].".jpg";
+        $logo = "/assets/logo-".$db["uniquename"].".jpg";
         $db_user = "api.".$db["uniquename"];
         $db_pass = "!".$db["uniquename"]."@api#$";
         $db_host = "172.30.5.3";
@@ -82,6 +84,7 @@
         $ret[] = array("from"=>"__wl-sitecompra__", "to"=>$legacyURI);
         $ret[] = array("from"=>"__wl-color-primary__", "to"=>$db["scss_colors_primary"]);
         $ret[] = array("from"=>"__wl-color-secondary__", "to"=>$db["scss_colors_secondary"]);
+        $ret[] = array("from"=>"__wl-site-logo-media__", "to"=>$logo);
         $ret[] = array("from"=>"__wl-site-logo__", "to"=>$logo);
         $ret[] = array("from"=>"__wl-db-user__", "to"=>$db_user);
         $ret[] = array("from"=>"__wl-db-pass__", "to"=>$db_pass);
@@ -145,97 +148,6 @@
     
         return $results;
     }
-    function execshell($dir, $cmd, $doecho) {
-        if ($dir!='') {
-            $cmd = "cd $dir &&".$cmd;
-        }
-
-        if ($doecho) {
-            echo shell_exec($cmd);
-        }
-        else {
-            shell_exec($cmd);
-        }
-    }
-    function git_clone($dir,$who) {
-        $urltoclone = "";
-
-        switch ($who) {
-            case "scaffolder":
-                $urltoclone = "https://blcoccaro:JweUqRJFkSqdKTjvyzct@bitbucket.org/intuitisolucoestecnologicas/scaffolder.git";
-            break;
-            case "to-site":
-                $urltoclone = "https://blcoccaro:JweUqRJFkSqdKTjvyzct@bitbucket.org/intuitisolucoestecnologicas/to-site.git";
-            break;
-            case "to-api":
-                $urltoclone = "https://blcoccaro:JweUqRJFkSqdKTjvyzct@bitbucket.org/intuitisolucoestecnologicas/to-api.git";
-            break;
-            case "to-legacy":
-                $urltoclone = "https://blcoccaro:JweUqRJFkSqdKTjvyzct@bitbucket.org/intuitisolucoestecnologicas/to-legacy.git";
-            break;
-        }
-
-        execshell($dir, "git clone $urltoclone", false);
-    }
-    function git_config($dir) {
-        execshell($dir, 'git config user.email "blcoccaro@gmail.com" && git config push.default simple', false);
-        //execshell($dir, 'git config user.email "blcoccaro+ticketoffice@gmail.com" && git config user.name "ticketofficedeploy"', false);
-    }
-    function git_pull($dir) {
-        execshell($dir, "git pull", false);
-    }
-    function git_reset($dir) {
-        execshell($dir, "git clean -fd && git reset --hard && git clean -fd", false);
-    }
-    function git_gotomaster($dir) {
-        git_reset($dir);
-        execshell($dir, "git checkout master", false);
-        git_reset($dir);
-    }
-    function git_createbranch_push($dir, $name, $idexec) {
-        git_config($dir);
-        $branchname = "wl_".$name."_".$idexec;
-        execshell($dir, 'git checkout -b '.$branchname.' && git add -A . && git commit -m "'.date("d-m-Y h:i:s").' <> [[automatically generated]] - '.$name.'" && git push '.$branchname, false);
-        execshell($dir, 'git push -u origin '.$branchname, false);
-    }
-    function git_mergetomaster($dir, $name, $idexec) {
-        $branchname = "wl_".$name."_".$idexec;
-        git_config($dir);
-        execshell($dir, 'git checkout master && git merge -q -m "'.date("d-m-Y h:i:s").' <> [[automatically generated]] - '.$name.'" --no-edit '.$branchname.' && git push', false);
-    }
-
-    function git_clone_scaffolder($dir) {
-        if (!file_exists($dir."scaffolder")) {
-            git_clone($dir, 'scaffolder');
-        }
-        else {
-            git_gotomaster($dir."scaffolder");
-        }
-    }
-    function git_clone_toapi($dir) {
-        if (!file_exists($dir."to-api")) {
-            git_clone($dir, 'to-api');
-        }
-        else {
-            git_gotomaster($dir."to-api");
-        }
-    }
-    function git_clone_tosite($dir) {
-        if (!file_exists($dir."to-site")) {
-            git_clone($dir, 'to-site');
-        }
-        else {
-            git_gotomaster($dir."to-site");
-        }
-    }
-    function git_clone_tolegacy($dir) {
-        if (!file_exists($dir."to-legacy")) {
-            git_clone($dir, 'to-legacy');
-        }
-        else {
-            git_gotomaster($dir."to-legacy");
-        }
-    }
 
     function change($file, $replacement, $doecho) {
         $content = file_get_contents($file);
@@ -286,8 +198,10 @@
                 change($row["name"], $replacement, $doecho);
             }
         }
-        git_createbranch_push($currentgit, $db["uniquename"], $idexec);
-        git_mergetomaster($currentgit, $db["uniquename"], $idexec);
+        //production
+        //git_createbranch_push($currentgit, $db["uniquename"], $idexec);
+        //dev
+        git_reset($currentgit);
     }
     function replaceindomain($db, $replacement, $jsonFile) {
         $aux = json_decode(file_get_contents($jsonFile), true);
@@ -313,8 +227,11 @@
 
         replaceindomain($db, $replacement, $dir."to-api/jsons/domains.json");         
 
-        git_createbranch_push($currentgit, $db["uniquename"], $idexec);
-        git_mergetomaster($currentgit, $db["uniquename"], $idexec);
+        //production
+        //git_createbranch_push($currentgit, $db["uniquename"], $idexec);
+        //git_mergetomaster($currentgit, $db["uniquename"], $idexec);
+        //dev
+        git_reset($currentgit);
     }
     function do_legacy($db, $replacement, $idexec) {
         $doecho = false;
@@ -326,8 +243,11 @@
 
         replaceindomain($db, $replacement, $dir."to-legacy/jsons/domains.json");         
 
-        git_createbranch_push($currentgit, $db["uniquename"], $idexec);
-        git_mergetomaster($currentgit, $db["uniquename"], $idexec);
+        //production
+        // git_createbranch_push($currentgit, $db["uniquename"], $idexec);
+        // git_mergetomaster($currentgit, $db["uniquename"], $idexec);
+        //dev
+        git_reset($currentgit);
     }
     function do_site($db, $replacement, $idexec) {
         $doecho = false;
@@ -339,18 +259,27 @@
 
         replaceindomain($db, $replacement, $dir."to-site/src/jsons/domains.json");         
 
-        git_createbranch_push($currentgit, $db["uniquename"], $idexec);
-        git_mergetomaster($currentgit, $db["uniquename"], $idexec);
+        //production
+        // git_createbranch_push($currentgit, $db["uniquename"], $idexec);
+        // git_mergetomaster($currentgit, $db["uniquename"], $idexec);
+        //dev
+        git_reset($currentgit);
     }
-    function doall($id) {
+    function doall($id, $do_site, $do_legacy, $do_api) {
         $idexec = date("Ymdhis");
         $db = getinfofromdb($id);
         $replacement = getReplacement($db);
 
         doScaffolder($db, $replacement, $idexec);
-       // do_toapi($db, $replacement, $idexec);
-       // do_legacy($db, $replacement, $idexec);
-        do_site($db, $replacement, $idexec);
+        if ($do_site) {
+            do_site($db, $replacement, $idexec);
+        }
+        if ($do_legacy) {
+            do_legacy($db, $replacement, $idexec);
+        }
+        if ($do_api) {
+            do_toapi($db, $replacement, $idexec);
+        }
 
         echo json_encode(array("success"=>true, "msg"=>"Criado com sucesso."));
         logme();
