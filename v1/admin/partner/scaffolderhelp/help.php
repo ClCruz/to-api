@@ -200,7 +200,7 @@
             }
         }
         //production
-        //git_createbranch_push($currentgit, $db["uniquename"], $idexec);
+        git_createbranch_push($currentgit, $db["uniquename"], $idexec);
         //dev
         // git_reset($currentgit);
     }
@@ -229,8 +229,8 @@
         replaceindomain($db, $replacement, $dir."to-api/jsons/domains.json");         
 
         //production
-        //git_createbranch_push($currentgit, $db["uniquename"], $idexec);
-        //git_mergetomaster($currentgit, $db["uniquename"], $idexec);
+        git_createbranch_push($currentgit, $db["uniquename"], $idexec);
+        git_mergetomaster($currentgit, $db["uniquename"], $idexec);
         //dev
         //git_reset($currentgit);
     }
@@ -246,8 +246,8 @@
         replaceindomain($db, $replacement, $dir."to-legacy/jsons/domains.json");         
 
         //production
-        // git_createbranch_push($currentgit, $db["uniquename"], $idexec);
-        // git_mergetomaster($currentgit, $db["uniquename"], $idexec);
+        git_createbranch_push($currentgit, $db["uniquename"], $idexec);
+        git_mergetomaster($currentgit, $db["uniquename"], $idexec);
         //dev
         //git_reset($currentgit);
     }
@@ -263,8 +263,8 @@
         replaceindomain($db, $replacement, $dir."to-site/src/jsons/domains.json");         
 
         //production
-        // git_createbranch_push($currentgit, $db["uniquename"], $idexec);
-        // git_mergetomaster($currentgit, $db["uniquename"], $idexec);
+        git_createbranch_push($currentgit, $db["uniquename"], $idexec);
+        git_mergetomaster($currentgit, $db["uniquename"], $idexec);
         //dev
         //git_reset($currentgit);
     }
