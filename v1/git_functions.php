@@ -48,6 +48,7 @@
     }
     function git_reset($dir) {
         execshell($dir, "git clean -fd && git reset --hard && git clean -fd", false);
+        git_pull($dir);
     }
     function git_gotomaster($dir) {
         git_reset($dir);

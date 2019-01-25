@@ -9,6 +9,8 @@
         git_clone_toapi($dir);
         git_clone_tosite($dir);
         git_clone_tolegacy($dir);
+        git_clone_toadmin($dir);
+        git_clone_todatabase($dir);
 
         $json = array("success"=>true
                     ,"msg"=>'Processo executado');
