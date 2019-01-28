@@ -4,6 +4,13 @@
     require_once($_SERVER['DOCUMENT_ROOT']."/lib/php-image-resize/ImageResize.php");
     use \Gumlet\ImageResize;
 
+
+    function savegitexec($id_partner,$started) {
+        $query = "EXEC pr_admin_partner_whitelabel_git_save ?,?";
+        $params = array($id_partner,$started);
+        $result = db_exec($query, $params);
+    }
+
     function get($id_user
                 ,$id_partner,$json_ga,$json_meta_description,$json_meta_keywords
                 ,$json_template,$json_info_title,$json_info_description
@@ -18,8 +25,13 @@
         $result = db_exec($query, $params);
 
         $imagelog = "";
+        $doimage = false;
 
-        if ($changedImage || $changedImage == 1 || $changedImage == "1") {      
+        if (((string)$changedImage)=="true" || ((string)$changedImage)=="1") {
+            $doimage = true;
+        }
+
+        if ($doimage) {      
             $aux = getinfofromdb($id_partner);
 
             $imagelog =  $imagelog."altered image|";
@@ -42,6 +54,7 @@
             }
         }
         else {
+            $type = "png";
             if (file_exists('/var/www/media/logos/logo-'.$aux["uniquename"].'.png')) {
                 $type = "png";
             }
@@ -60,10 +73,12 @@
         }
 
         if ($generate > 0) {
+            savegitexec($id_partner, 1);
             $do_site = $generate == 1 || $generate == 2;
             $do_legacy = $generate == 1 || $generate == 4;
             $do_api = $generate == 1 || $generate == 3;
             doall($id_partner, $do_site, $do_legacy, $do_api, $type);
+            savegitexec($id_partner, 0);
         }
 
         $json = array("success"=>true

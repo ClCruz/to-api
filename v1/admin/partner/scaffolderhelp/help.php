@@ -30,8 +30,25 @@
                 ,"scss_colors_primary"=> $row["scss_colors_primary"]
                 ,"scss_colors_secondary"=> $row["scss_colors_secondary"]
                 ,"apikey"=>$row["apikey"]
+                ,"videos"=>array("list"=>array())
             );
         }
+
+
+        $query = "EXEC pr_admin_partner_whitelabel_videos_list ?";
+        $params = array($id);
+        $result = db_exec($query, $params);
+
+        $aux = array();
+        foreach ($result as &$row) {
+            $aux = array(
+                "order" => $row["fileorder"]
+                ,"type" => $row["filetype"]
+                ,"src" => $row["source"]
+            );
+        }
+
+        $json["videos"]["list"] = $aux;
 
         return $json;
     }
@@ -91,6 +108,7 @@
         $ret[] = array("from"=>"__wl-db-ip__", "to"=>$db_host);
         $ret[] = array("from"=>"__wl-db-port__", "to"=>$db_port);
         $ret[] = array("from"=>"__wl-logoext__", "to"=>$logoext);
+        $ret[] = array("from"=>"__wl-video-list__", "to"=>json_encode($db["videos"]["list"], JSON_PRETTY_PRINT));
         $ret[] = array("from"=>"__wl-gateway-pagarme-api__", "to"=>"ak_live_pcYp3eGXxpOBHqViOLfBQ61NQ4433y");
         $ret[] = array("from"=>"__wl-gateway-pagarme-cryptkey__", "to"=>"ek_live_QSMMW6WD1Bgio5K9aB0IIPL656ctjE");
         return $ret;
@@ -267,6 +285,17 @@
         git_mergetomaster($currentgit, $db["uniquename"], $idexec);
         //dev
         //git_reset($currentgit);
+    }
+    function resetall() {
+        git_gotomaster("/var/www/gitauto/scaffolder/");
+        git_gotomaster("/var/www/gitauto/to-site/");
+        git_gotomaster("/var/www/gitauto/to-legacy/");
+        git_gotomaster("/var/www/gitauto/to-api/");
+        git_gotomaster("/var/www/gitauto/to-database/");
+
+        echo json_encode(array("success"=>true, "msg"=>"Resetado com sucesso."));
+        logme();
+        die();
     }
     function doall($id, $do_site, $do_legacy, $do_api, $logoext) {
         $idexec = date("Ymdhis");

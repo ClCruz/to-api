@@ -29,8 +29,25 @@
                 ,"json_info_companyname"=> $row["json_info_companyname"]
                 ,"scss_colors_primary"=> $row["scss_colors_primary"]
                 ,"scss_colors_secondary"=> $row["scss_colors_secondary"]
+                ,"apikey"=>$row["apikey"]
+                ,"videos"=>array("list"=>array())
             );
         }
+
+        $query = "EXEC pr_admin_partner_whitelabel_videos_list ?";
+        $params = array($id);
+        $result = db_exec($query, $params);
+
+        $aux = array();
+        foreach ($result as &$row) {
+            $aux[] = array(
+                "order" => $row["fileorder"]
+                ,"type" => $row["filetype"]
+                ,"src" => $row["source"]
+            );
+        }
+
+        $json["videos"]["list"] = $aux;
 
         echo json_encode($json);
         logme();
