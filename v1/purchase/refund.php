@@ -6,19 +6,19 @@
         $query = "EXEC pr_refund ?, ?, ?, ?";
         $params = array($id_ticketoffice_user, $codVenda, $all, $indiceList);
         $result = db_exec($query, $params, $id_base);
-
+        $retPagarme = "";
         $aux = array();
         foreach ($result as &$row) {
             $aux = array("key"=>$row["key"]
             ,"amount"=>$row["amount"]);
 
             //if ($dogateway == 1)
-                refundPagarme($aux["key"], $aux["amount"]);
+            $retPagarme = refundPagarme($aux["key"], $aux["amount"]);
             
             array_push($json,$aux);
         }
 
-        $json = array("success"=>true);
+        $json = array("success"=>true, "msg"=>$retPagarme);
 
         echo json_encode($json);
         logme();
@@ -26,6 +26,10 @@
     }
 
     function refundPagarme($id, $amount) {
+        if ($id == "") {
+            return "no_refund_in_gateway";
+        }
+        $ret = "";
         $conf = getConfigPagarme();
 
         $url = $conf["apiURI"]."transactions/".$id."/refund";
@@ -52,10 +56,15 @@
             'Content-Length: ' . strlen($post_data))                                                                       
         );             
         $response = curl_exec($ch);
-        //$errno = curl_errno($ch);
-
-        $aux = json_decode($response);
-
+        $errno = curl_errno($ch);
+        if ($errno) {
+            $ret = "Error in gateway#:" . $errno;
+        }
+        else  {
+            $aux = json_decode($response);
+            $ret = json_encode($aux);
+        }
+        
         curl_close($ch);
 
         return isset($aux["refunded_amount"]);
