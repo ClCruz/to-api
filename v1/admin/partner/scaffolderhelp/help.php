@@ -69,6 +69,7 @@
         $domainwithprotocol = "https://".$domain;
         $apiURI = "https://api.".$domainwithoutwww;
         $legacyURI = "https://compra.".$domainwithoutwww;
+        $adminURI = "https://admin.".$domainwithoutwww;
         $pinpadURI = "http://localhost:7001/api";
         $logomedia = "https://media.tixs.me/logos/logo-".$db["uniquename"].".jpg";
         $logo = "/assets/logo-".$db["uniquename"].".".$logoext;
@@ -99,6 +100,7 @@
         $ret[] = array("from"=>"__wl-siteapi__", "to"=>$apiURI);
         $ret[] = array("from"=>"__wl-pinpaduri__", "to"=>$pinpadURI);
         $ret[] = array("from"=>"__wl-sitecompra__", "to"=>$legacyURI);
+        $ret[] = array("from"=>"__wl-siteadmin__", "to"=>$adminURI);
         $ret[] = array("from"=>"__wl-color-primary__", "to"=>$db["scss_colors_primary"]);
         $ret[] = array("from"=>"__wl-color-secondary__", "to"=>$db["scss_colors_secondary"]);
         $ret[] = array("from"=>"__wl-site-logo-media__", "to"=>$logo);
@@ -227,10 +229,12 @@
         $site = str_replace("https://", "", getFromReplacement($replacement, "__wl-sitewithwww__"));
         $api = str_replace("https://", "", getFromReplacement($replacement, "__wl-siteapi__"));
         $legacy = str_replace("https://", "", getFromReplacement($replacement, "__wl-sitecompra__"));
+        $admin = str_replace("https://", "", getFromReplacement($replacement, "__wl-siteadmin__"));
 
         $aux[$site] = $db["uniquename"];
         $aux[$api] = $db["uniquename"];
         $aux[$legacy] = $db["uniquename"];
+        $aux[$admin] = $db["uniquename"];
 
         $content = json_encode($aux,JSON_PRETTY_PRINT);
 
