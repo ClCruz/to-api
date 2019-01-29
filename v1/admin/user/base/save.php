@@ -7,6 +7,11 @@
 
         $result = db_exec($query, $params);
 
+        $query = "EXEC pr_ticketoffice_user_add_base ?";
+        $params = array($id);
+        $result = db_exec($query, $params, $id_base);
+
+
         $json = array("success"=>true
         ,"msg"=>$row["msg"]);
 
