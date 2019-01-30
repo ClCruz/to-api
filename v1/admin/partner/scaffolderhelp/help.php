@@ -71,7 +71,7 @@
         $legacyURI = "https://compra.".$domainwithoutwww;
         $adminURI = "https://admin.".$domainwithoutwww;
         $pinpadURI = "http://localhost:7001/api";
-        $logomedia = "https://media.tixs.me/logos/logo-".$db["uniquename"].".jpg";
+        $logomedia = "https://media.tixs.me/logos/logo-".$db["uniquename"].".".$logoext;
         $logo = "/assets/logo-".$db["uniquename"].".".$logoext;
         $db_user = "api.".$db["uniquename"];
         $db_pass = "!".$db["uniquename"]."@api#$";
