@@ -5,7 +5,7 @@
         $query = "EXEC pr_pinpad_update ?,?,?,?,?,?,?,?";
         //key,pinpad_acquirerResponseCode,pinpad_transactionId,pinpad_executed,pinpad_error,pinpad_cancel,pinpad_ok,pinpad_fail
         $params = array($key,$pinpad_acquirerResponseCode,$pinpad_transactionId,$pinpad_executed,$pinpad_error,$pinpad_cancel,$pinpad_ok,$pinpad_fail,$codVenda);
-        $result = db_exec($query, $params, $id_base);
+        $result = db_exec($query, $params);
 
         $json = array("success"=>true);
 
