@@ -29,7 +29,7 @@ function getDatabaseName($id_base) {
 		$ret = $aux["default"];
 	}
 	else {
-		//$id_base_h = (string)$id_base;
+		$id_base_h = (string)$id_base;
 		$ret = $aux[$id_base_h];
 	}
 

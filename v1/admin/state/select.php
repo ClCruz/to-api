@@ -12,7 +12,7 @@
         foreach ($result as &$row) {
             $json[] = array(
                 "id_estado" => $row["id_estado"]
-                ,"ds_estado " => $row["ds_estado "]
+                ,"ds_estado " => $row["ds_estado"]
                 ,"sg_estado" => $row["sg_estado"]
                 ,"value"=>$row["id_estado"]
                 ,"text"=>$row["sg_estado"]
