@@ -288,8 +288,8 @@ $count = 0;
                 <div class="block middle"></div>
                 <div class="middle">
                     <span class="payment middle">Pagamento: <span class="value"><?php echo $row["paymentType"] ?></span></span>
-                    <span class="transaction middle"><span class="value">(<?php echo $row["transaction"] ?>)</span></span>
                     <?php if ($row["transaction"] != "") {?>
+                    <span class="transaction middle"><span class="value">(<?php echo $row["transaction"] ?>)</span></span>
                     <?php }?>
                 </div>
                 <div class="insurance_policy middle">Apólice de Seguro N: <span class="value"><?php echo $row["insurance_policy"] ?></span></div>

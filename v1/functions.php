@@ -8,6 +8,9 @@ $log = true;
 function getDefaultCardImageName() {
     return "card.jpg";
 }
+function getVideoFilename() {
+    return "demo";
+}
 function getOriginalCardImageName() {
     return "original.jpg";
 }

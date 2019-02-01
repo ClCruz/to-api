@@ -6,11 +6,13 @@
 #### Install for:  
 
 ```bash
-sudo docker run -it -d -p 2002:80 --name unique.api \
--v /var/www/unique/api:/var/www/html \
--v /var/www/unique/media:/var/www/media \
--v /var/www/unique/site:/var/www/site \
-blcoccaro/linuxphpsql:v4
+sudo docker run -it -d -p 2002:80 --restart=always --name unique.api \
+-v /hd/www/unique/api/:/var/www/html \
+-v /hd/www/unique/media/:/var/www/media \
+-v /hd/www/unique/site/:/var/www/site \
+-v /hd/www/unique/legacy:/var/www/legacy \
+-v /hd/www/unique/gitauto/:/var/www/gitauto \
+blcoccaro/phpwithsql:v1
 ```
 
 ### meanings 
