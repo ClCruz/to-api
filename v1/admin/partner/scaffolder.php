@@ -8,7 +8,7 @@
     function savegitexec($id_partner,$started) {
         $query = "EXEC pr_admin_partner_whitelabel_git_save ?,?";
         $params = array($id_partner,$started);
-        $result = db_exec($query, $params);
+        // $result = db_exec($query, $params);
     }
 
     function get($id_user

@@ -66,6 +66,9 @@
         $domain = $db["domain"];
         $domainwithwww = $domain;
         $domainwithoutwww = strpos($domain, 'www') === 0 ? str_replace("www.", "", $domain) : $domain;
+
+        //$domainwithoutwww = str_replace("ingressos.","",$domain);
+
         $domainwithprotocol = "https://".$domain;
         $apiURI = "https://api.".$domainwithoutwww;
         $legacyURI = "https://compra.".$domainwithoutwww;
