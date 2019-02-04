@@ -84,6 +84,10 @@ function get_id_base_from_id_evento($id_evento) {
 
     return $id_base;
 }
+function stopthehammer($obj) {
+    echo json_encode($obj);
+    die();
+}
 function sendonemail($from, $fromName, $to, $toName, $subject, $msg) {	
     if (getwhitelabelemail()["config"]["type"] != "api") {
         return false;

@@ -8,9 +8,9 @@
 
         traceme($id_purchase, "Validate Payment Method - start", '',0);
         $query = "EXEC pr_purchase_payment_method_hoursinadvance ?";
-        $params = array($bin, $id_payment_method);
+        $params = array($id_payment_method);
         $result = db_exec($query, $params);
-        $db = array();
+        $db = null;
         $ret = array("success"=>true, "msg"=>"");
         $hasError = false;
         $errorMsg = "";
@@ -19,13 +19,16 @@
                         ,"id_payment_method"=>$id_payment_method);
         }
 
-        foreach ($shopping as &$row) {
-            if ($db["QT_HR_ANTECED"]>$row["hoursinadvance"]) {
-                $hasError = true;
-                $errorMsg = "Esta forma de pagamento não pode ser utilizada no momento. Por favor, selecione outra. (".$db["QT_HR_ANTECED"].")";
-                break;
+        if ($db !== null && count($db) > 0) {
+            foreach ($shopping as &$row) {
+                if ($db["QT_HR_ANTECED"]>$row["hoursinadvance"]) {
+                    $hasError = true;
+                    $errorMsg = "Esta forma de pagamento não pode ser utilizada no momento. Por favor, selecione outra. (".$db["QT_HR_ANTECED"].")";
+                    break;
+                }
             }
         }
+
 
         traceme($id_purchase, "Validate Payment Method - end", '',0);
 
@@ -120,9 +123,150 @@
         return $ret;
     }
 
-    function makeitmine($id_purchase, $id_client, $id_session) {
 
-        traceme($id_purchase, "Make it mine - start", '',0);
+    function getpurchasesplit($id_purchase, $id_client, $type, $amount, $where, $payment_method) {
+
+        traceme($id_purchase, "get split for purchase - start", '',0);
+        $query = "EXEC pr_purchase_get_split ?";
+        $params = array($id_client);
+        traceme($id_purchase, "get split for purchase - get from db - start", '',0);
+        $result = db_exec($query, $params);
+        $splitdb = array();
+        $split = array();
+        $hasError = false;
+        $errorMsg = "";
+        foreach ($result as &$row) {
+            $splitdb[] = array("id_evento"=>$row["id_evento"]
+            ,"recipient_id"=>$row["recipient_id"]
+            ,"nr_percentual_split"=>$row["nr_percentual_split"]
+            ,"liable"=>$row["liable"]
+            ,"charge_processing_fee"=>$row["charge_processing_fee"]
+            ,"percentage_credit_web"=>$row["percentage_credit_web"]
+            ,"percentage_debit_web"=>$row["percentage_debit_web"]
+            ,"percentage_boleto_web"=>$row["percentage_boleto_web"]
+            ,"percentage_credit_box_office"=>$row["percentage_credit_box_office"]
+            ,"percentage_debit_box_office"=>$row["percentage_debit_box_office"]
+            ,"howmanysplits"=>$row["howmanysplits"]);
+        }
+
+        traceme($id_purchase, "get split for purchase - get from db - end", '',0);
+
+        traceme($id_purchase, "get split for purchase - loop - start", '',0);
+
+        if (count($splitdb)>0) {
+            $count = $splitdb[0]["howmanysplits"];
+        
+            $i = 0;
+            $amountUsed = 0;
+            $amount = $amount/100;
+        
+            $split = array();
+            foreach ($splitdb as &$row) {
+                $i = $i+1;
+                $perToUse = 0;
+                $amountToUse = 0;
+        
+                switch ($where) {
+                    case "web":
+                        switch ($payment_method) {
+                            case "credit":
+                            case "credit_card":
+                                    $perToUse = $row["percentage_credit_web"];
+                                break;
+                            case "boleto":
+                            case "payment_slip":
+                                $perToUse = $row["percentage_boleto_web"];
+                                break;
+                            case "debit":
+                            case "debit_card":
+                                $perToUse = $row["percentage_debit_web"];
+                                break;							
+                        }
+                        break;
+                    case "bilheteria":
+                        switch ($payment_method) {
+                            case "credit":
+                            case "credit_card":
+                                    $perToUse = $row["percentage_credit_box_office"];
+                                break;
+                            case "debit":
+                            case "debit_card":
+                                $perToUse = $row["percentage_debit_box_office"];
+                                break;							
+                        }
+                        break;
+                }
+        
+                if ($count==$i) {
+                    $amoutToUse = round($amount-$amountUsed, 2);
+                }
+                else {
+                    $amoutToUse = round($amount*($perToUse/100), 2);
+                }
+        
+                $amountUsed = $amountUsed + $amoutToUse;
+        
+                switch ($type) {
+                    case "pagarme":
+                        $split[] = array(
+                            "recipient_id" => $row["recipient_id"],
+                            "amount" => $amoutToUse*100,
+                            "liable" => $row["liable"],
+                            "charge_processing_fee" => $row["charge_processing_fee"]);
+                        break;
+                }                        
+            }
+        }
+
+
+        traceme($id_purchase, "get split for purchase - loop - end", '',0);
+
+        traceme($id_purchase, "get split for purchase - end", '',0);
+
+        return $split;
+    }
+
+    function getinstallments($id_purchase, $id_client) {
+
+        traceme($id_purchase, "get installments - start", '',0);
+        $query = "EXEC pr_purchase_installments ?";
+        $params = array($id_client);
+        $result = db_exec($query, $params);
+        $ret = array();
+        $hasError = false;
+        $errorMsg = "";
+        foreach ($result as &$row) {
+            $ret = array("id_evento"=>$row["id_evento"]
+                        ,"interest_rate"=>$row["interest_rate"]
+                        ,"max_installments"=>$row["max_installments"]
+                        ,"free_installments"=>$row["free_installments"]);
+        }
+
+        traceme($id_purchase, "get installments - end", '',0);
+
+        return $ret;
+    }
+
+    function checkmultipleevents($id_purchase, $id_client) {
+
+        traceme($id_purchase, "check multiples events - start", '',0);
+        $query = "EXEC pr_purchase_check_multiple_event ?";
+        $params = array($id_client);
+        $result = db_exec($query, $params);
+        $ret = array();
+        $hasError = false;
+        $errorMsg = "";
+        foreach ($result as &$row) {
+            $ret = array("success"=>$row["success"]
+                        ,"msg"=>$row["msg"]);
+        }
+
+        traceme($id_purchase, "check multiples events - end", '',0);
+
+        return $ret;
+    }
+
+    function makeitmine($id_client, $id_session) {
         $query = "EXEC pr_purchase_makeitbemine ?, ?";
         $params = array($id_session, $id_client);
         $result = db_exec($query, $params);
@@ -135,16 +279,25 @@
                         ,"session"=>$row["session"]);
         }
 
-        traceme($id_purchase, "Make it mine - end", '',0);
-
         return $ret;
     }
 
     function renew($id_session) {
         $query = "EXEC pr_purchase_renew ?,?";
-        $params = array($id_session, 10);
+        $params = array($id_session, 30);
         $result = db_exec($query, $params);
     }
+    function clearcurrentsessionclient($id_client) {
+        $query = "EXEC pr_purchase_clear_sessionclient ?";
+        $params = array($id_client);
+        $result = db_exec($query, $params);
+    }
+    function setinproc($id_pedido_venda, $cd_meio_pagamento) {
+        $query = "EXEC pr_purchase_setinproc ?, ?";
+        $params = array($cd_meio_pagamento, $id_pedido_venda);
+        $result = db_exec($query, $params);
+    }
+    
 
     function getbases4purchase($id_session) {
         $query = "EXEC pr_purchase_get_all_bases ?";
@@ -160,6 +313,50 @@
             ,"id_apresentacao"=>$row["id_apresentacao"]
             ,"id_reserva"=>$row["id_reserva"]);
         }
+        return $json;
+    }
+    
+    function generate_pedido_venda($id_client, $id_operador, $amountTotalINT
+                                ,$amountTotalwithoutserviceINT,$amountTotalServiceINT,$bin,$installment
+                                ,$ip,$host,$nr_beneficio,$nm_cliente_voucher,$ds_email_voucher,$nm_titular_cartao) {
+        $query = "EXEC pr_purchase_generate_pedido_venda ?, ?, ?,?,?,?,?,?,?,?,?,?,?";
+        $params = array($id_client, $id_operador, $amountTotalINT
+        ,$amountTotalwithoutserviceINT,$amountTotalServiceINT,$bin,$installment
+        ,$ip,$host,$nr_beneficio,$nm_cliente_voucher,$ds_email_voucher,$nm_titular_cartao);
+        $result = db_exec($query, $params);
+
+        $json = array();
+        foreach ($result as &$row) {
+            $json = array("id_pedido_venda"=>$row["id_pedido_venda"]);
+        }
+        return $json;
+    }
+    function getvaluesofmyshoppig($id_client) {
+        $query = "EXEC pr_purchase_get_values ?";
+        $params = array($id_client);
+        $result = db_exec($query, $params);
+
+        $json = array();
+        foreach ($result as &$row) {
+            $json[] = array("id"=>$row["id"]
+            ,"indice"=>$row["indice"]
+            ,"amount"=>$row["amount"]
+            ,"amountallWithoutService"=>$row["amountallWithoutService"]
+            ,"amountallWithService"=>$row["amountallWithService"]
+            ,"serviceAmountINT"=>$row["serviceAmountINT"]
+            ,"discountOther"=>$row["discountOther"]
+            ,"discountOtherIsPer"=>$row["discountOtherIsPer"]
+            ,"discountSector"=>$row["discountSector"]
+            ,"discountSectorIsPer"=>$row["discountSectorIsPer"]
+            ,"discountTicket"=>$row["discountTicket"]
+            ,"discountTicketIsPer"=>$row["discountTicketIsPer"]
+            ,"serviceAmount"=>$row["serviceAmount"]
+            ,"totalservice"=>$row["totalservice"]
+            ,"totalwithoutdiscount"=>$row["totalwithoutdiscount"]
+            ,"totalwithdiscount"=>$row["totalwithdiscount"]
+            ,"totalwithservice"=>$row["totalwithservice"]);
+        }
+        return $json;
     }
     function getcurrentpurchase($id_session) {
         $query = "EXEC pr_purchase_get_current ?";
@@ -197,7 +394,9 @@
             ,"id_apresentacao"=>$row["id_apresentacao"]
             ,"id_reserva"=>$row["id_reserva"]
             ,"hoursinadvance"=>$row["hoursinadvance"]
-            ,"in_taxa_por_pedido"=>$row["in_taxa_por_pedido"]);
+            ,"in_taxa_por_pedido"=>$row["in_taxa_por_pedido"]
+            ,"id_apresentacao_bilhete"=>$row["id_apresentacao_bilhete"]
+            ,"nr_beneficio"=>$row["nr_beneficio"]);
         }
         return $json;
     }
@@ -314,6 +513,7 @@
         foreach ($result as &$row) {
             $json[] = array("id_base"=>$row["id_base"]);
         }
+        return $json;
     }
 
     function traceme($id_purchase, $title, $values, $isforeign) {
