@@ -111,6 +111,30 @@
             break;
         }
     }
+    function getwhitelabelURI_legacy($next) {
+        $uri = getwhitelabel("legacy");
+
+        if (startsWith($uri, "http") == false) {
+            $uri = "https://".$uri;
+        }
+        if (endsWith($uri, "/") == false && startsWith($next, "/") == false) {
+            $uri .= "/";
+        }
+        $uri.=$next;
+        return $uri;
+    }
+    function getwhitelabelURI_home($next) {
+        $uri = getwhitelabel("uri");
+
+        if (startsWith($uri, "http") == false) {
+            $uri = "https://".$uri;
+        }
+        if (endsWith($uri, "/") == false && startsWith($next, "/") == false) {
+            $uri .= "/";
+        }
+        $uri.=$next;
+        return $uri;
+    }
     function getwhitelabel($property) {
         switch ($property) {
             case "legacy":

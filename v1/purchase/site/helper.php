@@ -318,11 +318,13 @@
     
     function generate_pedido_venda($id_client, $id_operador, $amountTotalINT
                                 ,$amountTotalwithoutserviceINT,$amountTotalServiceINT,$bin,$installment
-                                ,$ip,$host,$nr_beneficio,$nm_cliente_voucher,$ds_email_voucher,$nm_titular_cartao) {
-        $query = "EXEC pr_purchase_generate_pedido_venda ?, ?, ?,?,?,?,?,?,?,?,?,?,?";
+                                ,$ip,$host,$nr_beneficio,$nm_cliente_voucher,$ds_email_voucher,$nm_titular_cartao
+                                ,$id_pedido_ipagare, $cd_numero_autorizacao, $cd_numero_transacao, $id_transaction_braspag, $id_meio_pagamento) {
+        $query = "EXEC pr_purchase_generate_pedido_venda ?, ?, ?,?,?,?,?,?,?,?,?,?,?, ?,?,?,?,?";
         $params = array($id_client, $id_operador, $amountTotalINT
         ,$amountTotalwithoutserviceINT,$amountTotalServiceINT,$bin,$installment
-        ,$ip,$host,$nr_beneficio,$nm_cliente_voucher,$ds_email_voucher,$nm_titular_cartao);
+        ,$ip,$host,$nr_beneficio,$nm_cliente_voucher,$ds_email_voucher,$nm_titular_cartao
+        ,$id_pedido_ipagare, $cd_numero_autorizacao, $cd_numero_transacao, $id_transaction_braspag, $id_meio_pagamento);
         $result = db_exec($query, $params);
 
         $json = array();
@@ -331,6 +333,28 @@
         }
         return $json;
     }
+
+    function sell($id_client, $totalamount, $id_pedido_venda, $cd_meio_pagamento) {
+        $query = "EXEC pr_purchase_sell ?,?,?,?";
+        $params = array($id_client, $totalamount, $id_pedido_venda, $cd_meio_pagamento);
+        $result = db_exec($query, $params);
+
+        $json = array();
+        foreach ($result as &$row) {
+        $json = array("success"=>$row["success"]
+                        ,"id_base"=>$row["id_base"]
+                        ,"codVenda"=>$row["codVenda"]
+                        ,"id_pedido_venda"=>$row["id_pedido_venda"]
+                        ,"ErrorNumber"=>$row["ErrorNumber"]
+                        ,"ErrorSeverity"=>$row["ErrorSeverity"]
+                        ,"ErrorState"=>$row["ErrorState"]
+                        ,"ErrorProcedure"=>$row["ErrorProcedure"]
+                        ,"ErrorLine"=>$row["ErrorLine"]
+                        ,"ErrorMessage"=>$row["ErrorMessage"]);
+        }
+        return $json;
+    }
+
     function getvaluesofmyshoppig($id_client) {
         $query = "EXEC pr_purchase_get_values ?";
         $params = array($id_client);

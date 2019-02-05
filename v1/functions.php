@@ -126,6 +126,19 @@ function sendonemail($from, $fromName, $to, $toName, $subject, $msg) {
 
 	return $result;
 }
+function endsWith($haystack, $needle) {
+    // search forward starting from end minus needle length characters
+    if ($needle === '') {
+        return true;
+    }
+    $diff = \strlen($haystack) - \strlen($needle);
+    return $diff >= 0 && strpos($haystack, $needle, $diff) !== false;
+}
+function startsWith($haystack, $needle) {
+    // search backwards starting from haystack length characters from the end
+    return $needle === ''
+      || strrpos($haystack, $needle, -strlen($haystack)) !== false;
+}
 function logme() {
     global $log;
 

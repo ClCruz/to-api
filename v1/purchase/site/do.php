@@ -33,8 +33,15 @@
         // return array("success"=>$hasError == false, "msg"=>$errorMsg);
     }
 
-    function dopurchase($id_client, $id_payment_method, $card_number, $card_holdername, $card_expirationdate, $card_cvv, $payment_method, $installments) {
+    function dopurchase($id_client, $id_payment_method, $card_number, $card_holdername, $card_expirationdate, $card_cvv, $payment_method, $installments, $vouchername, $voucheremail) {
         $start = $_SERVER["REQUEST_TIME"];
+        $ip = "";
+        if (array_key_exists("HTTP_X_FORWARDED_FOR", $_SERVER)) {
+            $ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+        }
+    
+        $ip = ($ip == '' ? '' : '|').$_SERVER['REMOTE_ADDR'];
+    
   
         $id_purchase = get_id_purchase();
         
@@ -109,8 +116,12 @@
         renew($id_client);
         
         $values = getvaluesofmyshoppig($id_client);
+
+        //die(json_encode($values));
         
         $amount = $values[0]["totalwithservice"];
+        $totalwithdiscount = $values[0]["totalwithdiscount"];
+        $totalservice = $values[0]["totalservice"];
         
         $installment_config = getinstallments($id_purchase, $id_client);
         $installment_gateway = pagarme_installments($installment_config["free_installments"], $installment_config["max_installments"], $installment_config["interest_rate"], $amount);
@@ -156,12 +167,44 @@
                     );
         $purchase_gateway = pagarme_payment($id_purchase, $id_client, $metadata, $charge, $buyer);
 
+        $retofsevice = array("success"=>false, "seconds"=>0, "id_pedido_venda"=> 0, "codVenda"=> '', "msg"=> '');
+
+        if ($purchase_gateway["success"]) {
+            $bin = $purchase_gateway["card_first_digits"];
+            $amount = $values[0]["totalwithservice"];
+            $totalwithdiscount = $values[0]["totalwithdiscount"];
+            $totalservice = $values[0]["totalservice"];
+            $host = gethost();
+            $nr_beneficio = '';
+    
+            $pedidovenda = generate_pedido_venda($id_client, null, $amountToPay,intval($amountToPay)-intval($totalservice),$totalservice,$bin,$installments,$ip,$host,$nr_beneficio,$vouchername,$voucheremail,$card_holdername,"pagarme", $purchase_gateway["authorization_code"], $purchase_gateway["id"], $purchase_gateway["authorization_code"], $paymentmethod["id_meio_pagamento"]);
+
+            $sell = sell($id_client, $amountToPay, $pedidovenda["id_pedido_venda"], $id_payment_method);
+            
+            if ($sell["success"]) {
+                $capture_gateway = pagarme_capture($id_purchase,$purchase_gateway["id"], $id_client, $metadata, $charge, $buyer);
+
+                $retofsevice = array("success"=>true, "seconds"=>0, "id_pedido_venda"=> $sell["id_pedido_venda"], "codVenda"=> $sell["codVenda"], 'msg' => '');
+            }
+            else {
+                $retofsevice = array("success"=>false, "seconds"=>0, "id_pedido_venda"=> $sell["id_pedido_venda"], "codVenda"=> $sell["codVenda"], 'msg' => json_encode($sell));
+            }
+        }
+        else {
+            $retofsevice = array("success"=>false, "seconds"=>0, "id_pedido_venda"=> 0, "codVenda"=> 0, 'msg' => json_encode($purchase_gateway));
+        }
+
         $end = time();
         $duration = $end-$start;
         $hours = (int)($duration/60/60);
         $minutes = (int)($duration/60)-$hours*60;
         $seconds = (int)$duration-$hours*60*60-$minutes*60;
-    
+
+        $retofsevice["seconds"] = $seconds;
+
+        echo json_encode($retofsevice);
+        logme();
+        die();    
         
         //$id_client, $id_payment_method, $card_number, $card_holdername, $card_expirationdate, $card_cvv, $payment_method, $installments
         
@@ -179,13 +222,12 @@
         installments: installment number for this payment
     */
   //dopurchase($_POST["id_client"], $_POST["id_payment_method"], $_POST["card_number"], $_POST["card_holdername"], $_POST["card_expirationdate"], $_POST["card_cvv"], $_POST["payment_method"], $_POST["installments"]);
-  dopurchase($_REQUEST["id_client"], $_REQUEST["id_payment_method"], $_REQUEST["card_number"], $_REQUEST["card_holdername"], $_REQUEST["card_expirationdate"], $_REQUEST["card_cvv"], $_REQUEST["payment_method"], $_REQUEST["installments"]);
+  dopurchase($_REQUEST["id_client"], $_REQUEST["id_payment_method"], $_REQUEST["card_number"], $_REQUEST["card_holdername"], $_REQUEST["card_expirationdate"], $_REQUEST["card_cvv"], $_REQUEST["payment_method"], $_REQUEST["installments"], $_REQUEST["voucher_name"], $_REQUEST["voucher_email"]);
 
   //27902689_YWVB5h1IxqjniCvBl1pEOA2L2/XFR1MbmLDEXz6tbaIoW0E5VQ5TG1CWtGb8Cy2NxH+2Lq87ChSvkLIjXi1HDc/ZjZhdogfZfUo4AA8qxp343/hiEOR6ouzxYEPIQi9YJKlbR2NjTfahwhxiKE6w/cZGWHyBZNFjKeMvnn/eD/gtJ4kL5hYrYi9dJIZr2OpENa4ghuoIgyV1vJfQVWPY5EyRwkVZPNCb7UXNW6R8xCZSLvSg7yvNvkBpeifnN7GW3EmV/0/BhXTgNLpkE4EUoNLdDuiL133hGaDF8296bcVxydxLoohLwivYOc9D35RNPtAQrXpCyu8rUhcvpMGM0w==
   //https://compra.bringressos.com.br/comprar/etapa1.php?apresentacao=167576
   //http://localhost:2002/v1/purchase/site/session?id_client=30&session=thslkr39i6nhon6qgbgs5bnoc2
-  //http://localhost:2002/v1/purchase/site/do.php?id_client=30&id_payment_method=910&card_number=4242424242424242&card_holdername=BRUNO&card_expirationdate=02/21&card_cvv=123&payment_method=credit_card&installments=1
-  //http://localhost:2002/v1/purchase/site/do.php?id_client=30&id_payment_method=910&card_number=4242424242424242&card_holdername=matt murdock&card_expirationdate=0121&card_cvv=123&payment_method=credit_card&installments=1
+  //http://localhost:2002/v1/purchase/site/do.php?id_client=30&id_payment_method=910&card_number=4242424242424242&card_holdername=matt murdock&card_expirationdate=0121&card_cvv=123&payment_method=credit_card&installments=1&voucher_name=&voucher_email=
   //http://localhost:2002/v1/purchase/site/do.php?id_client=30&id_payment_method=910&card_number=4242424242424242&card_holdername=matt%20murdock&card_expirationdate=0121&card_cvv=623&payment_method=credit_card&installments=1
 
 //     function get($key, $bin) {

@@ -155,75 +155,238 @@
 
         if ($errno) {
             $error_message = curl_strerror($errno);
-            $responseJSON = array("success"=>false, "msg"=>"Erro no pagamento do gateway.", "gatewayinfo"=>json_decode($error_message));
+            $responseJSON = array("success"=>false, "object"=>"payment","msg"=>"Erro no pagamento do gateway.", "gatewayinfo"=>json_decode($error_message));
         }
         else {
             $json_response = json_decode($response);
             if (property_exists($json_response, 'errors')) {
-                $responseJSON = array("success"=>false, "msg"=>"Falha no pagamento do gateway.", "gatewayinfo"=>$json_response);
+                $responseJSON = array("success"=>false, "object"=>"payment","msg"=>"Falha no pagamento do gateway.", "gatewayinfo"=>$json_response);
             }
             else {
-                $responseJSON = array("success"=>true, "msg"=>"Sucesso.", "gatewayinfo"=>json_decode($response));
+                $responseJSON = array("success"=>true, "object"=>"payment","msg"=>"Sucesso.", "gatewayinfo"=>$json_response);
             }
             
         }
         curl_close($curl);
         $ret = array();
         if ($responseJSON["success"]) {
-            die(json_encode($responseJSON["gatewayinfo"]));
-            switch ($responseJSON["gatewayinfo"]["status"]) {
+            switch ($responseJSON["gatewayinfo"]->status) {
                 case "paid":
                 case "authorized":
                 case "waiting_payment":
                     $ret = array("success"=>true
+                        ,"object"=>"payment"
                         ,"msg"=>"purchase approved."
-                        ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]["acquirer_response_code"]
-                        ,"authorization_code"=>$responseJSON["gatewayinfo"]["authorization_code"]
-                        ,"authorized_amount"=>$responseJSON["gatewayinfo"]["authorized_amount"]
-                        ,"status"=>$responseJSON["gatewayinfo"]["status"]
-                        ,"cost"=>$responseJSON["gatewayinfo"]["cost"]
-                        ,"id"=>$responseJSON["gatewayinfo"]["tid"]
-                        ,"card_last_digits"=>$responseJSON["gatewayinfo"]["card_last_digits"]
-                        ,"card_first_digits"=>$responseJSON["gatewayinfo"]["card_first_digits"]
-                        ,"card_brand"=>$responseJSON["gatewayinfo"]["card_brand"]
-                        ,"ip"=>$responseJSON["gatewayinfo"]["ip"]);
+                        ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
+                        ,"authorization_code"=>$responseJSON["gatewayinfo"]->authorization_code
+                        ,"authorization_desc"=>translateacquirerresponsecode($responseJSON["gatewayinfo"]->acquirer_response_code)
+                        ,"authorized_amount"=>$responseJSON["gatewayinfo"]->authorized_amount
+                        ,"status"=>$responseJSON["gatewayinfo"]->status
+                        ,"cost"=>$responseJSON["gatewayinfo"]->cost
+                        ,"id"=>$responseJSON["gatewayinfo"]->tid
+                        ,"card_last_digits"=>$responseJSON["gatewayinfo"]->card_last_digits
+                        ,"card_first_digits"=>$responseJSON["gatewayinfo"]->card_first_digits
+                        ,"card_brand"=>$responseJSON["gatewayinfo"]->card_brand
+                        ,"ip"=>$responseJSON["gatewayinfo"]->ip);
                 break;
                 case "refused":
-                    switch($responseJSON["gatewayinfo"]["refuse_reason"]) {
+                    switch($responseJSON["gatewayinfo"]->refuse_reason) {
                         case "acquirer":
-                        break;
                         case "antifraud":
-                        break;
                         case "internal_error":
-                        break;
                         case "no_acquirer":
-                        break;
                         case "acquirer_timeout":
+                            $ret = array("success"=>false
+                            ,"object"=>"payment"
+                            ,"msg"=>"purchase not approved."
+                            ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
+                            ,"authorization_code"=>$responseJSON["gatewayinfo"]->authorization_code
+                            ,"authorization_desc"=>translateacquirerresponsecode($responseJSON["gatewayinfo"]->acquirer_response_code)
+                            ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
+                            ,"authorized_amount"=>$responseJSON["gatewayinfo"]->authorized_amount
+                            ,"status"=>$responseJSON["gatewayinfo"]->status
+                            ,"cost"=>$responseJSON["gatewayinfo"]->cost
+                            ,"id"=>$responseJSON["gatewayinfo"]->tid
+                            ,"card_last_digits"=>$responseJSON["gatewayinfo"]->card_last_digits
+                            ,"card_first_digits"=>$responseJSON["gatewayinfo"]->card_first_digits
+                            ,"card_brand"=>$responseJSON["gatewayinfo"]->card_brand
+                            ,"ip"=>$responseJSON["gatewayinfo"]->ip);
+
                         break;
-                        case "acquirer":
-                        break;
-                        case "acquirer":
-                        break;
-                    }
-                     
-                    $ret = array("success"=>true
-                    ,"msg"=>"purchase approved."
-                    ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]["acquirer_response_code"]
-                    ,"authorization_code"=>$responseJSON["gatewayinfo"]["authorization_code"]
-                    ,"id"=>$responseJSON["gatewayinfo"]["tid"]
-                    ,"card_last_digits"=>$responseJSON["gatewayinfo"]["card_last_digits"]
-                    ,"card_first_digits"=>$responseJSON["gatewayinfo"]["card_first_digits"]
-                    ,"card_brand"=>$responseJSON["gatewayinfo"]["card_brand"]
-                    ,"ip"=>$responseJSON["gatewayinfo"]["ip"]);
+                    }                     
                 break;
-            }
-            if ($responseJSON["gatewayinfo"]["status"] == "paid") {
             }
         }
         else {
-
+            $ret = array("success"=>false
+            ,"object"=>"payment"
+            ,"msg"=>"purchase not approved."
+            ,"acquirer_response_code"=>"9999"
+            ,"authorization_code"=>""
+            ,"authorization_desc"=>translateacquirerresponsecode("9999")
+            ,"acquirer_response_code"=>""
+            ,"authorized_amount"=>""
+            ,"status"=>"error"
+            ,"cost"=>""
+            ,"id"=>""
+            ,"card_last_digits"=>""
+            ,"card_first_digits"=>""
+            ,"card_brand"=>""
+            ,"ip"=>"");
         }
         return $ret;
+    }
+    function translateacquirerresponsecode($codeAux) {
+        $code = (string)$codeAux;
+        $ret = "";
+        $guindance = "";
+
+        switch ($code) {
+            case "0000": 
+                $ret = "Transação autorizada";
+            break;
+            case "1000": 
+                $ret = "Transação não autorizada";
+            break;
+            case "1001": 
+                $ret = "Cartão vencido";
+            break;
+            case "1002": 
+                $ret = "Transação não permitida";
+            break;
+            case "1003": 
+                $ret = "Rejeitado emissor";
+                $guindance = "Entre em contato com o banco emissor do cartão";
+            break;
+            case "1004": 
+                $ret = "Cartão com restrição";
+                $guindance = "Entre em contato com o banco emissor do cartão";
+            break;
+            case "1005": 
+                $ret = "Transação não autorizada";
+            break;
+            case "1006": 
+                $ret = "Tentativas de senha excedidas";
+            break;
+            case "1007": 
+                $ret = "Rejeitado emissor";
+                $guindance = "Entre em contato com o banco emissor do cartão";
+            break;
+            case "1008": 
+                $ret = "Rejeitado emissor";
+                $guindance = "Entre em contato com o banco emissor do cartão";
+            break;
+            case "1009": 
+                $ret = "Transação não autorizada";
+            break;
+            case "1010": 
+                $ret = "Valor inválido";
+            break;
+            case "1011": 
+                $ret = "Cartão inválido";
+            break;
+            case "1013": 
+                $ret = "Transação não autorizada";
+            break;
+            case "1014": 
+                $ret = "Tipo de conta inválido";
+                $guindance = "O tipo de conta selecionado não existe.Ex: transação de crédito num de débito.";
+            break;
+            case "1016": 
+                $ret = "Saldo insuficiente";
+            break;
+            case "1017": 
+                $ret = "Senha inválida";
+            break;
+            case "1019": 
+                $ret = "Transação não permitida";
+            break;
+            case "1020": 
+                $ret = "Transação não permitida";
+            break;
+            case "1021": 
+                $ret = "Rejeitado emissor";
+                $guindance = "Entre em contato com o banco emissor do cartão.";
+            break;
+            case "1022": 
+                $ret = "Cartão com restrição";
+            break;
+            case "1023": 
+                $ret = "Rejeitado emissor";
+                $guindance = "Entre em contato com o banco emissor do cartão.";
+            break;
+            case "1024": 
+                $ret = "Transação não permitida";
+            break;
+            case "1025": 
+                $ret = "Cartão bloqueado";
+                $guindance = "Entre em contato com o banco emissor do cartão.";
+            break;
+            case "1042": 
+                $ret = "Tipo de conta inválido";
+                $guindance = "O tipo de conta selecionado não existe.Ex: transação de crédito num de débito.";
+            break;
+            case "1045": 
+                $ret = "Código de segurança inválido";
+            break;
+            case "1045": 
+                $ret = "Código de segurança inválido";
+            break;
+            case "2000": 
+                $ret = "Cartão com restrição";
+            break;
+            case "2001": 
+                $ret = "Cartão vencido";
+            break;
+            case "2002": 
+                $ret = "Transação não permitida";
+            break;
+            case "2003": 
+                $ret = "Rejeitado emissor";
+                $guindance = "Entre em contato com o banco emissor do cartão";
+            break;
+            case "2004": 
+                $ret = "Cartão com restrição";
+                $guindance = "Entre em contato com o banco emissor do cartão";
+            break;
+            case "2005": 
+                $ret = "Transação não autorizada";
+            break;
+            case "2006": 
+                $ret = "Tentativas de senha excedidas";
+            break;
+            case "2007": 
+                $ret = "Cartão com restrição";
+            break;
+            case "2008": 
+                $ret = "Cartão com restrição";
+            break;
+            case "2009": 
+                $ret = "Cartão com restrição";
+            break;
+            case "9102": 
+                $ret = "Transação inválida";
+            break;
+            case "9108": 
+                $ret = "Erro no processamento";
+            break;
+            case "9109": 
+                $ret = "Erro no processamento";
+            break;
+            case "9111": 
+                $ret = "Time -out na transação";
+            break;
+            case "9112": 
+                $ret = "Emissor indisponível";
+            break;
+            case "9999": 
+                $ret = "Erro não especificado";
+            break;
+            default:
+                $ret = "Erro não especificado";
+            break;
+        }
+        return $ret.($guindance != "" ? (" - ".$guindance) : "");
     }
     function pagarme_capture($id_purchase, $id_gateway, $id_client, $metadata, $charge,$buyer) {
         $conf = getConfigPagarme();
@@ -272,69 +435,84 @@
 
         if ($errno) {
             $error_message = curl_strerror($errno);
-            $responseJSON = array("success"=>false, "msg"=>"Erro no pagamento do gateway.", "gatewayinfo"=>json_decode($error_message));
+            $responseJSON = array("success"=>false, "object"=>"capture","msg"=>"Erro no pagamento do gateway.", "gatewayinfo"=>json_decode($error_message));
         }
         else {
             $json_response = json_decode($response);
             if (property_exists($json_response, 'errors')) {
-                $responseJSON = array("success"=>false, "msg"=>"Falha no pagamento do gateway.", "gatewayinfo"=>$json_response);
+                $responseJSON = array("success"=>false, "object"=>"capture","msg"=>"Falha no pagamento do gateway.", "gatewayinfo"=>$json_response);
             }
             else {
-                $responseJSON = array("success"=>true, "msg"=>"Sucesso.", "gatewayinfo"=>json_decode($response));
+                $responseJSON = array("success"=>true, "object"=>"capture","msg"=>"Sucesso.", "gatewayinfo"=>json_decode($response));
             }
             
         }
         curl_close($curl);
         $ret = array();
         if ($responseJSON["success"]) {
-            die(json_encode($responseJSON["gatewayinfo"]));
-            switch ($responseJSON["gatewayinfo"]["status"]) {
+            switch ($responseJSON["gatewayinfo"]->status) {
                 case "paid":
+                case "authorized":
+                case "waiting_payment":
                     $ret = array("success"=>true
+                        ,"object"=>"capture"
                         ,"msg"=>"purchase approved."
-                        ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]["acquirer_response_code"]
-                        ,"authorization_code"=>$responseJSON["gatewayinfo"]["authorization_code"]
-                        ,"cost"=>$responseJSON["gatewayinfo"]["cost"]
-                        ,"id"=>$responseJSON["gatewayinfo"]["tid"]
-                        ,"card_last_digits"=>$responseJSON["gatewayinfo"]["card_last_digits"]
-                        ,"card_first_digits"=>$responseJSON["gatewayinfo"]["card_first_digits"]
-                        ,"card_brand"=>$responseJSON["gatewayinfo"]["card_brand"]
-                        ,"ip"=>$responseJSON["gatewayinfo"]["ip"]);
+                        ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
+                        ,"authorization_code"=>$responseJSON["gatewayinfo"]->authorization_code
+                        ,"authorization_desc"=>translateacquirerresponsecode($responseJSON["gatewayinfo"]->acquirer_response_code)
+                        ,"authorized_amount"=>$responseJSON["gatewayinfo"]->authorized_amount
+                        ,"status"=>$responseJSON["gatewayinfo"]->status
+                        ,"cost"=>$responseJSON["gatewayinfo"]->cost
+                        ,"id"=>$responseJSON["gatewayinfo"]->tid
+                        ,"card_last_digits"=>$responseJSON["gatewayinfo"]->card_last_digits
+                        ,"card_first_digits"=>$responseJSON["gatewayinfo"]->card_first_digits
+                        ,"card_brand"=>$responseJSON["gatewayinfo"]->card_brand
+                        ,"ip"=>$responseJSON["gatewayinfo"]->ip);
                 break;
                 case "refused":
-                    switch($responseJSON["gatewayinfo"]["refuse_reason"]) {
+                    switch($responseJSON["gatewayinfo"]->refuse_reason) {
                         case "acquirer":
-                        break;
                         case "antifraud":
-                        break;
                         case "internal_error":
-                        break;
                         case "no_acquirer":
-                        break;
                         case "acquirer_timeout":
+                            $ret = array("success"=>false
+                            ,"object"=>"capture"
+                            ,"msg"=>"purchase not approved."
+                            ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
+                            ,"authorization_code"=>$responseJSON["gatewayinfo"]->authorization_code
+                            ,"authorization_desc"=>translateacquirerresponsecode($responseJSON["gatewayinfo"]->acquirer_response_code)
+                            ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
+                            ,"authorized_amount"=>$responseJSON["gatewayinfo"]->authorized_amount
+                            ,"status"=>$responseJSON["gatewayinfo"]->status
+                            ,"cost"=>$responseJSON["gatewayinfo"]->cost
+                            ,"id"=>$responseJSON["gatewayinfo"]->tid
+                            ,"card_last_digits"=>$responseJSON["gatewayinfo"]->card_last_digits
+                            ,"card_first_digits"=>$responseJSON["gatewayinfo"]->card_first_digits
+                            ,"card_brand"=>$responseJSON["gatewayinfo"]->card_brand
+                            ,"ip"=>$responseJSON["gatewayinfo"]->ip);
+
                         break;
-                        case "acquirer":
-                        break;
-                        case "acquirer":
-                        break;
-                    }
-                     
-                    $ret = array("success"=>true
-                    ,"msg"=>"purchase approved."
-                    ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]["acquirer_response_code"]
-                    ,"authorization_code"=>$responseJSON["gatewayinfo"]["authorization_code"]
-                    ,"id"=>$responseJSON["gatewayinfo"]["tid"]
-                    ,"card_last_digits"=>$responseJSON["gatewayinfo"]["card_last_digits"]
-                    ,"card_first_digits"=>$responseJSON["gatewayinfo"]["card_first_digits"]
-                    ,"card_brand"=>$responseJSON["gatewayinfo"]["card_brand"]
-                    ,"ip"=>$responseJSON["gatewayinfo"]["ip"]);
+                    }                     
                 break;
-            }
-            if ($responseJSON["gatewayinfo"]["status"] == "paid") {
             }
         }
         else {
-
+            $ret = array("success"=>false
+            ,"object"=>"capture"
+            ,"msg"=>"purchase not approved."
+            ,"acquirer_response_code"=>"9999"
+            ,"authorization_code"=>""
+            ,"authorization_desc"=>translateacquirerresponsecode("9999")
+            ,"acquirer_response_code"=>""
+            ,"authorized_amount"=>""
+            ,"status"=>"error"
+            ,"cost"=>""
+            ,"id"=>""
+            ,"card_last_digits"=>""
+            ,"card_first_digits"=>""
+            ,"card_brand"=>""
+            ,"ip"=>"");
         }
         return $ret;
     }
