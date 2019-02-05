@@ -24,11 +24,46 @@
         }
         return $ret;
     }
+    function gethostforced($fullhost) {
+        $jsonFile = $_SERVER['DOCUMENT_ROOT']."/jsons/domains.json";
+
+        if (!file_exists($jsonFile)) {
+            die("Falha de configuração no JSON de domains.");
+        }
+
+        $aux = json_decode(file_get_contents($jsonFile), true);
+        //echo "fullhost: $fullHost";
+        //echo "<br />";
+        //echo "<br />";
+        //echo "aux:".print_r($aux,true);
+        
+        $ret = $aux[$fullHost];
+        //echo "<br />";
+        //echo "<br />";
+        //echo "ret:".json_encode($ret);
+        //die("");
+
+        if ($ret == "") {
+            $ret = $aux["default"];
+        }
+        return $ret;
+    }
     function getwhitelabelobj() {
         $ret = array();
         $whitelabel = gethost();
         $jsonFile = $_SERVER['DOCUMENT_ROOT']."/jsons/".$whitelabel.".json";
 
+        if (!file_exists($jsonFile)) {
+            die("Falha de configuração no JSON.");
+        }
+
+        $ret = json_decode(file_get_contents($jsonFile), true);
+
+        return $ret;
+    }
+    function getwhitelabelobjforced($forced) {
+        $ret = array();
+        $jsonFile = $_SERVER['DOCUMENT_ROOT']."/jsons/".$forced.".json";
         if (!file_exists($jsonFile)) {
             die("Falha de configuração no JSON.");
         }
@@ -63,6 +98,19 @@
     function getwhitelabelemail() {
         $ret = array();
         $whitelabel = gethost();
+        $jsonFile = $_SERVER['DOCUMENT_ROOT']."/jsons/emails/".$whitelabel.".json";
+
+        if (!file_exists($jsonFile)) {
+            die("Falha de configuração no JSON de e-mails.");
+        }
+
+        $ret = json_decode(file_get_contents($jsonFile), true);
+
+        return $ret;
+    }
+    function getwhitelabelemailforced($whitelabel) {
+        $ret = array();
+        //$whitelabel = gethost();
         $jsonFile = $_SERVER['DOCUMENT_ROOT']."/jsons/emails/".$whitelabel.".json";
 
         if (!file_exists($jsonFile)) {
@@ -123,8 +171,34 @@
         $uri.=$next;
         return $uri;
     }
+    function getwhitelabelURI_legacy_forced($host, $next) {
+        $forced = getwhitelabelobjforced($host);
+        $uri = $forced["legacy"];
+
+        if (startsWith($uri, "http") == false) {
+            $uri = "https://".$uri;
+        }
+        if (endsWith($uri, "/") == false && startsWith($next, "/") == false) {
+            $uri .= "/";
+        }
+        $uri.=$next;
+        return $uri;
+    }
     function getwhitelabelURI_home($next) {
         $uri = getwhitelabel("uri");
+
+        if (startsWith($uri, "http") == false) {
+            $uri = "https://".$uri;
+        }
+        if (endsWith($uri, "/") == false && startsWith($next, "/") == false) {
+            $uri .= "/";
+        }
+        $uri.=$next;
+        return $uri;
+    }
+    function getwhitelabelURI_home_forced($host,$next) {
+        $forced = getwhitelabelobjforced($host);
+        $uri = $forced["uri"];
 
         if (startsWith($uri, "http") == false) {
             $uri = "https://".$uri;

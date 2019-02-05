@@ -3,6 +3,7 @@
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/purchase/site/cardbin.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/purchase/site/helper.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/gateway/payment/pagarme.php");
+    require_once($_SERVER['DOCUMENT_ROOT']."/v1/email/purchasehelp.php");
 
     function check_halfpricestudents_lot_validate($id_purchase, $id_client, $id_session) {
 
@@ -185,6 +186,7 @@
                 $capture_gateway = pagarme_capture($id_purchase,$purchase_gateway["id"], $id_client, $metadata, $charge, $buyer);
 
                 $retofsevice = array("success"=>true, "seconds"=>0, "id_pedido_venda"=> $sell["id_pedido_venda"], "codVenda"=> $sell["codVenda"], 'msg' => '');
+                make_purchase_email($pedidovenda["id_pedido_venda"], $vouchername,$voucheremail);
             }
             else {
                 $retofsevice = array("success"=>false, "seconds"=>0, "id_pedido_venda"=> $sell["id_pedido_venda"], "codVenda"=> $sell["codVenda"], 'msg' => json_encode($sell));
@@ -193,6 +195,7 @@
         else {
             $retofsevice = array("success"=>false, "seconds"=>0, "id_pedido_venda"=> 0, "codVenda"=> 0, 'msg' => json_encode($purchase_gateway));
         }
+
 
         $end = time();
         $duration = $end-$start;
@@ -205,11 +208,6 @@
         echo json_encode($retofsevice);
         logme();
         die();    
-        
-        //$id_client, $id_payment_method, $card_number, $card_holdername, $card_expirationdate, $card_cvv, $payment_method, $installments
-        
-
-        // clearcurrentsessionclient($id_client);
     }
     /*
         id_client: client id    
@@ -228,34 +226,7 @@
   //https://compra.bringressos.com.br/comprar/etapa1.php?apresentacao=167576
   //http://localhost:2002/v1/purchase/site/session?id_client=30&session=thslkr39i6nhon6qgbgs5bnoc2
   //http://localhost:2002/v1/purchase/site/do.php?id_client=30&id_payment_method=910&card_number=4242424242424242&card_holdername=matt murdock&card_expirationdate=0121&card_cvv=123&payment_method=credit_card&installments=1&voucher_name=&voucher_email=
-  //http://localhost:2002/v1/purchase/site/do.php?id_client=30&id_payment_method=910&card_number=4242424242424242&card_holdername=matt%20murdock&card_expirationdate=0121&card_cvv=623&payment_method=credit_card&installments=1
+  //http://localhost:2002/v1/purchase/site/do.php?id_client=30&id_payment_method=910&card_number=4242424242424242&card_holdername=matt murdock&card_expirationdate=0121&card_cvv=123&payment_method=credit_card&installments=1&voucher_name=matt murdock&voucher_email=blcoccaro@gmail.com
 
-//     function get($key, $bin) {
 
-//         $query = "EXEC pr_pinpad_get_base ?";
-//         $params = array($key);
-//         $result = db_exec($query, $params);
-
-//         $id_base = null;
-//         foreach ($result as &$row) {
-//             $id_base = $row["id_base"];
-//         }
-
-//         $query = "EXEC pr_checkbin ?, ?";
-//         $params = array($key, $bin);
-//         $result = db_exec($query, $params, $id_base);
-
-//         $json = array();
-//         foreach ($result as &$row) {
-//             $json = array("check"=>$row["check"]
-//                         ,"success"=>$row["success"]);
-            
-//             //array_push($json,$aux);
-//         }
-
-//         echo json_encode($json);
-//         logme();
-//         die();    
-//     }
-// get($_REQUEST["key"], $_REQUEST["bin"]);
 ?>

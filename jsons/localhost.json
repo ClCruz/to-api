@@ -33,7 +33,7 @@
       "gift": "../comprar/templates/multi_tixsme/impressaoPresente.html"
     },
     "emails": {
-      "buyer": "/v1/template/email/localhost/buyer.html"
+      "folder": "/v1/template/email/default/"
     },
     "email": {
       "buyer": "../comprar/templates/multi_tixsme/emailComprador.html",
