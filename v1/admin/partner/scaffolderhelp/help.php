@@ -2,9 +2,9 @@
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/git_functions.php");
 
-    function getinfofromdb($id) {
-        $query = "EXEC pr_admin_partner_get_wl ?";
-        $params = array($id);
+    function getinfofromdb($id, $uniquename) {
+        $query = "EXEC pr_admin_partner_get_wl ?, ?";
+        $params = array($id, $uniquename);
         $result = db_exec($query, $params);
 
         $json = array();
@@ -61,7 +61,12 @@
         }
         return null;
     }
-
+    function getonlyReplacement($uniquename) {
+        $logoext = "png";
+        $db = getinfofromdb("00000000-0000-0000-0000-000000000000", $uniquename);
+        $replacement = getReplacement($db, $logoext);
+        return $replacement;
+    }
     function getReplacement($db, $logoext) {
         $domain = $db["domain"];
         $domainwithwww = $domain;
@@ -106,7 +111,7 @@
         $ret[] = array("from"=>"__wl-siteadmin__", "to"=>$adminURI);
         $ret[] = array("from"=>"__wl-color-primary__", "to"=>$db["scss_colors_primary"]);
         $ret[] = array("from"=>"__wl-color-secondary__", "to"=>$db["scss_colors_secondary"]);
-        $ret[] = array("from"=>"__wl-site-logo-media__", "to"=>$logo);
+        $ret[] = array("from"=>"__wl-site-logo-media__", "to"=>$logomedia);
         $ret[] = array("from"=>"__wl-site-logo__", "to"=>$logo);
         $ret[] = array("from"=>"__wl-db-user__", "to"=>$db_user);
         $ret[] = array("from"=>"__wl-db-pass__", "to"=>$db_pass);
@@ -306,7 +311,7 @@
     }
     function doall($id, $do_site, $do_legacy, $do_api, $logoext) {
         $idexec = date("Ymdhis");
-        $db = getinfofromdb($id);
+        $db = getinfofromdb($id, '');
         $replacement = getReplacement($db,$logoext);
 
         doScaffolder($db, $replacement, $idexec);
