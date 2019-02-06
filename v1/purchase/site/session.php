@@ -5,11 +5,10 @@
 
     function setsession($id_client, $session) {
         $makemine = makeitmine($id_client, $session);
-        echo json_encode($makemine);
+        //echo json_encode($makemine);
         logme();
-        die();    
-        //http://localhost:2002/v1/purchase/site/session?id_client=30&session=thslkr39i6nhon6qgbgs5bnoc2
+  //      die();    
     }
   //setsession($_POST["id_client"], $_POST["session"]);
-  setsession($_REQUEST["id_client"], $_REQUEST["session"]);
+  //setsession($_REQUEST["id_client"], $_REQUEST["session"]);
 ?>

@@ -72,6 +72,9 @@
         $conf = getConfigPagarme();
         //$pagarme = new PagarMe\Client($conf["apikey"]);
 
+        traceme($id_purchase, "Initiating gateway|pagarme|transactions", 'pagarme',0);
+        traceme($id_purchase, "Initiating gateway|pagarme|config", json_encode($conf),0);
+
         $transaction_data = array(
             "api_key" => $conf["apikey"],    
             // "metadata" => $metadata,    
@@ -124,6 +127,7 @@
             ));
         }
         
+        traceme($id_purchase, "Request gateway|pagarme|transactions", json_encode($transaction_data),1);
         
         $url = $conf["apiURI"]."transactions";
         
@@ -146,6 +150,8 @@
         $response = curl_exec($curl);
         // fclose($out);
         $errno = curl_errno($curl);
+
+        traceme($id_purchase, "Response - gateway|pagarme|transactions", json_encode($response)."| errno: ".$errno,1);
 
         // $data = ob_get_clean();
         // $data .= PHP_EOL . $response . PHP_EOL;
@@ -234,6 +240,7 @@
             ,"card_brand"=>""
             ,"ip"=>"");
         }
+        traceme($id_purchase, "My response - gateway|pagarme|transactions", json_encode($ret),0);
         return $ret;
     }
     function translateacquirerresponsecode($codeAux) {
@@ -247,12 +254,15 @@
             break;
             case "1000": 
                 $ret = "Transação não autorizada";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1001": 
                 $ret = "Cartão vencido";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1002": 
                 $ret = "Transação não permitida";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1003": 
                 $ret = "Rejeitado emissor";
@@ -264,9 +274,11 @@
             break;
             case "1005": 
                 $ret = "Transação não autorizada";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1006": 
                 $ret = "Tentativas de senha excedidas";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1007": 
                 $ret = "Rejeitado emissor";
@@ -278,31 +290,39 @@
             break;
             case "1009": 
                 $ret = "Transação não autorizada";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1010": 
                 $ret = "Valor inválido";
+                $guindance = "Refaça o processo de compra, ou entre em contato a nossa central de atendimento";
             break;
             case "1011": 
                 $ret = "Cartão inválido";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1013": 
                 $ret = "Transação não autorizada";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1014": 
                 $ret = "Tipo de conta inválido";
                 $guindance = "O tipo de conta selecionado não existe.Ex: transação de crédito num de débito.";
             break;
             case "1016": 
-                $ret = "Saldo insuficiente";
+                $ret = "Transação não autorizada"; //Saldo insuficiente
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1017": 
                 $ret = "Senha inválida";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1019": 
                 $ret = "Transação não permitida";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1020": 
                 $ret = "Transação não permitida";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1021": 
                 $ret = "Rejeitado emissor";
@@ -310,6 +330,7 @@
             break;
             case "1022": 
                 $ret = "Cartão com restrição";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1023": 
                 $ret = "Rejeitado emissor";
@@ -317,6 +338,7 @@
             break;
             case "1024": 
                 $ret = "Transação não permitida";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1025": 
                 $ret = "Cartão bloqueado";
@@ -328,18 +350,23 @@
             break;
             case "1045": 
                 $ret = "Código de segurança inválido";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "1045": 
                 $ret = "Código de segurança inválido";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "2000": 
                 $ret = "Cartão com restrição";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "2001": 
                 $ret = "Cartão vencido";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "2002": 
                 $ret = "Transação não permitida";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "2003": 
                 $ret = "Rejeitado emissor";
@@ -351,45 +378,60 @@
             break;
             case "2005": 
                 $ret = "Transação não autorizada";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "2006": 
                 $ret = "Tentativas de senha excedidas";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "2007": 
                 $ret = "Cartão com restrição";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "2008": 
                 $ret = "Cartão com restrição";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "2009": 
                 $ret = "Cartão com restrição";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "9102": 
                 $ret = "Transação inválida";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "9108": 
                 $ret = "Erro no processamento";
+                $guindance = "Refaça o processo de compra, ou entre em contato a nossa central de atendimento";
             break;
             case "9109": 
                 $ret = "Erro no processamento";
+                $guindance = "Refaça o processo de compra, ou entre em contato a nossa central de atendimento";
             break;
             case "9111": 
                 $ret = "Time -out na transação";
+                $guindance = "Refaça o processo de compra, ou entre em contato a nossa central de atendimento";
             break;
             case "9112": 
                 $ret = "Emissor indisponível";
+                $guindance = "Entre em contato com o banco emissor do cartão";
             break;
             case "9999": 
                 $ret = "Erro não especificado";
+                $guindance = "Refaça o processo de compra, ou entre em contato a nossa central de atendimento";
             break;
             default:
                 $ret = "Erro não especificado";
+                $guindance = "Refaça o processo de compra, ou entre em contato a nossa central de atendimento";
             break;
         }
         return $ret.($guindance != "" ? (" - ".$guindance) : "");
     }
     function pagarme_capture($id_purchase, $id_gateway, $id_client, $metadata, $charge,$buyer) {
         $conf = getConfigPagarme();
+
+        traceme($id_purchase, "Initiating gateway|pagarme|capture", 'pagarme',0);
+        traceme($id_purchase, "Initiating gateway|pagarme|config", json_encode($conf),0);
         //$pagarme = new PagarMe\Client($conf["apikey"]);
 
         $transaction_data = array(
@@ -404,9 +446,9 @@
             ));
         }
         
-        
         $url = $conf["apiURI"]."transactions/".$id_gateway."/capture";
         
+        traceme($id_purchase, "Request gateway|pagarme|capture", json_encode($transaction_data),1);
         //die(json_encode($transaction_data));
         
         $post_data = json_encode($transaction_data);     
@@ -424,6 +466,7 @@
         );             
 
         $response = curl_exec($curl);
+        traceme($id_purchase, "Response gateway|pagarme|capture", json_encode($response),1);
         // fclose($out);
         $errno = curl_errno($curl);
 
@@ -514,6 +557,7 @@
             ,"card_brand"=>""
             ,"ip"=>"");
         }
+        traceme($id_purchase, "My response gateway|pagarme|capture", json_encode($ret),0);
         return $ret;
     }
 

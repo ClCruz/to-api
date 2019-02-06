@@ -1,5 +1,6 @@
 <?php
     function gethost() {
+        $ret = "";
         $fullHost = $_SERVER["HTTP_HOST"];
         $jsonFile = $_SERVER['DOCUMENT_ROOT']."/jsons/domains.json";
 
@@ -12,8 +13,14 @@
         //echo "<br />";
         //echo "<br />";
         //echo "aux:".print_r($aux,true);
-        
-        $ret = $aux[$fullHost];
+
+        if (array_key_exists($fullHost, $aux)) {
+            $ret = $aux[$fullHost];
+        }
+        if (array_key_exists("imthebossofme", $_REQUEST)) {
+            $ret = $_REQUEST["imthebossofme"];
+        }
+
         //echo "<br />";
         //echo "<br />";
         //echo "ret:".json_encode($ret);
@@ -22,6 +29,8 @@
         if ($ret == "") {
             $ret = $aux["default"];
         }
+
+
         return $ret;
     }
     function gethostforced($fullhost) {

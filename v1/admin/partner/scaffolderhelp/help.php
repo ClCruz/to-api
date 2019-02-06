@@ -89,7 +89,7 @@
         $ret = array();
         $ret[] = array("from"=>"__whitelabel-name__", "to"=>$db["uniquename"]);
         $ret[] = array("from"=>"__wl-site__", "to"=> $domain);
-        $ret[] = array("from"=>"__wl-sitewithwww__", "to"=> $domain);
+        $ret[] = array("from"=>"__wl-sitewithwww__", "to"=> $domainwithprotocol);
         $ret[] = array("from"=>"__wl-sitewithoutwww__", "to"=> $domainwithoutwww);
         $ret[] = array("from"=>"__wl-sitewithwwwnoprotocol__", "to"=> $domainwithwww);
         $ret[] = array("from"=>"__wl-template__", "to"=>$db["json_template"]);

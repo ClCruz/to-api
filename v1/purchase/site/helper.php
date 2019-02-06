@@ -1,8 +1,8 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function get_id_purchase() {
-        return "teste";
+    function get_id_purchase($session, $id_client) {
+        return date("Ymdhis")."-".$session."-".$id_client;
     }
     function ispaymentmethodok($id_purchase, $id_client, $id_session, $id_payment_method, $shopping) {
 
