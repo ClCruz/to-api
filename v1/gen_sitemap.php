@@ -19,7 +19,7 @@
     }
     $uniquename = $_REQUEST["uniquename"];
     touch("/var/www/site/sitemap".$uniquename.".xml");
-    $myfile = fopen("/var/www/site/sitemap".$uniquename.".xml", "w") or die("Unable to open file!");
+    $myfile = fopen("/var/www/site/sitemap_".$uniquename.".xml", "w") or die("Unable to open file!");
     $txt = get($uniquename);
     fwrite($myfile, $txt);
     fclose($myfile);
