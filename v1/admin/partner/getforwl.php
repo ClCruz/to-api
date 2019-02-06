@@ -3,7 +3,7 @@
 
     function get($id) {
         //sleep(5);
-        $query = "EXEC pr_admin_partner_get_wl ?";
+        $query = "EXEC pr_admin_partner_get_wl ?, NULL";
         $params = array($id);
         $result = db_exec($query, $params);
 
