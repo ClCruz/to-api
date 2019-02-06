@@ -183,6 +183,10 @@
                     $ret = array("success"=>true
                         ,"object"=>"payment"
                         ,"msg"=>"purchase approved."
+                        ,'payment_method'=>$responseJSON["gatewayinfo"]->payment_method
+                        ,'boleto_url'=>$responseJSON["gatewayinfo"]->boleto_url
+                        ,'boleto_barcode'=>$responseJSON["gatewayinfo"]->boleto_barcode
+                        ,'boleto_expiration_date'=>$responseJSON["gatewayinfo"]->boleto_expiration_date
                         ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
                         ,"authorization_code"=>$responseJSON["gatewayinfo"]->authorization_code
                         ,"authorization_desc"=>translateacquirerresponsecode($responseJSON["gatewayinfo"]->acquirer_response_code)
@@ -205,6 +209,10 @@
                             $ret = array("success"=>false
                             ,"object"=>"payment"
                             ,"msg"=>"purchase not approved."
+                            ,'payment_method'=>$responseJSON["gatewayinfo"]->payment_method
+                            ,'boleto_url'=>$responseJSON["gatewayinfo"]->boleto_url
+                            ,'boleto_barcode'=>$responseJSON["gatewayinfo"]->boleto_barcode
+                            ,'boleto_expiration_date'=>$responseJSON["gatewayinfo"]->boleto_expiration_date
                             ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
                             ,"authorization_code"=>$responseJSON["gatewayinfo"]->authorization_code
                             ,"authorization_desc"=>translateacquirerresponsecode($responseJSON["gatewayinfo"]->acquirer_response_code)
@@ -229,6 +237,10 @@
             ,"msg"=>"purchase not approved."
             ,"acquirer_response_code"=>"9999"
             ,"authorization_code"=>""
+            ,'payment_method'=>""
+            ,'boleto_url'=>""
+            ,'boleto_barcode'=>""
+            ,'boleto_expiration_date'=>""
             ,"authorization_desc"=>translateacquirerresponsecode("9999")
             ,"acquirer_response_code"=>""
             ,"authorized_amount"=>""

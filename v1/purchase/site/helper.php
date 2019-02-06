@@ -32,7 +32,7 @@
 
         traceme($id_purchase, "Validate Payment Method - end", '',0);
 
-        return array("success"=>$hasError == false, "msg"=>$errorMsg);
+        return array("success"=>$hasError == false, "msg"=>$errorMsg, "msgtobuyer"=>$errorMsg);
     }
 
     function getmysession($id_purchase, $id_client) {
@@ -258,7 +258,8 @@
         $errorMsg = "";
         foreach ($result as &$row) {
             $ret = array("success"=>$row["success"]
-                        ,"msg"=>$row["msg"]);
+            ,"msg"=>$row["msg"]
+            ,"msgtobuyer"=>$row["msg"]);
         }
 
         traceme($id_purchase, "check multiples events - end", '',0);
@@ -282,9 +283,14 @@
         return $ret;
     }
 
-    function renew($id_session) {
+    function workaround_pagseguro($id_pedido_venda, $obj, $status) {
+        $query = "EXEC pr_workaround_pagseguro ?,?,?";
+        $params = array($id_pedido_venda, $obj, $status);
+        $result = db_exec($query, $params);
+    }
+    function renew($id_session, $id_user) {
         $query = "EXEC pr_purchase_renew ?,?";
-        $params = array($id_session, 30);
+        $params = array($id_session, $id_user);
         $result = db_exec($query, $params);
     }
     function clearcurrentsessionclient($id_client) {
@@ -420,7 +426,10 @@
             ,"hoursinadvance"=>$row["hoursinadvance"]
             ,"in_taxa_por_pedido"=>$row["in_taxa_por_pedido"]
             ,"id_apresentacao_bilhete"=>$row["id_apresentacao_bilhete"]
-            ,"nr_beneficio"=>$row["nr_beneficio"]);
+            ,"nr_beneficio"=>$row["nr_beneficio"]
+            ,"QT_INGRESSOS_POR_CPF"=>$row["QT_INGRESSOS_POR_CPF"]
+            ,"purchasebythiscpf"=>$row["purchasebythiscpf"]
+            );
         }
         return $json;
     }
@@ -460,65 +469,65 @@
 
         if ($id_payment_method == '') {
             $hasError = true;
-            array_push($errs, array("field"=>"id_payment_method", "msg"=> "Código do tipo de pagamento é obrigatório."));
+            array_push($errs, array("field"=>"id_payment_method", "msgtobuyer"=> "Código do tipo de pagamento é obrigatório."));
         }
         if ($isCreditCard) {
             if ($card_number == '') {
                 $hasError = true;
-                array_push($errs, array("field"=>"card_number", "msg"=> "Número do cartão de crédito é obrigatório."));
+                array_push($errs, array("field"=>"card_number", "msgtobuyer"=> "Número do cartão de crédito é obrigatório."));
             }
             if (strlen($card_number) > 16) {
                 $hasError = true;
-                array_push($errs, array("field"=>"card_number", "msg"=> "Número do cartão de crédito é inválido. (ERR-1)"));
+                array_push($errs, array("field"=>"card_number", "msgtobuyer"=> "Número do cartão de crédito é inválido. (ERR-1)"));
             }
             if (!luhn_check($card_number)) {
                 $hasError = true;
-                array_push($errs, array("field"=>"card_number", "msg"=> "Número do cartão de crédito é inválido. (ERR-2)"));
+                array_push($errs, array("field"=>"card_number", "msgtobuyer"=> "Número do cartão de crédito é inválido. (ERR-2)"));
             }
             if ($card_holdername == '') {
                 $hasError = true;
-                array_push($errs, array("field"=>"card_holdername", "msg"=> "Nome no cartão de crédito é obrigatório."));
+                array_push($errs, array("field"=>"card_holdername", "msgtobuyer"=> "Nome no cartão de crédito é obrigatório."));
             }
             if ($card_expirationdate == '') {
                 $hasError = true;
-                array_push($errs, array("field"=>"card_holdername", "msg"=> "Data de expiração de crédito é obrigatório."));
+                array_push($errs, array("field"=>"card_holdername", "msgtobuyer"=> "Data de expiração de crédito é obrigatório."));
             }
             $card_expirationdate_explode = explode("/", $card_expirationdate);
             if (!is_numeric($card_expirationdate_explode[0])) {
                 $hasError = true;
-                array_push($errs, array("field"=>"card_expirationdate", "msg"=> "Data de expiração de crédito é inválida. (ERR-1)"));
+                array_push($errs, array("field"=>"card_expirationdate", "msgtobuyer"=> "Data de expiração de crédito é inválida. (ERR-1)"));
             }
             if (intval(date('Y'))<=intval($card_expirationdate_explode[1]) && intval(date('m'))<intval($card_expirationdate_explode[0])) {
                 $hasError = true;
-                array_push($errs, array("field"=>"card_expirationdate", "msg"=> "Data de expiração de crédito é inválida. (ERR-3)"));
+                array_push($errs, array("field"=>"card_expirationdate", "msgtobuyer"=> "Data de expiração de crédito é inválida. (ERR-3)"));
             }
             if ($card_cvv == '') {
                 $hasError = true;
-                array_push($errs, array("field"=>"card_cvv", "msg"=> "CVV é obrigatório."));
+                array_push($errs, array("field"=>"card_cvv", "msgtobuyer"=> "CVV é obrigatório."));
             }
             if (!is_numeric($card_cvv)) {
                 $hasError = true;
-                array_push($errs, array("field"=>"card_cvv", "msg"=> "Data de expiração de crédito é inválida. (ERR-1)"));
+                array_push($errs, array("field"=>"card_cvv", "msgtobuyer"=> "Data de expiração de crédito é inválida. (ERR-1)"));
             }
             if ($payment_method!="credit_card" && $payment_method!="payment_slip") {
                 $hasError = true;
-                array_push($errs, array("field"=>"payment_method", "msg"=> "Método de pagamento é inválido. (ERR-1)"));
+                array_push($errs, array("field"=>"payment_method", "msgtobuyer"=> "Método de pagamento é inválido. (ERR-1)"));
             }
             if ($installments == '') {
                 $hasError = true;
-                array_push($errs, array("field"=>"installments", "msg"=> "Número de parcelas é obrigatório."));
+                array_push($errs, array("field"=>"installments", "msgtobuyer"=> "Número de parcelas é obrigatório."));
             }
             if (!is_numeric($installments)) {
                 $hasError = true;
-                array_push($errs, array("field"=>"installments", "msg"=> "Número de parcelas é inválido. (ERR-1)"));
+                array_push($errs, array("field"=>"installments", "msgtobuyer"=> "Número de parcelas é inválido. (ERR-1)"));
             }
             if (!intval($installments)<1) {
                 $hasError = true;
-                array_push($errs, array("field"=>"installments", "msg"=> "Número de parcelas é inválido. (ERR-2)"));
+                array_push($errs, array("field"=>"installments", "msgtobuyer"=> "Número de parcelas é inválido. (ERR-2)"));
             }
             if (!intval($installments)>12) {
                 $hasError = true;
-                array_push($errs, array("field"=>"installments", "msg"=> "Número de parcelas é inválido. (ERR-3)"));
+                array_push($errs, array("field"=>"installments", "msgtobuyer"=> "Número de parcelas é inválido. (ERR-3)"));
             }   
         }
 
@@ -526,7 +535,7 @@
             $msg = "Falha na validação dos dados enviados.";
         }
 
-        return array("success"=>$hasError == false, "msg_obj"=>$errs, "msg"=>$msg);
+        return array("success"=>$hasError == false, "msg_obj"=>$errs, "msgtobuyer"=>$msg);
     }
     function getbases4purchasedistinct($id_session) {
         $query = "EXEC pr_purchase_get_all_bases_distinct ?";

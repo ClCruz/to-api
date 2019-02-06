@@ -35,39 +35,60 @@
         // return array("success"=>$hasError == false, "msg"=>$errorMsg);
     }
     function dopurchase($id_session, $id_client, $id_payment_method, $card_number, $card_holdername, $card_expirationdate, $card_cvv, $payment_method, $installments, $vouchername, $voucheremail) {
-        setsession($id_client, $id_session);
 
+        
+        setsession($id_client, $id_session);
+        
         $start = $_SERVER["REQUEST_TIME"];
         $ip = "";
         if (array_key_exists("HTTP_X_FORWARDED_FOR", $_SERVER)) {
             $ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
         }
-    
+        
         $ip = ($ip == '' ? '' : '|').$_SERVER['REMOTE_ADDR'];
-    
-  
+        
+        
         $id_purchase = get_id_purchase($id_session, $id_client);
         
         traceme($id_purchase, "Initiating purchase", json_encode(array("id_client"=>$id_client, "card_number"=>$card_number, "card_holdername"=>$card_holdername, "card_expirationdate"=>$card_expirationdate, "card_cvv"=>$card_cvv, "payment_method"=>$payment_method, "installments"=>$installments)),0);
-
+        
         // $postValidate = validate_post($id_client, $id_payment_method, $card_number, $card_holdername, $card_expirationdate, $card_cvv, $payment_method, $installments);
         // if ($postValidate["success"] == false) {
-        //     echo json_encode($postValidate);
-        //     logme();
-        //     traceme($id_purchase, "Finished purchase", json_encode($postValidate),0);
+            //     echo json_encode($postValidate);
+            //     logme();
+            //     traceme($id_purchase, "Finished purchase", json_encode($postValidate),0);
         //     die();
         // }
-
+        
         //$mysession = getmysession($id_purchase, $id_client);
         //$id_session = $mysession["id_session"];
         $shopping = getcurrentpurchase($id_session);
+        // echo json_encode(array("success"=>false, "msgtobuyer"=>"Não há nenhum item selecionado."));
+        // die();
 
         if (count($shopping) == 0) {
-            echo json_encode(array("success"=>false, "msg"=>"Não há nenhum item selecionado."));
+            echo json_encode(array("success"=>false, "msgtobuyer"=>"Não há nenhum item selecionado."));
             logme();
             traceme($id_purchase, "Finished purchase", '',0);
             die();
         }
+
+        $howmanynow = count($shopping);
+
+        foreach ($shopping as &$row) {
+            $howmanyican = $row["QT_INGRESSOS_POR_CPF"];
+            $howmanyalready = $row["purchasebythiscpf"];
+            $howmanyall = intval($howmanyalready)+$howmanynow;
+    
+            if ($howmanyall>$howmanyican) {
+                echo json_encode(array("success"=>false, "msgtobuyer"=>"O evento permite a compra de no máximo ".$howmanyican." bilhete(s) por CPF, Você comprou ".$howmanyall."."));
+                logme();
+                traceme($id_purchase, "Finished purchase", '',0);
+                die();
+            }
+        }
+
+
 
         $client = getclient($id_purchase, $id_client);
         
@@ -75,9 +96,14 @@
         $paymentmethod = getpaymentmethod($id_purchase, $id_payment_method);
         
         $isCreditCard = $paymentmethod["in_tipo_meio_pagamento"] == 'CC';
+        $printisafter = false;
 
         if ($payment_method == "" || $payment_method == null) {
             $payment_method = $isCreditCard ? "credit_card" : "payment_slip";
+        }
+
+        if ($id_payment_method == '911' || $id_payment_method = 911) {
+            $printisafter = true;
         }
         
         $bin = '';
@@ -120,7 +146,7 @@
             die();
         }
         
-        renew($id_client);
+        renew($id_session, $id_client);
         
         $values = getvaluesofmyshoppig($id_client);
 
@@ -206,27 +232,42 @@
             
             if ($sell["success"]) {
                 traceme($id_purchase, "sell", 'success',0);
-                $metadata = pagarme_setMetadata($sell["id_pedido_venda"], $shopping[0]["id_evento"]);
-                $capture_gateway = pagarme_capture($id_purchase,$purchase_gateway["id"], $id_client, $metadata, $charge, $buyer);
                 
-                traceme($id_purchase, "capture_gateway", json_encode($capture_gateway),0);
+                if ($printisafter == true) {
+                    traceme($id_purchase, "workaround pagseguro", 'start',0);
+                    workaround_pagseguro($sell["id_pedido_venda"], json_encode($purchase_gateway), $purchase_gateway["status"]);
+                    traceme($id_purchase, "workaround pagseguro", 'success',0);
+                }
+                
+                $metadata = pagarme_setMetadata($sell["id_pedido_venda"], $shopping[0]["id_evento"]);
+                if ($printisafter == false) {
+                    $capture_gateway = pagarme_capture($id_purchase,$purchase_gateway["id"], $id_client, $metadata, $charge, $buyer);
+                    traceme($id_purchase, "capture_gateway", json_encode($capture_gateway),0);
+                }
+                else {
+                    traceme($id_purchase, "capture_gateway", "boleto will not be captured",0);
+                }                
                 
                 $retofsevice = array("success"=>true
                                     , "seconds"=>0
                                     , "id_pedido_venda"=> $sell["id_pedido_venda"]
                                     , "codVenda"=> $sell["codVenda"]
+                                    , 'printisafter'=> $printisafter
                                     , 'msg' => ''
                                     , "msgtobuyer"=>"");
 
-                traceme($id_purchase, "sending email", json_encode(array("id_pedido_venda"=>$pedidovenda["id_pedido_venda"], "vouchername"=>$vouchername,"voucheremail"=>$voucheremail)),1);
-                make_purchase_email($pedidovenda["id_pedido_venda"], $vouchername,$voucheremail);
-                traceme($id_purchase, "sending email", 'ok',1);
+                if ($printisafter == false) {
+                    traceme($id_purchase, "sending email", json_encode(array("id_pedido_venda"=>$pedidovenda["id_pedido_venda"], "vouchername"=>$vouchername,"voucheremail"=>$voucheremail)),1);
+                    make_purchase_email($pedidovenda["id_pedido_venda"], $vouchername,$voucheremail);
+                    traceme($id_purchase, "sending email", 'ok',1);
+                }
             }
             else {
                 $retofsevice = array("success"=>false
                                     , "seconds"=>0
                                     , "id_pedido_venda"=> 0
                                     , "codVenda"=> 0
+                                    , 'printisafter'=> $printisafter
                                     , 'msg' => json_encode($sell)
                                     , "msgtobuyer"=>"Ocorreu um problema na cobrança.".$purchase_gateway["authorization_desc"]);
             }
@@ -237,6 +278,7 @@
                                 , "seconds"=>0
                                 , "id_pedido_venda"=> 0
                                 , "codVenda"=> 0
+                                , 'printisafter'=> $printisafter
                                 , 'msg' => json_encode($purchase_gateway)
                                 , "msgtobuyer"=>"Ocorreu um problema na cobrança. ".$purchase_gateway["authorization_desc"]);
         }
