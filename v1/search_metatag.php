@@ -1,17 +1,27 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
+    require_once($_SERVER['DOCUMENT_ROOT']."/v1/admin/partner/scaffolderhelp/help.php");
 
     $id = $_REQUEST["id"];
     $params = explode("/",$id);
 
+    $uniquename = getuniquefromdomain($_REQUEST["host"]);
+    $replace = getonlyReplacement($uniquename);
+    $logo = "";
 
-    $title = getwhitelabel("title");
-    $appName = getwhitelabel("appName");
-    $name = getwhitelabel("appName");
-    $host = getwhitelabel("uri");
-    $description = getwhitelabel("meta_description");
-    $keyword = getwhitelabel("meta_keywords");
-    $logo = getwhitelabel("logo");
+    foreach($replacement as $tocheck){
+        if (strpos("__wl-site-logo-media__", $tocheck["from"])  !== false) {
+            $logo = $tocheck["to"];
+        }
+    }
+
+
+    $title = getwhitelabelobjforced($uniquename)["info"]["title"];
+    $appName = getwhitelabelobjforced($uniquename)["host"];
+    $name = getwhitelabelobjforced($uniquename)["host"];
+    $host = getwhitelabelobjforced($uniquename)["uri"];
+    $description = getwhitelabelobjforced($uniquename)["meta"]["description"];
+    $keyword = getwhitelabelobjforced($uniquename)["meta"]["keywords"];
     $width = "493";
     $height = "498";
     logme();
@@ -46,8 +56,8 @@
     <meta property="og:site_name" content="<?php echo $name?>" />
 
     <meta property="og:image" content="<?php echo $logo?>" />
-    <!--meta property="og:image:secure_url" content="https://secure.example.com/ogp.jpg" /--> 
-    <meta property="og:image:type" content="image/jpeg" /> 
+    <meta property="og:image:secure_url" content=""<?php echo $logo?>" />
+    <meta property="og:image:type" content="image/png" /> 
     <meta property="og:image:alt" content="<?php echo $name?>" />
     <!--meta property="og:image:secure_url" content=" echo $obj["img"]" /-->
 

@@ -1,4 +1,27 @@
 <?php
+    function getuniquefromdomain($fullHost) {
+        $ret = "";
+        $jsonFile = $_SERVER['DOCUMENT_ROOT']."/jsons/domains.json";
+
+        if (!file_exists($jsonFile)) {
+            die("Falha de configuração no JSON de domains.");
+        }
+
+        $aux = json_decode(file_get_contents($jsonFile), true);
+
+        if (array_key_exists($fullHost, $aux)) {
+            $ret = $aux[$fullHost];
+        }
+        if (array_key_exists("imthebossofme", $_REQUEST)) {
+            $ret = $_REQUEST["imthebossofme"];
+        }
+
+        if ($ret == "") {
+            $ret = $aux["default"];
+        }
+
+        return $ret;
+    }
     function gethost() {
         $ret = "";
         $fullHost = $_SERVER["HTTP_HOST"];

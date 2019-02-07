@@ -78,10 +78,11 @@
         return $ret;
     }
     $obj = get($_REQUEST["id"]);
-    $title = getwhitelabel("title");
-    $appName = getwhitelabel("appName");
-    $name = getwhitelabel("appName");
-    $host = getwhitelabel("uri")."/evento/";
+    $uniquename = getuniquefromdomain($_REQUEST["host"]);
+    $title = getwhitelabelobjforced($uniquename)["info"]["title"];
+    $appName = getwhitelabelobjforced($uniquename)["host"];
+    $name = getwhitelabelobjforced($uniquename)["host"];
+    $host = getwhitelabelobjforced($uniquename)["uri"]."/evento/";
 ?>
 <!DOCTYPE html>
 <html>
@@ -113,7 +114,7 @@
     <meta property="og:site_name" content="<?php echo $name?>" />
 
     <meta property="og:image" content="<?php echo $obj["img"]?>" />
-    <!--meta property="og:image:secure_url" content="https://secure.example.com/ogp.jpg" /--> 
+    <meta property="og:image:secure_url" content="<?php echo $obj["img"]?>" /> 
     <meta property="og:image:type" content="image/jpeg" /> 
     <meta property="og:image:alt" content="<?php echo $obj["NomPeca"]?>" />
     <!--meta property="og:image:secure_url" content=" echo $obj["img"]" /-->
