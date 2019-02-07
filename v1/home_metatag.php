@@ -2,6 +2,23 @@
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/admin/partner/scaffolderhelp/help.php");
 
+    function get($uniquename) {
+        $query = "EXEC pr_generate_link_for_home ?";
+        $params = array($uniquename);
+        $result = db_exec($query, $params);
+
+        $text = "";
+
+        foreach ($result as &$row) {
+            if ($text != "")
+                $text .= "<br />";
+            $text .= $row["result"];
+        }
+        logme();
+
+        return $text;
+    }
+
     $id = $_REQUEST["id"];
     $params = explode("/",$id);
 
@@ -62,6 +79,8 @@
 
 </head>
 <body>
-    
+    <h1><?php echo $title ?></h1>
+    <h2><?php echo $description?></h2>
+    <?php echo get($uniquename) ?>
 </body>
 </html>
