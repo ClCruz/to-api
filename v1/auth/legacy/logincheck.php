@@ -9,6 +9,8 @@
 
         $json = array("exist"=>0);
 
+        // die("ddd".json_encode($login,JSON_PRETTY_PRINT));
+
         foreach ($result as &$row) {
             $json = array("exist"=>$row["exist"]);
         }
@@ -18,6 +20,6 @@
         die();    
     }
 
-login($_REQUEST["login"]);
+login($_POST["login"]);
 
 ?>
