@@ -20,6 +20,7 @@
                     ,"needRG" => $row["needRG"]
                     ,"needPhone" => $row["needPhone"]
                     ,"needName" => $row["needName"]
+                    ,"ticketoffice_askemail" => $row["ticketoffice_askemail"]
                     ,"needCardBin" => "0"
                     ,"needClient" => $row["needCPF"] == "1" || $row["needRG"] == "1" || $row["needPhone"] == "1" || $row["needName"] == "1"    
                     ,"text"=>$row["NomPeca"]

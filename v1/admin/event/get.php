@@ -36,6 +36,7 @@
                 ,"QtIngrPorPedido" => $row["QtIngrPorPedido"]
                 ,"qt_ingressos_por_cpf" => $row["qt_ingressos_por_cpf"]
                 ,"in_obriga_cpf" => $row["in_obriga_cpf"]
+                ,"ticketoffice_askemail" => $row["ticketoffice_askemail"]
                 ,"DatIniPeca" => $row["DatIniPeca"]
                 ,"DatFinPeca" => $row["DatFinPeca"]
                 ,"hasPresentantion" => $row["hasPresentantion"]

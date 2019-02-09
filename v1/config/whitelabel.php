@@ -73,7 +73,7 @@
         //echo "<br />";
         //echo "<br />";
         //echo "ret:".json_encode($ret);
-        //die("");
+        // die("ddd");
 
         if ($ret == "") {
             $ret = $aux["default"];
@@ -83,6 +83,7 @@
     function getwhitelabelobj() {
         $ret = array();
         $whitelabel = gethost();
+        // die(json_encode($whitelabel));
         $jsonFile = $_SERVER['DOCUMENT_ROOT']."/jsons/".$whitelabel.".json";
 
         if (!file_exists($jsonFile)) {
@@ -90,7 +91,7 @@
         }
 
         $ret = json_decode(file_get_contents($jsonFile), true);
-
+        // die(json_encode($ret, JSON_PRETTY_PRINT));
         return $ret;
     }
     function getwhitelabelobjforced($forced) {
@@ -191,6 +192,31 @@
             break;
         }
     }
+    function getwhitelabelURI_api($next) {
+        $uri = getwhitelabel("api");
+
+        if (startsWith($uri, "http") == false) {
+            $uri = "https://".$uri;
+        }
+        if (endsWith($uri, "/") == false && startsWith($next, "/") == false) {
+            $uri .= "/";
+        }
+        $uri.=$next;
+        return $uri;
+    }
+    function getwhitelabelURI_api_forced($host, $next) {
+        $forced = getwhitelabelobjforced($host);
+        $uri = $forced["api"];
+
+        if (startsWith($uri, "http") == false) {
+            $uri = "https://".$uri;
+        }
+        if (endsWith($uri, "/") == false && startsWith($next, "/") == false) {
+            $uri .= "/";
+        }
+        $uri.=$next;
+        return $uri;
+    }
     function getwhitelabelURI_legacy($next) {
         $uri = getwhitelabel("legacy");
 
@@ -245,6 +271,9 @@
         switch ($property) {
             case "legacy":
                 return getwhitelabelobj()["legacy"];
+            break;
+            case "api":
+                return getwhitelabelobj()["api"];
             break;
             case "css":
                 return getwhitelabelobj()["css"];

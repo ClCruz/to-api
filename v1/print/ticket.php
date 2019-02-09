@@ -16,6 +16,7 @@
     }
     function get($id_base, $codVenda, $indice) {
         $query = "EXEC pr_print_ticket ?, ?";
+        // die("dd".json_encode($codVenda));
         $params = array($codVenda, $indice);
         $result = db_exec($query, $params, $id_base);
 
@@ -84,6 +85,10 @@
         return $json;
     }
     $obj = get($_REQUEST["id_base"], $_REQUEST["id"], $_REQUEST["indice"]);
+
+    $dontbreakline = $_REQUEST["dontbreakline"] != null && $_REQUEST["dontbreakline"] != '';
+    $dontclose = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
+    $dontprint = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
 ?>
 <!DOCTYPE html>
 <html>
@@ -256,7 +261,13 @@ $count = 0;
 <?php foreach ($obj as &$row) {?>
     <?php $count = $count +1; ?>
     <?php if ($count != 1) { ?>
-    <div class="pagebreak"></div>
+        <?php if ($dontbreakline) {
+            echo "<br /><br /><br />";
+        }
+        else {
+            echo "<div class='pagebreak'></div>";
+        }
+        ?>
     <?php } ?>
     <table class="table dotted">
         <tr>
@@ -350,8 +361,14 @@ $count = 0;
 <?php } ?>
 <div class="pagebreak"></div>
 <script lang="javascript">
-    window.print();
-    window.close();
+    <?php 
+    if ($dontprint == false) {
+        echo "window.print();";
+    }
+    if ($dontclose == false) {
+        echo "window.close();";
+    }
+    ?>
 </script>
 </body>
 </html>

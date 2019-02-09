@@ -4,27 +4,29 @@
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/admin/partner/scaffolderhelp/help.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/mail_functions.php");
 
-    /*
-    $buyer: informações do comprador
-        name: nome
-        email: email
-        document: documento
-    $voucher: objeto do ingresso
-        id: id do pedido
-        link: link para impressão
-        $event: array de eventos
-            linkimage: link da imagem do evento
-            link: link para o evento
-            name: nome do evento
-            city: cidade do evento
-            state: estado do evento
-            tickettype: tipo do bilhete
-            date: data do evento
-            hour: hora do evento
-            amount: valor do evento
-        totalamount: valor total do voucher
+    function generate_email_print_code($id_pedido_venda, $codVenda, $id_base) {
+        if ($id_pedido_venda == null)
+            $id_pedido_venda = 0;
+        if ($codVenda == null)
+            $codVenda = '';
+        if ($id_base == null)
+            $id_base = 0;
+        
 
-    */
+        $query = "EXEC pr_generate_email_ticket_print ?, ?, ?";
+        $params = array($codVenda, $id_base, $id_pedido_venda);
+        $result = db_exec($query, $params);
+        
+        $json = array();
+        foreach ($result as &$row) {
+            $json = array(
+                "code" => $row["code"],
+            );
+        }
+
+        return $json;
+    }
+
     function get_purchase_email($id_pedido_venda) {
         $query = "EXEC pr_purchase_info_email ?";
         $params = array($id_pedido_venda);
@@ -52,14 +54,53 @@
                 "voucher_event_amount_total" => $row["voucher_event_amount_total"],
                 "voucher_event_service_total" => $row["voucher_event_service_total"],
                 "voucher_event_value_total" => $row["voucher_event_value_total"],
-                "voucher_link" => getwhitelabelURI_legacy("/comprar/reimprimirEmail.php?pedido=".$row["voucher_id"]),
+                "voucher_printcodehas" => $row["printcodehas"],
+                "voucher_linkold" => getwhitelabelURI_legacy("/comprar/reimprimirEmail.php?pedido=".$row["voucher_id"]),
+                "voucher_link" => getwhitelabelURI_api("/v1/email/ticket?code=".$row["printcode"]),
             );
         }
         //die(json_encode($json[1]["voucher_event_amount"]));
 
         return $json;
     }
-    function setHtml_purchase_email($obj, $isgift, $vouchername,$voucheremail) { 
+    function get_purchase_email_ticketoffice($codVenda, $id_base) {
+        //die(json_encode(getwhitelabelobj(),JSON_PRETTY_PRINT));
+        $query = "EXEC pr_purchase_info_email_ticketoffice ?";
+        $params = array($codVenda);
+        $result = db_exec($query, $params, $id_base);
+        
+        $json = array();
+        foreach ($result as &$row) {
+            $json[] = array(
+                "buyer_name" => $row["buyer_name"],
+                "buyer_email" => $row["buyer_email"],
+                "buyer_document" => $row["buyer_document"],
+                "voucher_id" => $row["voucher_id"],
+                "voucher_code" => $row["voucher_code"],
+                "voucher_event_image" => getDefaultMediaHost(). str_replace("{id}", $row["id_evento"],str_replace("{default_card}", getDefaultCardImageName(),$row["cardimage"])),
+                "voucher_event_link" => getwhitelabelURI_home($row["uri"]),
+                "voucher_event_name" => $row["voucher_event_name"],
+                "voucher_local_name" => $row["voucher_local_name"],
+                "voucher_event_city" => $row["voucher_event_city"],
+                "voucher_event_state" => $row["voucher_event_state"],
+                "voucher_event_tickettype" => $row["voucher_event_tickettype"],
+                "voucher_event_date" => $row["voucher_event_date"],
+                "voucher_event_hour" => $row["voucher_event_hour"],
+                "voucher_event_amount" => $row["voucher_event_amount"],
+                "voucher_event_service" => $row["voucher_event_service"],
+                "voucher_event_amount_total" => $row["voucher_event_amount_total"],
+                "voucher_event_service_total" => $row["voucher_event_service_total"],
+                "voucher_event_value_total" => $row["voucher_event_value_total"],
+                "voucher_printcodehas" => $row["printcodehas"],
+                "voucher_linkold" => getwhitelabelURI_legacy("/comprar/reimprimirEmail.php?pedido=".$row["voucher_id"]),
+                "voucher_link" => getwhitelabelURI_api("/v1/email/ticket?code=".$row["printcode"]),
+            );
+        }
+        //die(json_encode($json[1]["voucher_event_amount"]));
+
+        return $json;
+    }
+    function setHtml_purchase_email($obj, $isgift, $vouchername,$voucheremail, $type) { 
         $templatefolder = $_SERVER['DOCUMENT_ROOT'].$templatefolder = getwhitelabelobj()["templates"]["emails"]["folder"];
 
         $replacement = getonlyReplacement(gethost());
@@ -92,9 +133,14 @@
 
         $loader = new Twig_Loader_Filesystem($templatefolder);
         $twig = new Twig_Environment($loader);
-        $htmlname = "buyer.html";
-        if ($isgift) {
-            $htmlname = "gift.html";
+        if ($type == "web") {
+            $htmlname = "buyer.html";
+            if ($isgift) {
+                $htmlname = "gift.html";
+            }
+        }
+        else {
+            $htmlname = "ticketoffice_buyer.html";
         }
         return $twig->render($htmlname, [
                                             "purchases" => $obj,
@@ -113,7 +159,7 @@
                                             "voucher_event_amount_total" => $obj[0]["voucher_event_amount_total"],
                                             "voucher_event_service_total" => $obj[0]["voucher_event_service_total"],
                                             "voucher_event_value_total" => $obj[0]["voucher_event_value_total"],
-                                            "voucher_link" => $obj[0]["voucher_link"], 
+                                            "voucher_link" => ($obj[0]["voucher_printcodehas"] == 1 ? $obj[0]["voucher_link"] : $obj[0]["voucher_linkold"]), 
                                         ] );
     }
 
@@ -123,7 +169,7 @@
         } 
         
         $obj = get_purchase_email($id_pedido_venda);
-        $html = setHtml_purchase_email($obj, $voucheremail != null, $vouchername,$voucheremail);
+        $html = setHtml_purchase_email($obj, $voucheremail != null, $vouchername,$voucheremail, 'web');
 
         $to = $obj[0]["buyer_email"];
         $toName = $obj[0]["buyer_name"];
@@ -137,6 +183,24 @@
             $toName = $vouchername;
             $subject = "Você acaba de ser presenteado por um amigo!";
         }
+
+        $msg = $html;
+
+        sendToAPI($from, $fromName, $to, $toName, $subject, $msg);
+        logme();
+    }
+    function make_purchase_email_ticketoffice($codVenda, $id_base, $email) {        
+        $obj = get_purchase_email_ticketoffice($codVenda, $id_base);
+        // die(json_encode($obj,JSON_PRETTY_PRINT));
+        $html = setHtml_purchase_email($obj, false, '','', 'ticketoffice');
+
+        $to = $email;
+        $toName = "Venda pela Bilheteria";
+
+        $from = getwhitelabelemail()["noreply"]["email"];
+        $fromName = getwhitelabelemail()["noreply"]["from"];
+
+        $subject = "Agradecemos sua compra";
 
         $msg = $html;
 

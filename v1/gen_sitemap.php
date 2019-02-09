@@ -1,14 +1,20 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
+    $count = 0;
+
     function get($uniquename) {
+        global $count;
         $query = "EXEC pr_generate_sitemap ?";
         $params = array($uniquename);
         $result = db_exec($query, $params);
 
         $text = "";
 
+
+        $count = 0;
         foreach ($result as &$row) {
+            $count = $count+1;
             if ($text != "")
                 $text .= PHP_EOL;
             $text .= $row["result"];
@@ -23,6 +29,6 @@
     $txt = get($uniquename);
     fwrite($myfile, $txt);
     fclose($myfile);
-    echo "generated sitemap.";
+    echo "generated ".((string)$count)." sitemap.";
     die("");
 ?>

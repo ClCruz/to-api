@@ -24,12 +24,13 @@
     ,$QtIngrPorPedido
     ,$in_obriga_cpf
     ,$qt_ingressos_por_cpf
+    ,$ticketoffice_askemail
     ,$imagechanged
     ,$imagebase64
     ) {
         //die("aqui: $imagechanged / $imagebase64");
         //sleep(5);
-        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
         $params = array($apikey
         ,$id_produtor
         ,$id_to_admin_user
@@ -48,7 +49,9 @@
         ,$bannerDescription
         ,$QtIngrPorPedido
         ,$in_obriga_cpf == "" ? "0" : $in_obriga_cpf
-        ,$qt_ingressos_por_cpf);
+        ,$qt_ingressos_por_cpf
+        ,$ticketoffice_askemail == "" ? "0" : $ticketoffice_askemail
+    );
 
         //die("aqui".json_encode($params));
         $result = db_exec($query, $params, $id_base);
@@ -144,6 +147,7 @@ execute($_REQUEST["apikey"]
 ,$_POST["QtIngrPorPedido"]
 ,$_POST["in_obriga_cpf"]
 ,$_POST["qt_ingressos_por_cpf"]
+,$_POST["ticketoffice_askemail"]
 ,$_POST["imagechanged"]
 ,$_POST["imagebase64"]);
 ?>
