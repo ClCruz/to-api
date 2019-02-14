@@ -18,7 +18,7 @@
         }
         //die("ddd".print_r($result,true));
         if ($id_base == 0 && $codPeca == 0) {
-            echo json_encode(array("error"=>true, "msg"=>"Não foi possível achar o evento."));    
+            echo json_encode(array("error"=>true, "msg"=>"Não foi possível achar o evento.", "goto"=> "home"));    
             die();
         }
 

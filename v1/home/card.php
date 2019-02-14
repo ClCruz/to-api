@@ -22,7 +22,7 @@
                 "ds_nome_teatro" => $row["ds_nome_teatro"],
                 "ds_municipio" => $row["ds_municipio"],
                 "sg_estado" => $row["sg_estado"],
-                "datas" => $row["datas"],
+                "datas" => $row["dates"],
                 "img" => getDefaultMediaHost() . str_replace("{id}", $row["id_evento"],str_replace("{default_card}", getDefaultCardImageName(),$row["cardimage"])),
                 "uri" => $row["uri"],
                 "badge"=> splitBadge($row["badges"]),
@@ -70,7 +70,7 @@
 
         return $ret;
     }
-//splitBadge('CompreIngressos|/badge/ci.png,ItauCard|/badge/itaucard.png');
+ //splitBadge('CompreIngressos|/badge/ci.png,ItauCard|/badge/itaucard.png');
 getCardUP($_REQUEST["city"],$_REQUEST["state"], $_REQUEST["apikey"]);
 
 ?>

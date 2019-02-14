@@ -249,7 +249,7 @@
                 }
                 
                 $metadata = pagarme_setMetadata($sell["id_pedido_venda"], $shopping[0]["id_evento"]);
-                if ($printisafter == false) {
+                if ($printisafter == true) {
                     $capture_gateway = pagarme_capture($id_purchase,$purchase_gateway["id"], $id_client, $metadata, $charge, $buyer);
                     traceme($id_purchase, "capture_gateway", json_encode($capture_gateway),0);
                 }
