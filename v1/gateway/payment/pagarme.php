@@ -5,11 +5,12 @@
 
     //getConfigPagarme() 
 
-    function pagarme_installments($free_installments, $max_installments, $interest_rate, $amount) {
+    function pagarme_installments($id_purchase, $free_installments, $max_installments, $interest_rate, $amount) {
+
         $conf = getConfigPagarme();
-
+        
         $url = $conf["apiURI"]."transactions/calculate_installments_amount";
-
+        
         $fields = array(
             'api_key' => urlencode($conf["apikey"]),
             'amount' => urlencode($amount),
@@ -17,33 +18,37 @@
             'max_installments' => urlencode($max_installments),
             'interest_rate' => urlencode($interest_rate),
         );
-
+        traceme($id_purchase, "Request gateway|pagarme|calculate_installments_amount", json_encode($fields),1);
+        traceme($id_purchase, "Initiating gateway|pagarme|config", json_encode($conf),0);
+        
         $fields_string = "";
-
+        
         foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-
+        
         $fields_string = rtrim($fields_string, '&');
-
+        
         $url = $url."?".$fields_string;
-
+        
         $curl = curl_init();
-
+        
         curl_setopt($curl,CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
+        
         
         $curl_exec = curl_exec($curl);
         curl_close($curl);
 
         $result = json_decode($curl_exec);
 
+        traceme($id_purchase, "Response - gateway|pagarme|calculate_installments_amount", json_encode($result),1);
+
         // die(print_r($result[0]->installments, true));
 
         return $result;
     }
 
-    function pagarme_setMetadata($id_pedido, $id_evento) {
-        return array("id_pedido_venda"=>$id_pedido, "id_evento"=>$id_evento);
+    function pagarme_setMetadata($id_pedido, $id_evento, $host) {
+        return array("id_pedido_venda"=>$id_pedido, "id_evento"=>$id_evento, "host"=>$host);
     }
     /*
         $metadata: informações para ficarem gravadas no pagarme

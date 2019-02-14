@@ -168,7 +168,7 @@
         $totalservice = $values[0]["totalservice"];
         
         $installment_config = getinstallments($id_purchase, $id_client);
-        $installment_gateway = pagarme_installments($installment_config["free_installments"], $installment_config["max_installments"], $installment_config["interest_rate"], $amount);
+        $installment_gateway = pagarme_installments($id_purchase, $installment_config["free_installments"], $installment_config["max_installments"], $installment_config["interest_rate"], $amount);
 
         $installment_choosed = $installment_gateway->installments->{$installments};
 
@@ -184,7 +184,7 @@
 
         //die(json_encode($shopping));
 
-        $metadata = pagarme_setMetadata("0", $shopping[0]["id_evento"]);
+        $metadata = pagarme_setMetadata("0", $shopping[0]["id_evento"], getuniquefromdomain());
 
         $charge = array("amount"=>$amountToPay
                         ,"split"=>$split
@@ -222,7 +222,6 @@
 
         $retofsevice = array("success"=>false, "seconds"=>0, "id_pedido_venda"=> 0, "codVenda"=> '', "msg"=> '');
 
-
         if ($purchase_gateway["success"]) {
             traceme($id_purchase, "gateway success", '',0);
             $bin = $purchase_gateway["card_first_digits"];
@@ -251,7 +250,7 @@
                     traceme($id_purchase, "workaround pagseguro", 'success',0);
                 }
                 
-                $metadata = pagarme_setMetadata($sell["id_pedido_venda"], $shopping[0]["id_evento"]);
+                $metadata = pagarme_setMetadata($sell["id_pedido_venda"], $shopping[0]["id_evento"], getuniquefromdomain());
                 if ($printisafter == true) {
                     $capture_gateway = pagarme_capture($id_purchase,$purchase_gateway["id"], $id_client, $metadata, $charge, $buyer);
                     traceme($id_purchase, "capture_gateway", json_encode($capture_gateway),0);
