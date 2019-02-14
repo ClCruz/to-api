@@ -106,6 +106,8 @@
         if ($id_payment_method == '911' || $id_payment_method = 911) {
             $printisafter = true;
         }
+
+        traceme($id_purchase, "value for printisafter variable", json_encode($printisafter),0);
         
         $bin = '';
         $card_number_original = $card_number;
@@ -266,7 +268,7 @@
                                     , 'msg' => ''
                                     , "msgtobuyer"=>"");
 
-                if ($printisafter == false) {
+                if ($printisafter == true) {
                     traceme($id_purchase, "sending email", json_encode(array("id_pedido_venda"=>$pedidovenda["id_pedido_venda"], "vouchername"=>$vouchername,"voucheremail"=>$voucheremail)),1);
                     make_purchase_email($pedidovenda["id_pedido_venda"], $vouchername,$voucheremail);
                     traceme($id_purchase, "sending email", 'ok',1);
