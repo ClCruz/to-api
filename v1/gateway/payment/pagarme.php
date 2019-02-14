@@ -93,11 +93,11 @@
                     "complementary" => $buyer["address"]["complementary"],
                     "city" => $buyer["address"]["city"],
                     "state" => $buyer["address"]["state"]
+                ),
+                "phone" => array(
+                    "ddd" => $buyer["phone"]["ddd"] == null ? '' : $buyer["phone"]["ddd"],
+                    "number" => $buyer["phone"]["number"] == null ? '' : $buyer["phone"]["number"]
                 )
-                // "phone" => array(
-                //     "ddd" => $buyer["phone"]["ddd"] == null ? '' : $buyer["phone"]["ddd"],
-                //     "number" => $buyer["phone"]["number"] == null ? '' : $buyer["phone"]["number"]
-                // )
             ),
             "postback_url" => $conf["postbackURI"]
         );

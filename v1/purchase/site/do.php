@@ -201,6 +201,7 @@
                         ,"email"=> $client["cd_email_login"]
                         ,"sex"=> $client["in_sexo"]
                         ,"born"=> $client["dt_nascimento"]
+                        ,"phone"=> array("ddd"=>$client["ds_ddd_telefone"], "number"=>$client["ds_telefone"])
                         ,"address"=> array(
                             "street"=> $client["ds_endereco"]
                             ,"neighborhood"=> $client["ds_bairro"]
