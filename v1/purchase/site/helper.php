@@ -237,7 +237,7 @@
         $errorMsg = "";
         foreach ($result as &$row) {
             $ret = array("id_evento"=>$row["id_evento"]
-                        ,"interest_rate"=>$row["interest_rate"]
+                        ,"interest_rate"=> intval($row["interest_rate"])/100
                         ,"max_installments"=>$row["max_installments"]
                         ,"free_installments"=>$row["free_installments"]);
         }
