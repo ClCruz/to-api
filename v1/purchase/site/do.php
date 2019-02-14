@@ -63,6 +63,7 @@
         //$mysession = getmysession($id_purchase, $id_client);
         //$id_session = $mysession["id_session"];
         $shopping = getcurrentpurchase($id_session);
+        traceme($id_purchase, "shopping cart", json_encode($shopping),0);
         // echo json_encode(array("success"=>false, "msgtobuyer"=>"Não há nenhum item selecionado."));
         // die();
 
@@ -141,6 +142,14 @@
         $multiple = checkmultipleevents($id_purchase, $id_client);
         if ($multiple["success"] == false) {
             echo json_encode($multiple);
+            logme();
+            traceme($id_purchase, "Finished purchase", '',0);
+            die();
+        }
+
+        $checkSplit = checksplitevents($id_purchase, $id_client);
+        if ($checkSplit["success"] == false) {
+            echo json_encode($checkSplit);
             logme();
             traceme($id_purchase, "Finished purchase", '',0);
             die();

@@ -247,6 +247,26 @@
         return $ret;
     }
 
+    function checksplitevents($id_purchase, $id_client) {
+
+        traceme($id_purchase, "check split events - start", '',0);
+        $query = "EXEC pr_purchase_check_split ?";
+        $params = array($id_client);
+        $result = db_exec($query, $params);
+        $ret = array();
+        $hasError = false;
+        $errorMsg = "";
+        foreach ($result as &$row) {
+            $ret = array("success"=>$row["success"]
+            ,"msg"=>$row["msg"]
+            ,"msgtobuyer"=>$row["msg"]);
+        }
+
+        traceme($id_purchase, "check split events - end", '',0);
+
+        return $ret;
+    }
+
     function checkmultipleevents($id_purchase, $id_client) {
 
         traceme($id_purchase, "check multiples events - start", '',0);
