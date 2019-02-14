@@ -37,7 +37,7 @@
 
     function getmysession($id_purchase, $id_client) {
 
-        traceme($id_purchase, "get my session - start", '',0);
+        traceme($id_purchase, "get my session - start", json_encode($id_client),0);
         $query = "EXEC pr_purchase_get_current_session ?";
         $params = array($id_client);
         $result = db_exec($query, $params);
@@ -50,14 +50,14 @@
                         ,"id_cliente"=>$row["id_cliente"]);
         }
 
-        traceme($id_purchase, "get my session - end", '',0);
+        traceme($id_purchase, "get my session - end", json_encode($ret),0);
 
         return $ret;
     }
 
     function getpaymentmethod($id_purchase, $id_payment_method) {
 
-        traceme($id_purchase, "get payment method - start", '',0);
+        traceme($id_purchase, "get payment method - start", json_encode($id_payment_method),0);
         $query = "EXEC pr_purchase_payment_method ?";
         $params = array($id_payment_method);
         $result = db_exec($query, $params);
@@ -76,14 +76,14 @@
             ,"id_gateway"=>$row["id_gateway"]);
         }
 
-        traceme($id_purchase, "get payment method - end", '',0);
+        traceme($id_purchase, "get payment method - end", json_encode($ret),0);
 
         return $ret;
     }
 
     function getclient($id_purchase, $id_client) {
 
-        traceme($id_purchase, "get client - start", '',0);
+        traceme($id_purchase, "get client - start", json_encode($id_client),0);
         $query = "EXEC pr_purchase_get_client ?";
         $params = array($id_client);
         $result = db_exec($query, $params);
@@ -118,7 +118,7 @@
             ,"fullname"=>$row["fullname"]);
         }
 
-        traceme($id_purchase, "get client - end", '',0);
+        traceme($id_purchase, "get client - end", json_encode($ret),0);
 
         return $ret;
     }
@@ -126,7 +126,7 @@
 
     function getpurchasesplit($id_purchase, $id_client, $type, $amount, $where, $payment_method) {
 
-        traceme($id_purchase, "get split for purchase - start", '',0);
+        traceme($id_purchase, "get split for purchase - start", json_encode(array("id_client"=>$id_client, "type"=>$type, "amount"=>$amount, "where"=>$where, "payment_method"=>$payment_method)),0);
         $query = "EXEC pr_purchase_get_split ?";
         $params = array($id_client);
         traceme($id_purchase, "get split for purchase - get from db - start", '',0);
@@ -149,7 +149,7 @@
             ,"howmanysplits"=>$row["howmanysplits"]);
         }
 
-        traceme($id_purchase, "get split for purchase - get from db - end", '',0);
+        traceme($id_purchase, "get split for purchase - get from db - end", json_encode($result),0);
 
         traceme($id_purchase, "get split for purchase - loop - start", '',0);
 
@@ -221,7 +221,7 @@
 
         traceme($id_purchase, "get split for purchase - loop - end", '',0);
 
-        traceme($id_purchase, "get split for purchase - end", '',0);
+        traceme($id_purchase, "get split for purchase - end", json_encode($split),0);
 
         return $split;
     }
@@ -242,7 +242,7 @@
                         ,"free_installments"=>$row["free_installments"]);
         }
 
-        traceme($id_purchase, "get installments - end", '',0);
+        traceme($id_purchase, "get installments - end", json_encode($ret),0);
 
         return $ret;
     }
@@ -262,7 +262,7 @@
             ,"msgtobuyer"=>$row["msg"]);
         }
 
-        traceme($id_purchase, "check split events - end", '',0);
+        traceme($id_purchase, "check split events - end", json_encode($ret),0);
 
         return $ret;
     }
@@ -282,7 +282,7 @@
             ,"msgtobuyer"=>$row["msg"]);
         }
 
-        traceme($id_purchase, "check multiples events - end", '',0);
+        traceme($id_purchase, "check multiples events - end", json_encode($ret),0);
 
         return $ret;
     }
