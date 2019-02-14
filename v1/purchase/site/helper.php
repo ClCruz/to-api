@@ -323,6 +323,11 @@
         $params = array($cd_meio_pagamento, $id_pedido_venda);
         $result = db_exec($query, $params);
     }
+    function change_situacao($id_pedido_venda) {
+        $query = "EXEC pr_purchase_change_situacao ?";
+        $params = array($id_pedido_venda);
+        $result = db_exec($query, $params);
+    }
     
 
     function getbases4purchase($id_session) {
