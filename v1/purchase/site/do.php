@@ -97,14 +97,14 @@
         $paymentmethod = getpaymentmethod($id_purchase, $id_payment_method);
         
         $isCreditCard = $paymentmethod["in_tipo_meio_pagamento"] == 'CC';
-        $printisafter = false;
+        $printisafter = true;
 
         if ($payment_method == "" || $payment_method == null) {
             $payment_method = $isCreditCard ? "credit_card" : "payment_slip";
         }
 
         if ($id_payment_method == '911' || $id_payment_method == 911) {
-            $printisafter = true;
+            $printisafter = false;
         }
 
         traceme($id_purchase, "value for printisafter variable", json_encode($printisafter),0);
@@ -244,14 +244,14 @@
             if ($sell["success"]) {
                 traceme($id_purchase, "sell", 'success',0);
                 
-                if ($printisafter == true) {
+                if ($isCreditCard == true) {
                     traceme($id_purchase, "workaround pagseguro", 'start',0);
                     workaround_pagseguro($sell["id_pedido_venda"], json_encode($purchase_gateway), $purchase_gateway["status"]);
                     traceme($id_purchase, "workaround pagseguro", 'success',0);
                 }
                 
                 $metadata = pagarme_setMetadata($sell["id_pedido_venda"], $shopping[0]["id_evento"], getuniquefromdomain());
-                if ($printisafter == true) {
+                if ($isCreditCard == true) {
                     $capture_gateway = pagarme_capture($id_purchase,$purchase_gateway["id"], $id_client, $metadata, $charge, $buyer);
                     traceme($id_purchase, "capture_gateway", json_encode($capture_gateway),0);
                 }
@@ -271,7 +271,7 @@
                                     , 'msg' => ''
                                     , "msgtobuyer"=>"");
 
-                if ($printisafter == true) {
+                if ($isCreditCard == true) {
                     traceme($id_purchase, "sending email", json_encode(array("id_pedido_venda"=>$pedidovenda["id_pedido_venda"], "vouchername"=>$vouchername,"voucheremail"=>$voucheremail)),1);
                     make_purchase_email($pedidovenda["id_pedido_venda"], $vouchername,$voucheremail);
                     traceme($id_purchase, "sending email", 'ok',1);
