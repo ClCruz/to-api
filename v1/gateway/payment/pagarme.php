@@ -444,6 +444,59 @@
         }
         return $ret.($guindance != "" ? (" - ".$guindance) : "");
     }
+    function pagarme_refund($id, $amount) {
+        if ($id == "") {
+            return "no_refund_in_gateway";
+        }
+        $ret = "";
+        $conf = getConfigPagarme();
+        
+        $url = $conf["apiURI"]."transactions/".$id."/refund";
+        
+        $post_data = "";
+        
+        if ($amount == 0)
+        {
+            $data = array("api_key" => $conf["apikey"]);
+            $post_data = "{ \"api_key\":\"".$conf["apikey"]."\" }";
+        }
+        else {
+            $data = array("api_key" => $conf["apikey"], "amount" => $amount);
+            $post_data = json_encode($data);     
+        }
+        
+        $ch = curl_init($url); 
+        //curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);                                                                  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Content-Type: application/json',                                                                                
+            'Content-Length: ' . strlen($post_data))                                                                       
+        );             
+        $response = curl_exec($ch);
+        $errno = curl_errno($ch);
+
+        $ret = array("success"=>true, "msg"=>"");
+
+
+        if ($errno) {
+            $ret = "Error in gateway#:" . $errno;
+        }
+        else  {
+            $aux = json_decode($response);
+            if (property_exists($aux, "errors")) {
+                $ret = array("success"=>false, "msg"=>$aux->errors[0]->message);
+            }
+            else {
+                $ret["success"] = isset($aux["refunded_amount"]);
+            }
+        }
+        
+        curl_close($ch);
+
+        return $ret;
+    }
     function pagarme_capture($id_purchase, $id_gateway, $id_client, $metadata, $charge,$buyer) {
         $conf = getConfigPagarme();
 

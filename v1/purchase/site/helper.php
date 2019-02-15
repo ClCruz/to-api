@@ -303,6 +303,20 @@
         return $ret;
     }
 
+    function gettransactionbypedido($id_pedido_venda) {
+        $query = "EXEC pr_purchase_refund_transaction_by_pedido ?";
+        $params = array($id_pedido_venda);
+        $result = db_exec($query, $params);
+        $ret = array();
+        $hasError = false;
+        $errorMsg = "";
+        foreach ($result as &$row) {
+            $ret = array("cd_numero_transacao"=>$row["cd_numero_transacao"]);
+        }
+
+        return $ret;
+    }
+
     function workaround_pagseguro($id_pedido_venda, $obj, $status) {
         $query = "EXEC pr_workaround_pagseguro ?,?,?";
         $params = array($id_pedido_venda, $obj, $status);
