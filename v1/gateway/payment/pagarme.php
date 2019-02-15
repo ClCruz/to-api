@@ -417,6 +417,10 @@
                 $ret = "Transação inválida";
                 $guindance = "Entre em contato com o banco emissor do cartão";
             break;
+            case "5092": 
+                $ret = "Autorização recusada";
+                $guindance = "O valor solicitado para captura não é válido";
+            break;
             case "9108": 
                 $ret = "Erro no processamento";
                 $guindance = "Refaça o processo de compra, ou entre em contato a nossa central de atendimento";
