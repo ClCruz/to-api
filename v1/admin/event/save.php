@@ -27,10 +27,13 @@
     ,$ticketoffice_askemail
     ,$imagechanged
     ,$imagebase64
+    ,$free_installments
+    ,$max_installments
+    ,$interest_rate
     ) {
         //die("aqui: $imagechanged / $imagebase64");
         //sleep(5);
-        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
         $params = array($apikey
         ,$id_produtor
         ,$id_to_admin_user
@@ -51,6 +54,9 @@
         ,$in_obriga_cpf == "" ? "0" : $in_obriga_cpf
         ,$qt_ingressos_por_cpf
         ,$ticketoffice_askemail == "" ? "0" : $ticketoffice_askemail
+        ,$free_installments
+        ,$max_installments
+        ,$interest_rate
     );
 
         //die("aqui".json_encode($params));
@@ -149,5 +155,8 @@ execute($_REQUEST["apikey"]
 ,$_POST["qt_ingressos_por_cpf"]
 ,$_POST["ticketoffice_askemail"]
 ,$_POST["imagechanged"]
-,$_POST["imagebase64"]);
+,$_POST["imagebase64"]
+,$_POST["free_installments"]
+,$_POST["max_installments"]
+,$_POST["interest_rate"]);
 ?>
