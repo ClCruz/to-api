@@ -31,6 +31,9 @@
         
         $curl = curl_init();
         
+        set_time_limit(0);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0); 
+        curl_setopt($curl, CURLOPT_TIMEOUT, 3600);
         curl_setopt($curl,CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         
@@ -140,11 +143,14 @@
         
         $post_data = json_encode($transaction_data);     
         //$out = fopen('php://output', 'w');
+        set_time_limit(0);
         $curl = curl_init(); 
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
         curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);                                                                  
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);                                                                      
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0); 
+        curl_setopt($curl, CURLOPT_TIMEOUT, 3600);
         // curl_setopt($curl, CURLOPT_VERBOSE, true);
         // curl_setopt($curl, CURLOPT_STDERR, $out);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(                                                                          
@@ -469,11 +475,15 @@
             $post_data = json_encode($data);     
         }
         
+        set_time_limit(0);
         $ch = curl_init($url); 
         //curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);                                                                  
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);           
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0); 
+        curl_setopt($curl, CURLOPT_TIMEOUT, 3600);
+                                                           
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
             'Content-Type: application/json',                                                                                
             'Content-Length: ' . strlen($post_data))                                                                       
@@ -524,6 +534,7 @@
         
         traceme($id_purchase, "Request gateway|pagarme|capture", json_encode($transaction_data),1);
         //die(json_encode($transaction_data));
+        set_time_limit(0);
         
         $post_data = json_encode($transaction_data);     
         //$out = fopen('php://output', 'w');
@@ -531,7 +542,9 @@
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
         curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);                                                                  
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);                                                                      
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);          
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0); 
+        curl_setopt($curl, CURLOPT_TIMEOUT, 3600);                                                            
         // curl_setopt($curl, CURLOPT_VERBOSE, true);
         // curl_setopt($curl, CURLOPT_STDERR, $out);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(                                                                          
