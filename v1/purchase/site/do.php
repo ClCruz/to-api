@@ -103,7 +103,7 @@
             $payment_method = $isCreditCard ? "credit_card" : "payment_slip";
         }
 
-        if ($id_payment_method == '911' || $id_payment_method = 911) {
+        if ($id_payment_method == '911' || $id_payment_method == 911) {
             $printisafter = true;
         }
 
