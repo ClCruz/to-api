@@ -19,6 +19,7 @@
                 ,"active" => $row["active"]
                 ,"created" => $row["created"]
                 ,"updated" => $row["updated"]
+                ,"pair" => $row["pair"]
             );
         }
 

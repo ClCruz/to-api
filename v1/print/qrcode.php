@@ -6,6 +6,11 @@
     use Metzli\Renderer\PngRenderer;
     
     function get($id_base, $codVenda, $indice) {
+
+        if ($id_base == null || $id_base == '') {
+            $id_base = get_id_base_by_codvenda($codVenda);
+        }
+
         $query = "EXEC pr_print_ticket ?, ?";
         $params = array($codVenda, $indice);
         $result = db_exec($query, $params, $id_base);

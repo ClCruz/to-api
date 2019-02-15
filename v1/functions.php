@@ -73,7 +73,7 @@ function performance() {
     $result = db_exec($query, $params);
 }
 function get_id_base_from_id_evento($id_evento) {
-    $query = "EXEC pr_admin_event_getbase ??";
+    $query = "EXEC pr_admin_event_getbase ?";
     $params = array($id_evento);
     $result = db_exec($query, $params);
 
@@ -84,6 +84,19 @@ function get_id_base_from_id_evento($id_evento) {
 
     return $id_base;
 }
+function get_id_base_by_codvenda($codVenda) {
+    $query = "EXEC pr_recover_base_by_codvenda ?";
+    $params = array($codVenda);
+    $result = db_exec($query, $params);
+
+    $id_base = 0;
+    foreach ($result as &$row) {
+        $id_base = $row["id_base"];
+    }
+
+    return $id_base;
+}
+
 function stopthehammer($obj) {
     echo json_encode($obj);
     die();

@@ -5,11 +5,12 @@
 
     //getConfigPagarme() 
 
-    function pagarme_installments($free_installments, $max_installments, $interest_rate, $amount) {
+    function pagarme_installments($id_purchase, $free_installments, $max_installments, $interest_rate, $amount) {
+
         $conf = getConfigPagarme();
-
+        
         $url = $conf["apiURI"]."transactions/calculate_installments_amount";
-
+        
         $fields = array(
             'api_key' => urlencode($conf["apikey"]),
             'amount' => urlencode($amount),
@@ -17,33 +18,37 @@
             'max_installments' => urlencode($max_installments),
             'interest_rate' => urlencode($interest_rate),
         );
-
+        traceme($id_purchase, "Request gateway|pagarme|calculate_installments_amount", json_encode($fields),1);
+        traceme($id_purchase, "Initiating gateway|pagarme|config", json_encode($conf),0);
+        
         $fields_string = "";
-
+        
         foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-
+        
         $fields_string = rtrim($fields_string, '&');
-
+        
         $url = $url."?".$fields_string;
-
+        
         $curl = curl_init();
-
+        
         curl_setopt($curl,CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
+        
         
         $curl_exec = curl_exec($curl);
         curl_close($curl);
 
         $result = json_decode($curl_exec);
 
+        traceme($id_purchase, "Response - gateway|pagarme|calculate_installments_amount", json_encode($result),1);
+
         // die(print_r($result[0]->installments, true));
 
         return $result;
     }
 
-    function pagarme_setMetadata($id_pedido, $id_evento) {
-        return array("id_pedido_venda"=>$id_pedido, "id_evento"=>$id_evento);
+    function pagarme_setMetadata($id_pedido, $id_evento, $host) {
+        return array("id_pedido_venda"=>$id_pedido, "id_evento"=>$id_evento, "host"=>$host);
     }
     /*
         $metadata: informações para ficarem gravadas no pagarme
@@ -93,11 +98,11 @@
                     "complementary" => $buyer["address"]["complementary"],
                     "city" => $buyer["address"]["city"],
                     "state" => $buyer["address"]["state"]
+                ),
+                "phone" => array(
+                    "ddd" => $buyer["phone"]["ddd"] == null ? '' : $buyer["phone"]["ddd"],
+                    "number" => $buyer["phone"]["number"] == null ? '' : $buyer["phone"]["number"]
                 )
-                // "phone" => array(
-                //     "ddd" => $buyer["phone"]["ddd"] == null ? '' : $buyer["phone"]["ddd"],
-                //     "number" => $buyer["phone"]["number"] == null ? '' : $buyer["phone"]["number"]
-                // )
             ),
             "postback_url" => $conf["postbackURI"]
         );
@@ -438,6 +443,59 @@
             break;
         }
         return $ret.($guindance != "" ? (" - ".$guindance) : "");
+    }
+    function pagarme_refund($id, $amount) {
+        if ($id == "") {
+            return "no_refund_in_gateway";
+        }
+        $ret = "";
+        $conf = getConfigPagarme();
+        
+        $url = $conf["apiURI"]."transactions/".$id."/refund";
+        
+        $post_data = "";
+        
+        if ($amount == 0)
+        {
+            $data = array("api_key" => $conf["apikey"]);
+            $post_data = "{ \"api_key\":\"".$conf["apikey"]."\" }";
+        }
+        else {
+            $data = array("api_key" => $conf["apikey"], "amount" => $amount);
+            $post_data = json_encode($data);     
+        }
+        
+        $ch = curl_init($url); 
+        //curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);                                                                  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Content-Type: application/json',                                                                                
+            'Content-Length: ' . strlen($post_data))                                                                       
+        );             
+        $response = curl_exec($ch);
+        $errno = curl_errno($ch);
+
+        $ret = array("success"=>true, "msg"=>"");
+
+
+        if ($errno) {
+            $ret = "Error in gateway#:" . $errno;
+        }
+        else  {
+            $aux = json_decode($response);
+            if (property_exists($aux, "errors")) {
+                $ret = array("success"=>false, "msg"=>$aux->errors[0]->message);
+            }
+            else {
+                $ret["success"] = isset($aux["refunded_amount"]);
+            }
+        }
+        
+        curl_close($ch);
+
+        return $ret;
     }
     function pagarme_capture($id_purchase, $id_gateway, $id_client, $metadata, $charge,$buyer) {
         $conf = getConfigPagarme();

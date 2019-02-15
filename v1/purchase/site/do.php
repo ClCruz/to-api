@@ -63,6 +63,7 @@
         //$mysession = getmysession($id_purchase, $id_client);
         //$id_session = $mysession["id_session"];
         $shopping = getcurrentpurchase($id_session);
+        traceme($id_purchase, "shopping cart", json_encode($shopping),0);
         // echo json_encode(array("success"=>false, "msgtobuyer"=>"Não há nenhum item selecionado."));
         // die();
 
@@ -96,15 +97,17 @@
         $paymentmethod = getpaymentmethod($id_purchase, $id_payment_method);
         
         $isCreditCard = $paymentmethod["in_tipo_meio_pagamento"] == 'CC';
-        $printisafter = false;
+        $printisafter = true;
 
         if ($payment_method == "" || $payment_method == null) {
             $payment_method = $isCreditCard ? "credit_card" : "payment_slip";
         }
 
-        if ($id_payment_method == '911' || $id_payment_method = 911) {
-            $printisafter = true;
+        if ($id_payment_method == '911' || $id_payment_method == 911) {
+            $printisafter = false;
         }
+
+        traceme($id_purchase, "value for printisafter variable", json_encode($printisafter),0);
         
         $bin = '';
         $card_number_original = $card_number;
@@ -145,6 +148,14 @@
             traceme($id_purchase, "Finished purchase", '',0);
             die();
         }
+
+        $checkSplit = checksplitevents($id_purchase, $id_client);
+        if ($checkSplit["success"] == false) {
+            echo json_encode($checkSplit);
+            logme();
+            traceme($id_purchase, "Finished purchase", '',0);
+            die();
+        }
         
         renew($id_session, $id_client);
         
@@ -157,7 +168,7 @@
         $totalservice = $values[0]["totalservice"];
         
         $installment_config = getinstallments($id_purchase, $id_client);
-        $installment_gateway = pagarme_installments($installment_config["free_installments"], $installment_config["max_installments"], $installment_config["interest_rate"], $amount);
+        $installment_gateway = pagarme_installments($id_purchase, $installment_config["free_installments"], $installment_config["max_installments"], $installment_config["interest_rate"], $amount);
 
         $installment_choosed = $installment_gateway->installments->{$installments};
 
@@ -173,7 +184,7 @@
 
         //die(json_encode($shopping));
 
-        $metadata = pagarme_setMetadata("0", $shopping[0]["id_evento"]);
+        $metadata = pagarme_setMetadata("0", $shopping[0]["id_evento"], getuniquefromdomain());
 
         $charge = array("amount"=>$amountToPay
                         ,"split"=>$split
@@ -192,6 +203,7 @@
                         ,"email"=> $client["cd_email_login"]
                         ,"sex"=> $client["in_sexo"]
                         ,"born"=> $client["dt_nascimento"]
+                        ,"phone"=> array("ddd"=>$client["ds_ddd_telefone"], "number"=>$client["ds_telefone"])
                         ,"address"=> array(
                             "street"=> $client["ds_endereco"]
                             ,"neighborhood"=> $client["ds_bairro"]
@@ -209,7 +221,6 @@
         $purchase_gateway = pagarme_payment($id_purchase, $id_client, $metadata, $charge, $buyer);
 
         $retofsevice = array("success"=>false, "seconds"=>0, "id_pedido_venda"=> 0, "codVenda"=> '', "msg"=> '');
-
 
         if ($purchase_gateway["success"]) {
             traceme($id_purchase, "gateway success", '',0);
@@ -233,20 +244,24 @@
             if ($sell["success"]) {
                 traceme($id_purchase, "sell", 'success',0);
                 
-                if ($printisafter == true) {
+                if ($isCreditCard == true) {
                     traceme($id_purchase, "workaround pagseguro", 'start',0);
                     workaround_pagseguro($sell["id_pedido_venda"], json_encode($purchase_gateway), $purchase_gateway["status"]);
                     traceme($id_purchase, "workaround pagseguro", 'success',0);
                 }
                 
-                $metadata = pagarme_setMetadata($sell["id_pedido_venda"], $shopping[0]["id_evento"]);
-                if ($printisafter == true) {
+                $metadata = pagarme_setMetadata($sell["id_pedido_venda"], $shopping[0]["id_evento"], getuniquefromdomain());
+                if ($isCreditCard == true) {
                     $capture_gateway = pagarme_capture($id_purchase,$purchase_gateway["id"], $id_client, $metadata, $charge, $buyer);
                     traceme($id_purchase, "capture_gateway", json_encode($capture_gateway),0);
                 }
                 else {
                     traceme($id_purchase, "capture_gateway", "boleto will not be captured",0);
                 }                
+
+                traceme($id_purchase, "change situacao", json_encode($sell["id_pedido_venda"]),0);
+                change_situacao($sell["id_pedido_venda"]);
+                traceme($id_purchase, "change situacao end", '',0);
                 
                 $retofsevice = array("success"=>true
                                     , "seconds"=>0
@@ -256,7 +271,7 @@
                                     , 'msg' => ''
                                     , "msgtobuyer"=>"");
 
-                if ($printisafter == false) {
+                if ($isCreditCard == true) {
                     traceme($id_purchase, "sending email", json_encode(array("id_pedido_venda"=>$pedidovenda["id_pedido_venda"], "vouchername"=>$vouchername,"voucheremail"=>$voucheremail)),1);
                     make_purchase_email($pedidovenda["id_pedido_venda"], $vouchername,$voucheremail);
                     traceme($id_purchase, "sending email", 'ok',1);

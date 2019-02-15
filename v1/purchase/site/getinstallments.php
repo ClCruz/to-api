@@ -14,7 +14,7 @@
       $id_purchase = get_id_purchase($id_session, $codCliente);
 
       $installment_config = getinstallments($id_purchase, $codCliente);
-      $installment_gateway = pagarme_installments($installment_config["free_installments"], $installment_config["max_installments"], $installment_config["interest_rate"], $amount);
+      $installment_gateway = pagarme_installments($id_purchase, $installment_config["free_installments"], $installment_config["max_installments"], $installment_config["interest_rate"], $amount);
       
       echo json_encode($installment_gateway);
         logme();
