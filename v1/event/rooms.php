@@ -10,7 +10,7 @@
 
         foreach ($result as &$row) {
             $aux = array("NomSala"=>$row["NomSala"]
-            ,"NomSetor"=>$row["NomSetor"]
+            //,"NomSetor"=>$row["NomSetor"]
             ,"CodSala"=>$row["CodSala"]);
 
             array_push($json,$aux);
