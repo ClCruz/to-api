@@ -72,7 +72,7 @@
         $json = array("success"=>true
         ,"msg"=>"Salvo com sucesso");
 
-        if ($id_evento!=0) {
+        if ($id_evento == 0) {
             $json = array("success"=>false
             ,"msg"=>"Falha ao salvar");
         }
