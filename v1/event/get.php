@@ -10,6 +10,7 @@
         $codPeca = 0;
         $id_evento = 0;
         $codPeca = 0;
+        $id_base = 0;
 
         foreach ($result as &$row) {
             $id_evento = $row["id_evento"];

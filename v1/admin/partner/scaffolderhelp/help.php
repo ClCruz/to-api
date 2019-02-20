@@ -109,8 +109,8 @@
         $ret[] = array("from"=>"__wl-pinpaduri__", "to"=>$pinpadURI);
         $ret[] = array("from"=>"__wl-sitecompra__", "to"=>$legacyURI);
         $ret[] = array("from"=>"__wl-siteadmin__", "to"=>$adminURI);
-        $ret[] = array("from"=>"__wl-color-primary__", "to"=>$db["scss_colors_primary"]);
-        $ret[] = array("from"=>"__wl-color-secondary__", "to"=>$db["scss_colors_secondary"]);
+        $ret[] = array("from"=>"__wl-color-primary__", "to"=> $db["scss_colors_primary"]);
+        $ret[] = array("from"=>"__wl-color-secondary__", "to"=> $db["scss_colors_secondary"]);
         $ret[] = array("from"=>"__wl-site-logo-media__", "to"=>$logomedia);
         $ret[] = array("from"=>"__wl-site-logo__", "to"=>$logo);
         $ret[] = array("from"=>"__wl-db-user__", "to"=>$db_user);
