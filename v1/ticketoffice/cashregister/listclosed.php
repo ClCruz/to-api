@@ -1,9 +1,9 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function set($id_base, $id_ticketoffice_user, $date) {
-        $query = "EXEC pr_ticketoffice_cashregister_closedbydate ?, ?, ?";
-        $params = array($id_base, $id_ticketoffice_user, $date);
+    function set($id_base, $id_ticketoffice_user, $date, $id) {
+        $query = "EXEC pr_ticketoffice_cashregister_closedbydate ?, ?, ?, ?";
+        $params = array($id_base, $id_ticketoffice_user, $date, $id);
         $result = db_exec($query, $params);
 
         $json = array();
@@ -28,5 +28,5 @@
         die();     
     }
     
-set($_REQUEST["id_base"], $_POST["id_ticketoffice_user"], $_POST["date"]);
+set($_REQUEST["id_base"], $_POST["id_ticketoffice_user"], $_POST["date"], $_POST["id"]);
 ?>

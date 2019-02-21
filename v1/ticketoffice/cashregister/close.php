@@ -13,6 +13,7 @@
             $json = array(
             "success"=>$row["success"]
             ,"msg"=>$row["msg"]
+            ,"id"=>$row["id"]
             );
         }
 
