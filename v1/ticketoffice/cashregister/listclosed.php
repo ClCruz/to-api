@@ -17,6 +17,7 @@
                 ,"name"=>$row["name"]
                 ,"login"=>$row["login"]
                 ,"email"=>$row["email"]
+                ,"hasDiff"=>$row["hasDiff"]
                 ,"text"=>$row["closed"]
                 ,"value"=>$row["id"]
             );
