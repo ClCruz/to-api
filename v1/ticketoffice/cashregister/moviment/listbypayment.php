@@ -11,14 +11,13 @@
         foreach ($result as &$row) {
             //die("aaa".print_r($row["Saldo"],true));
             $aux = array(
-            "id"=>$row["id_evento"]
+            "id"=>$row["id_base"]
             ,"id_base"=>$row["id_base"]
             ,"ds_nome_teatro"=>$row["ds_nome_teatro"]
-            ,"id_evento"=>$row["id_evento"]
-            ,"ds_evento"=>$row["ds_evento"]
-            ,"amountbyevent"=>$row["amountbyevent"]
-            ,"qtdbyevent"=>$row["qtdbyevent"]
-            ,"rowspan"=>$row["total"]
+            ,"codForPagto"=>$row["codForPagto"]
+            ,"desc"=>$row["desc"]
+            ,"amountbypayment"=>$row["amountbypayment"]
+            ,"amountbypaymentinput"=>$row["amountbypaymentinput"]
             );
             array_push($json,$aux);
         }
