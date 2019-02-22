@@ -9,7 +9,7 @@
         $json = array();
 
         foreach ($result as &$row) {
-            $json = array("success"=> $row["success"], "msg"=> $row["msg"]);
+            $json = array("success"=> $row["success"], "msg"=> $row["msg"], "id"=> $row["id"], "created"=> $row["created"]);
         }
 
         echo json_encode($json);
