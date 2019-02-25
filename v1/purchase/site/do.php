@@ -259,9 +259,11 @@
                     traceme($id_purchase, "capture_gateway", "boleto will not be captured",0);
                 }                
 
-                traceme($id_purchase, "change situacao", json_encode($sell["id_pedido_venda"]),0);
-                change_situacao($sell["id_pedido_venda"]);
-                traceme($id_purchase, "change situacao end", '',0);
+                if ($isCreditCard == true) {
+                    traceme($id_purchase, "change situacao", json_encode($sell["id_pedido_venda"]),0);
+                    change_situacao($sell["id_pedido_venda"]);
+                    traceme($id_purchase, "change situacao end", '',0);
+                }
                 
                 $retofsevice = array("success"=>true
                                     , "seconds"=>0
