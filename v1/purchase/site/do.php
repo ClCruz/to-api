@@ -244,7 +244,7 @@
             if ($sell["success"]) {
                 traceme($id_purchase, "sell", 'success',0);
                 
-                if ($isCreditCard == true) {
+                if ($isCreditCard == false) {
                     traceme($id_purchase, "workaround pagseguro", 'start',0);
                     workaround_pagseguro($sell["id_pedido_venda"], json_encode($purchase_gateway), $purchase_gateway["status"]);
                     traceme($id_purchase, "workaround pagseguro", 'success',0);
