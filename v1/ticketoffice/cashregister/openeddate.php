@@ -3,14 +3,14 @@
 
     function open($id_base, $id) {
 
-        $query = "EXEC pr_ticketoffice_cashregister_open ?, ?";
+        $query = "EXEC pr_ticketoffice_cashregister_opendate ?, ?";
         $params = array($id, $id_base);
         $result = db_exec($query, $params);
 
         $isOpen = false;
         
         foreach ($result as &$row) {
-            $json = array("success"=>$row["success"], "alreadyopened"=>$row["alreadyopened"], "msg"=>$row["msg"]);
+            $json = array("opendate"=>$row["opendate"]);
         }
         echo json_encode($json);    
 

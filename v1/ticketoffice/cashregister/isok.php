@@ -2,43 +2,37 @@
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
     function get($id_base, $id) {
-        $query = "EXEC pr_currentCashRegister ?";
-        $params = array($id);
-        $result = db_exec($query, $params, $id_base);
+        $query = "EXEC pr_ticketoffice_cashregister_status ?, ?";
+        $params = array($id, $id_base);
+        $result = db_exec($query, $params);
 
         $aux = array();
 
         foreach ($result as &$row) {
-            $aux = array("id"=>$row["id"]
-            ,"login"=>$row["login"]
-            ,"name"=>$row["name"]
-            ,"opened"=>$row["opened"]
-            ,"Codmovimento"=>$row["Codmovimento"]
-            ,"Saldo"=>$row["Saldo"]
-            ,"ValDiferenca"=>$row["ValDiferenca"]
-            ,"ObsDiferenca"=>$row["ObsDiferenca"]
-            ,"DatMovimento"=>$row["DatMovimento"]
-            ,"hoursOpened"=>$row["hoursOpened"]);
-            //array_push($json,$aux);
+            $aux = array("success"=>$row["success"]
+            ,"isopen"=>$row["isopen"]
+            ,"needclose"=>$row["needclose"]
+            ,"openhours"=>$row["openhours"]);
         }
+
         $isOk = false;
         $isOpen = false;
         $needClose = false;
 
-        if ($aux["opened"] == 1 || $aux["opened"] == true || $aux["opened"] == "1") {
+        if ($aux["isopen"] == 1 || $aux["isopen"] == true || $aux["isopen"] == "1") {
             $isOpen = true;
-            if (intval($aux["hoursOpened"]) < 24) {
-                $isOk = true;
+            if ($aux["needclose"] == 1 || $aux["needclose"] == true || $aux["needclose"] == "1") {
+                $needClose = true;
             }
             else {
-                $needClose = true;
+                $isOk = true;
             }
         }
 
         $json = array("isok"=>$isOk
                     ,"isopen"=>$isOpen
                     ,"needClose"=>$needClose
-                    ,"hoursOpened"=>$row["hoursOpened"]);
+                    ,"hoursOpened"=>$aux["openhours"]);
 
         echo json_encode($json);
         logme();
