@@ -211,34 +211,44 @@
                         ,"ip"=>$responseJSON["gatewayinfo"]->ip);
                 break;
                 case "refused":
+                    $acquirer_response_code = $responseJSON["gatewayinfo"]->acquirer_response_code;
+                    if ($acquirer_response_code == "0000") {
+                        $acquirer_response_code = "9999";
+                    }
+                    $authorization_desc = translateacquirerresponsecode($acquirer_response_code);
                     switch($responseJSON["gatewayinfo"]->refuse_reason) {
                         case "acquirer":
+                        break;
                         case "antifraud":
+                            $authorization_desc = "Não autorizado.";
+                        break;
                         case "internal_error":
+                        break;
                         case "no_acquirer":
+                        break;
                         case "acquirer_timeout":
-                            $ret = array("success"=>false
-                            ,"object"=>"payment"
-                            ,"msg"=>"purchase not approved."
-                            ,'payment_method'=>$responseJSON["gatewayinfo"]->payment_method
-                            ,'boleto_url'=>$responseJSON["gatewayinfo"]->boleto_url
-                            ,'boleto_barcode'=>$responseJSON["gatewayinfo"]->boleto_barcode
-                            ,'boleto_expiration_date'=>$responseJSON["gatewayinfo"]->boleto_expiration_date
-                            ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
-                            ,"authorization_code"=>$responseJSON["gatewayinfo"]->authorization_code
-                            ,"authorization_desc"=>translateacquirerresponsecode($responseJSON["gatewayinfo"]->acquirer_response_code)
-                            ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
-                            ,"authorized_amount"=>$responseJSON["gatewayinfo"]->authorized_amount
-                            ,"status"=>$responseJSON["gatewayinfo"]->status
-                            ,"cost"=>$responseJSON["gatewayinfo"]->cost
-                            ,"id"=>$responseJSON["gatewayinfo"]->tid
-                            ,"card_last_digits"=>$responseJSON["gatewayinfo"]->card_last_digits
-                            ,"card_first_digits"=>$responseJSON["gatewayinfo"]->card_first_digits
-                            ,"card_brand"=>$responseJSON["gatewayinfo"]->card_brand
-                            ,"ip"=>$responseJSON["gatewayinfo"]->ip);
-
+                            $authorization_desc = "Tempo expirado.";
                         break;
                     }                     
+                    $ret = array("success"=>false
+                    ,"object"=>"payment"
+                    ,"msg"=>"purchase not approved."
+                    ,'payment_method'=>$responseJSON["gatewayinfo"]->payment_method
+                    ,'boleto_url'=>$responseJSON["gatewayinfo"]->boleto_url
+                    ,'boleto_barcode'=>$responseJSON["gatewayinfo"]->boleto_barcode
+                    ,'boleto_expiration_date'=>$responseJSON["gatewayinfo"]->boleto_expiration_date
+                    ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
+                    ,"authorization_code"=>$responseJSON["gatewayinfo"]->authorization_code
+                    ,"authorization_desc"=> $authorization_desc
+                    ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
+                    ,"authorized_amount"=>$responseJSON["gatewayinfo"]->authorized_amount
+                    ,"status"=>$responseJSON["gatewayinfo"]->status
+                    ,"cost"=>$responseJSON["gatewayinfo"]->cost
+                    ,"id"=>$responseJSON["gatewayinfo"]->tid
+                    ,"card_last_digits"=>$responseJSON["gatewayinfo"]->card_last_digits
+                    ,"card_first_digits"=>$responseJSON["gatewayinfo"]->card_first_digits
+                    ,"card_brand"=>$responseJSON["gatewayinfo"]->card_brand
+                    ,"ip"=>$responseJSON["gatewayinfo"]->ip);
                 break;
             }
         }
