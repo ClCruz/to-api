@@ -73,7 +73,7 @@
 
     <meta property="og:image" content="<?php echo $logo?>" />
     <meta property="og:image:url" content="<?php echo $logo?>" />
-    <meta property="og:image:secure_url" content=""<?php echo $logo?>" />
+    <meta property="og:image:secure_url" content="<?php echo $logo?>" />
     <meta property="og:image:type" content="image/png" /> 
     <meta property="og:image:alt" content="<?php echo $name?>" />
     <!--meta property="og:image:secure_url" content=" echo $obj["img"]" /-->
