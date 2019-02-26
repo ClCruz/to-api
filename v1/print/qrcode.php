@@ -11,8 +11,8 @@
             $id_base = get_id_base_by_codvenda($codVenda);
         }
 
-        $query = "EXEC pr_print_ticket ?, ?";
-        $params = array($codVenda, $indice);
+        $query = "EXEC pr_print_ticket ?, ?, ?";
+        $params = array($codVenda, $indice, gethost());
         $result = db_exec($query, $params, $id_base);
 
         $json = array();
@@ -64,7 +64,8 @@
                 ,"user"=>$row["user"]
                 ,"countTicket"=>$row["countTicket"]
                 ,"purchase_date"=>$row["purchase_date"]
-                ,"print_date"=>$row["print_date"]                                
+                ,"print_date"=>$row["print_date"]         
+                ,"domain"=>$row["domain"]                       
                 ,"howMany"=>$row["howMany"]           
             );
         }

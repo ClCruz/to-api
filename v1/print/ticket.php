@@ -1,374 +1,390 @@
 <?php
-    require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
-    require_once($_SERVER['DOCUMENT_ROOT'].'/lib/Metzli/autoload.php');
-
-    use Metzli\Encoder\Encoder;
-    use Metzli\Renderer\PngRenderer;
-    
-    function splitResp($value, $which) {
-        $ret = array();
-
-        if ($value === null || $value === '')
-            return $ret;
-
-        $aux1 = explode(":", $value);
-        return $aux1[$which];
-    }
-    function get($id_base, $codVenda, $indice) {
-        $query = "EXEC pr_print_ticket ?, ?";
-        // die("dd".json_encode($codVenda));
-        $params = array($codVenda, $indice);
-        $result = db_exec($query, $params, $id_base);
-
-        $json = array();
-        foreach ($result as &$row) {
-
-            $code = $row['barcode'];
-
-            //die("teste".$code);
-
-            $code = Encoder::encode($code);
-            $renderer = new PngRenderer();
-            $render = $renderer->render($code);
-
-            $png = imagecreatefromstring($renderer->render($code));
-            ob_start();
-            imagepng($png);
-            $imagedata = ob_get_contents();
-            ob_end_clean();
-            imagedestroy($png);
-        
-
-            $json[] = array(
-                "id"=>$row["id"]
-                ,"qrcode"=>base64_encode($imagedata)
-                ,"local"=>$row["local"]
-                ,"address"=>$row["address"]
-                ,"name"=>$row["name"]
-                ,"weekday"=>$row["weekday"]
-                ,"weekdayName"=>$row["weekdayName"]
-                ,"hour"=>$row["hour"]
-                ,"month"=>$row["month"]
-                ,"monthName"=>$row["monthName"]
-                ,"day"=>$row["day"]
-                ,"year"=>$row["year"]
-                ,"roomName"=>$row["roomName"]
-                ,"roomNameOther"=>$row["roomNameOther"]
-                ,"seatNameFull"=>$row["seatNameFull"]
-                ,"seatRow"=>$row["seatRow"]
-                ,"seatName"=>$row["seatName"]
-                ,"seatIndice"=>$row["seatIndice"]
-                ,"purchaseCode"=>$row["purchaseCode"]
-                ,"purchaseCodeInt"=>$row["purchaseCodeInt"]
-                ,"ticket"=>$row["ticket"]
-                ,"payment"=>$row["payment"]
-                ,"paymentType"=>$row["paymentType"]
-                ,"transaction"=>$row["transaction"]
-                ,"buyer"=>$row["buyer"]
-                ,"buyerDoc"=>$row["buyerDoc"]
-                ,"insurance_policy"=>$row["insurance_policy"]
-                ,"opening_time"=>$row["opening_time"]
-                ,"eventResp"=>$row["eventResp"]
-                ,"eventRespName"=>splitResp($row["eventResp"],0)
-                ,"eventRespDoc"=>splitResp($row["eventResp"],1)
-                ,"eventRespAddress"=>splitResp($row["eventResp"],2)
-                ,"user"=>$row["user"]
-                ,"countTicket"=>$row["countTicket"]
-                ,"purchase_date"=>$row["purchase_date"]
-                ,"print_date"=>$row["print_date"]                                
-                ,"howMany"=>$row["howMany"]           
-            );
-        }
-
-        logme();
-
-        return $json;
-    }
-    $obj = get($_REQUEST["id_base"], $_REQUEST["id"], $_REQUEST["indice"]);
-
-    $dontbreakline = $_REQUEST["dontbreakline"] != null && $_REQUEST["dontbreakline"] != '';
-    $dontclose = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
-    $dontprint = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
-?>
+   require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
+   require_once($_SERVER['DOCUMENT_ROOT'].'/lib/Metzli/autoload.php');
+   
+   use Metzli\Encoder\Encoder;
+   use Metzli\Renderer\PngRenderer;
+   
+   function splitResp($value, $which) {
+       $ret = array();
+   
+       if ($value === null || $value === '')
+           return $ret;
+   
+       $aux1 = explode(":", $value);
+       return $aux1[$which];
+   }
+   function limittext($text, $len = 36) {
+       return substr($text, 0, $len);
+   }
+   function limittextandforce($text, $len = 36) {
+        return substr($text, 0, $len);
+   }
+   function get($id_base, $codVenda, $indice) {
+       $query = "EXEC pr_print_ticket ?, ?, ?";
+       // die("dd".json_encode($codVenda));
+       $params = array($codVenda, $indice, gethost());
+       $result = db_exec($query, $params, $id_base);
+   
+       $json = array();
+       foreach ($result as &$row) {
+   
+           $code = $row['barcode'];
+   
+           //die("teste".$code);
+   
+           $code = Encoder::encode($code);
+           $renderer = new PngRenderer();
+           $render = $renderer->render($code);
+   
+           $png = imagecreatefromstring($renderer->render($code));
+           ob_start();
+           imagepng($png);
+           $imagedata = ob_get_contents();
+           ob_end_clean();
+           imagedestroy($png);
+       
+   
+           $json[] = array(
+               "id"=>$row["id"]
+               ,"qrcode"=>base64_encode($imagedata)
+               ,"local"=>$row["local"]
+               ,"address"=>$row["address"]
+               ,"name"=>$row["name"]
+               ,"weekday"=>$row["weekday"]
+               ,"weekdayName"=>$row["weekdayName"]
+               ,"hour"=>$row["hour"]
+               ,"month"=>$row["month"]
+               ,"monthName"=>$row["monthName"]
+               ,"day"=>$row["day"]
+               ,"year"=>$row["year"]
+               ,"roomName"=>$row["roomName"]
+               ,"roomNameOther"=>$row["roomNameOther"]
+               ,"seatNameFull"=>$row["seatNameFull"]
+               ,"seatRow"=>$row["seatRow"]
+               ,"seatName"=>$row["seatName"]
+               ,"seatIndice"=>$row["seatIndice"]
+               ,"purchaseCode"=>$row["purchaseCode"]
+               ,"purchaseCodeInt"=>$row["purchaseCodeInt"]
+               ,"ticket"=>$row["ticket"]
+               ,"payment"=>$row["payment"]
+               ,"paymentType"=>$row["paymentType"]
+               ,"transaction"=>$row["transaction"]
+               ,"buyer"=>$row["buyer"]
+               ,"buyerDoc"=>$row["buyerDoc"]
+               ,"insurance_policy"=>$row["insurance_policy"]
+               ,"opening_time"=>$row["opening_time"]
+               ,"eventResp"=>$row["eventResp"]
+               ,"eventRespName"=>$row["productor_name"]
+               ,"eventRespDoc"=>$row["productor_document"]
+               ,"eventRespAddress"=>$row["productor_address"]
+               ,"user"=>$row["user"]
+               ,"countTicket"=>$row["countTicket"]
+               ,"purchase_date"=>$row["purchase_date"]
+               ,"print_date"=>$row["print_date"]                    
+               ,"domain"=>$row["domain"]                                   
+               ,"howMany"=>$row["howMany"]           
+               ,"IngressoNumerado"=>$row["IngressoNumerado"]
+           );
+       }
+   
+       logme();
+   
+       return $json;
+   }
+   $obj = get($_REQUEST["id_base"], $_REQUEST["id"], $_REQUEST["indice"]);
+   
+   $dontbreakline = $_REQUEST["dontbreakline"] != null && $_REQUEST["dontbreakline"] != '';
+   $dontclose = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
+   $dontprint = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
+   ?>
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-    <style>
-        body {
-            
-        }
-        .left {
-            font-size: 10px;
-        }
-        .middle {
-            font-size: 10px;
-            line-height: 10px;
-            margin-bottom: 0px;
-        }
-        .right {
-            font-size: 9px;
+   <head>
+      <meta charset="utf-8" />
+      <title></title>
+      <style>
+         .pagebreak { page-break-after: always; } 
+         .cut {
+         line-height: 0px;
+         padding-bottom: 1px;
+         }
+         .cutoutside {
+         line-height: 0px;
+         padding-bottom: 15px;
+         padding-left: 9px;
+         }
+         .fakejumpline {
+         visibility: hidden;
+         }
+         .image {
+         width: 90px;
+         height: 90px;
+         position: relative;
+         }
+         .container{
+         display:flex;
+         }
+         .fixed{
+         width: 90px;
+         height: 90px;
+         }
+         .flex-item{
+         flex-grow: 1;
+         padding-left: 10px;
+         }
+         .printbase {
+         font-size: 14px;
+         /* font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;  */
+         font-family: "Lucida Console";
+         line-height: 12px;
+         text-transform: uppercase;
+         width: 309px;
+         }
+         .printbase div {
+         padding-bottom: 2px;
+         }
+         .printbase .printname {
+         font-weight: bold;
+         font-size: 16px;
+         }
+         .printbase .printdomain {
+         font-weight: bold;
+         font-size: 18px;
+         }
+         .printbase .printday {
+         font-weight: bold;
+         font-size: 13px;
+         }
+         .printbase .printvalue {
+         font-weight: bold;
+         }
+         .printbase .printright {
+         text-align: right;
+         }
+         .printbase .printqtd {
+         font-size: 10px;
+         }
+         .printfirstpart {
+         text-align: center;
+         }
+         .printsecondpart {
+         text-align: center;
+         font-size: 10px;
+         }
+         .center {
+         width: 50%;
+         }
+         .givemesomespace {
+         padding-top: 15px;
+         }
+         .givemesomespaceless {
+         padding-top: 5px;
+         }
+         .givemesomespacemore {
+         padding-top: 25px;
+         }
+         .forcetwolines {
+            min-height:24px;
+         }
+      </style>
+   </head>
+   <body>
+      <?php 
+         $count = 0;
+         ?>
+      <?php foreach ($obj as &$row) {?>
+      <?php $count = $count +1; ?>
+      <?php if ($count != 1) { ?>
+      <?php if ($dontbreakline) {
+         echo "";
+         }
+         else {
+         echo "<div class='pagebreak'></div>";
+         }
+         ?>
+      <?php } ?>
+      <div>
+          <div>
 
-        }
-        .table {
-        }
+          </div>
+         <div class="container" style="width: 816px;">
+            <div class="printbase printfirstpart center">
+               <div class="">&nbsp;</div>
+               <div class="">&nbsp;</div>
+               <div class="">&nbsp;</div>
+               <div class="printdomain"><?php echo limittext($row["domain"]); ?></div>
+               <div class="">&nbsp;</div>
+               <div class="">&nbsp;</div>
+               <div class=""><?php echo limittext($row["local"]); ?></div>
+               <div class="forcetwolines"><?php echo limittextandforce($row["address"],98); ?></div>
+               <div class="">&nbsp;</div>
+               <div class="">&nbsp;</div>
+               <div class="printname givemesomespaceless"><?php echo limittext($row["name"]) ?></div>
+               <div class="printday">
+                  <span class=""><?php echo limittext($row["weekdayName"]) ?></span>
+                  <span class=""><?php echo limittext($row["hour"]) ?></span>
+                  <span class=""><?php echo limittext($row["day"]."-".$row["monthName"]."-".$row["year"]) ?></span>
+               </div>
+               <div class="">Abertura: <span class="printvalue"><?php echo limittext($row["opening_time"]) ?></span></div>
+               <div class="">
+                  <span class="">Setor: <span class="printvalue"><?php echo limittext($row["roomName"],10) ?></span></span>
+                  <span class="">Fileira: <span class="printvalue"><?php echo limittext($row["seatRow"],5) ?></span></span>
+                  <span class="">Assento: <span class="printvalue"><?php echo limittext($row["seatName"],5) ?></span></span>
+               </div>
+               <div class="">
+                  <span class="">Bilhete: <span class="printvalue"><?php echo limittext($row["ticket"],7) ?></span></span>
+                  <span class="">ID: <span class="printvalue"><?php echo limittext($row["purchaseCode"]."-".$row["purchaseCodeInt"]."-".$row["seatIndice"],26) ?></span></span>
+               </div>
+               <div class="">&nbsp;</div>
+               <div class="">&nbsp;</div>
+               <div class="givemesomespaceless">
+                  <span class="">Emitido para: <span class="printvalue"><?php echo limittext($row["buyer"],33) ?></span></span>
+               </div>
+               <div class="">
+                  <span class="">CPF/CNPJ: <span class="printvalue"><?php echo documentformatBR($row["buyerDoc"]) ?></span></span>
+               </div>
+               <div class="">
+                  <span class="">Pagamento: 
+                  <span class="printvalue">
+                  <?php echo limittext($row["paymentType"],10) ?>
+                  <?php if ($row["transaction"] != "") {?>
+                  <span class="">(<?php echo $row["transaction"] ?>)</span>
+                  <?php }?>
+                  </span>
+                  </span>
+               </div>
+               <div class="">
+                  <span class="">
+                  Apol. Seg.: <span class="printvalue"><?php echo limittext($row["insurance_policy"],35) ?></span>
+                  </span>
+               </div>
+               <div class="">
+                  <span class="">
+                  Responsável: <span class="printvalue"><?php echo limittext($row["eventRespName"],34) ?></span>
+                  </span>
+               </div>
+               <div class="">
+                  <span class="">
+                  CNPJ/CPF: <span class="printvalue"><?php echo documentformatBR($row["eventRespDoc"]) ?></span>
+                  </span>
+               </div>
+               <div class="forcetwolines">
+                    <span class=""><?php echo limittextandforce($row["user"]." V:".$row["purchase_date"]." IM:".$row["print_date"],500) ?>
+                  </span>
 
-        .value {
-            font-weight: bold;
-            font-size: 10px;
-            text-transform: uppercase;
-        }
-        .block {
-            display:block;
-        }
-
-
-        .local {
-            text-transform: uppercase;
-            text-align: center;
-        }
-        .address {
-        }
-        .name {
-            font-weight: bold;
-        }
-        .name.middle {
-            font-size: 14px;
-            padding-bottom: 1px;
-            padding-top: 1px;   
-            text-align: center;
-        }
-        .divDay {
-            text-align: center;
-        }
-        .weekdayName {
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-        .hour {
-            font-weight: bold;
-        }
-        .day {
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-        .opening_time {
-            text-align: center;
-        }
-        .portao {
-            display: none;
-        }
-        .roomName {
-            text-transform: uppercase;
-            text-align: center;
-        }
-        .seatRow {
-            text-transform: uppercase;
-        }
-        .seatName {
-            text-transform: uppercase;
-        }
-        .ticketIdentity {
-        }
-        .ticket {
-            text-align: center;
-        }        
-        .ticket2 {
-            font-size: 10px;
-        }        
-        .buyer {
-        }
-        .buyerDoc {
-        }
-        .payment {
-            text-transform: uppercase;
-        }
-        .transaction {
-        }
-        .insurance_policy {
-        }
-        .eventRespName {
-            text-transform: uppercase;
-        }
-        .eventRespDoc {
-        }
-        .eventRespAddress {
-        }
-        .user {
-            text-transform: uppercase;
-        }
-        .countTicket {
-        }
-        .purchase_date {
-        }
-        .print_date {
-        }
-        .image {
-            width: 70px;
-            height: 70px;
-        }
-        .table {
-            margin-left: 0px;
-        }
-        .tdleft {
-            display:none;
-            text-align: center;
-            border-right: 1px solid #cdd0d4;
-            border-bottom: 2px dotted #cdd0d4;
-        }
-        .tdmiddle {
-            text-align: left;
-            /*border-right: 1px solid #cdd0d4;*/
-            /*border-bottom: 2px dotted #cdd0d4;*/
-        }
-        .tdright {
-            display:none;
-            text-align: center;
-            border-bottom: 2px dotted #cdd0d4;
-        }
-        .dotted {
-            
-        }
-        .dotted2 {
-            
-        }
-        .lineheight {
-            line-height: 2px;
-        }
-        .pagebreak { page-break-after: always; } 
-        .cut {
-            line-height: 0px;
-            padding-bottom: 1px;
-        }
-        .cutoutside {
-            line-height: 0px;
-            padding-bottom: 15px;
-            padding-left: 9px;
-        }
-        .noimage {
-            padding-left:49px;
-        }
-        .section {
-            margin-top: 3px;
-        }
-    </style>
-</head>
-<body>
-<?php 
-$count = 0;
-?>
-<?php foreach ($obj as &$row) {?>
-    <?php $count = $count +1; ?>
-    <?php if ($count != 1) { ?>
-        <?php if ($dontbreakline) {
-            echo "<br /><br /><br />";
-        }
-        else {
-            echo "<div class='pagebreak'></div>";
-        }
-        ?>
-    <?php } ?>
-    <table class="table dotted">
-        <tr>
-            <td class="tdmiddle">
-                <div class="local middle"><?php echo $row["local"] ?></div>
-                <div class="address middle local"><?php echo $row["address"] ?></div>
-                <div class="name middle"><?php echo $row["name"] ?></div>
-                <div class="middle divDay">
-                    <span class="weekdayName middle"><?php echo $row["weekdayName"] ?></span>
-                    <span class="hour middle"><?php echo $row["hour"] ?></span>
-                    <span class="day middle"><?php echo $row["day"]."-".$row["monthName"]."-".$row["year"] ?></span>
-                </div>
-                <div class="opening_time middle">Abertura: <span class="value"><?php echo $row["opening_time"] ?></span></div>
-                <?php if ($row["opening_time"] != "") {?>
-                <?php }?>
-                <div class="portao middle"></div>
-                <div class="roomName middle ">Setor: <span class="value"><?php echo $row["roomName"] ?></span></div>
-                <div class="middle" style="margin: 0 auto; text-align: center;">
-                    <span class="seatRow  middle">Fileira: <span class="value"><?php echo $row["seatRow"] ?></span></span>
-                    <span class="seatName middle"> | Assento: <span class="value"><?php echo $row["seatName"] ?></span></span>
-                </div>
-                <div class="ticket middle">Bilhete: <span class="value"><?php echo $row["ticket"] ?></span></div>
-                <div class="ticketIdentity local middle">Código: <span class="value"><?php echo $row["purchaseCode"]."-".$row["purchaseCodeInt"]."-".$row["seatIndice"] ?></span></div>
-                <div class="middle section">
-                    <span class="buyer middle">Emitido para: <span class="value"><?php echo $row["buyer"] ?></span></span>
-                    <br>
-                    <span class="buyerDoc middle">CPF/CNPJ: <span class="value"><?php echo $row["buyerDoc"] ?></span></span>
-                </div>
-                <div class="block middle"></div>
-                <div class="middle">
-                    <span class="payment middle">Pagamento: <span class="value"><?php echo $row["paymentType"] ?></span></span>
-                    <?php if ($row["transaction"] != "") {?>
-                    <span class="transaction middle"><span class="value">(<?php echo $row["transaction"] ?>)</span></span>
-                    <?php }?>
-                </div>
-                <div class="insurance_policy middle">Apólice de Seguro N: <span class="value"><?php echo $row["insurance_policy"] ?></span></div>
-                <?php if ($row["insurance_policy"] != "") {?>
-                <?php }?>
-                <div class="block middle"></div>
-                <div class="middle">
-                    <span class="eventRespName middle">Responsável: <span class="value"><?php echo $row["eventRespName"] ?></span></span>
-                    <br>
-                    <span class="eventRespDoc middle">CNPJ/CPF: <span class="value"><?php echo $row["eventRespDoc"] ?></span></span>
-                </div>
-                <div class="eventRespAddress middle">End.: <span class="value"><?php echo $row["eventRespAddress"] ?></span></div>
-                <div class="middle">
-                    <span class="countTicket middle">Qtde: <span class="value"><?php echo $row["howMany"] ?></span></span>
-                    <span class="user middle"> - <span class="value"><?php echo $row["user"] ?></span></span>
-                    <br>
-                    <span class="purchase_date middle"> V:<span class="value"><?php echo $row["purchase_date"] ?></span></span>
-                    <span class="print_date middle"> IM:<span class="value"><?php echo $row["print_date"] ?></span></span>
-                </div>
-                <br>
-                <table class="dotted2">
-                    <tr>
-                        <td><img class="image" src="data:image/png;base64,<?php echo $row["qrcode"]?>" alt="image 1" width="96" height="48"/></td>
-                        <td>
-                            <table>
-                                <tr class="lineheight">
-                                    <td><div class="name middle"><?php echo $row["name"] ?></div></td>
-                                </tr>
-                                <tr class="lineheight">
-                                    <td>
-                                        <div class="middle divDay">
-                                            <span class="weekdayName middle"><?php echo $row["weekdayName"] ?></span>
-                                            <span class="hour middle"><?php echo $row["hour"] ?></span>
-                                            <span class="day middle"><?php echo $row["day"]."-".$row["monthName"]."-".$row["year"] ?></span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="lineheight">
-                                    <td><div class="ticketIdentity middle">Código: <span class="value"><?php echo $row["purchaseCode"]."-".$row["purchaseCodeInt"]."-".$row["seatIndice"] ?></span></div></td>
-                                </tr>
-                                <tr class="lineheight">
-                                    <td><span class="buyerDoc middle">Emitido para CPF/CNPJ: <span class="value"><?php echo $row["buyerDoc"] ?></span></td>
-                                </tr>
-                                <tr class="lineheight">
-                                    <td>
-                                        <span class="countTicket middle">Qtde: <span class="value"><?php echo $row["howMany"] ?></span></span>
-                                        <span class="user middle"> - <span class="value"><?php echo $row["user"] ?></span></span>
-                                        <span class="ticket2 middle"> - <span class="value"><?php echo $row["ticket"] ?></span></span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-<?php } ?>
-<div class="pagebreak"></div>
-<script lang="javascript">
-    <?php 
-    if ($dontprint == false) {
-        echo "window.print();";
-    }
-    if ($dontclose == false) {
-        echo "window.close();";
-    }
-    ?>
-</script>
-</body>
+               </div>
+               <div class="printright">
+                  <span class="printqtd">
+                  Qtde: <span class=""><?php echo $row["howMany"] ?></span>
+                  </span>
+               </div>
+               <div class="">
+                  <span class="">
+                  &nbsp;
+                  </span>
+               </div>
+               <div class="">
+                  <span class="">
+                  &nbsp;
+                  </span>
+               </div>
+               <div class="">&nbsp;</div>
+               <div class="">&nbsp;</div>
+               <div class="">&nbsp;</div>
+            </div>
+         </div>
+         <div class="container givemesomespace">
+            <div class="fixed"><img class="image" style="<?php echo ($count == 1 || $count == "1") ? "top:-90px" : "" ?>" src="data:image/png;base64,<?php echo $row["qrcode"]?>" alt="image 1" width="96" height="48"/></div>
+            <div class="flex-item">
+               <div class="printbase printsecondpart">
+                  <div class="printname"><?php echo limittext($row["name"],30) ?></div>
+                  <div class="printday">
+                     <span class=""><?php echo $row["weekdayName"] ?></span>
+                     <span class=""><?php echo $row["hour"] ?></span>
+                     <span class=""><?php echo $row["day"]."-".$row["monthName"]."-".$row["year"] ?></span>
+                  </div>
+                  <div class="">
+                     <span class="">Setor: <span class="printvalue"><?php echo limittext($row["roomName"],8) ?></span></span>
+                     <span class="">Fileira: <span class="printvalue"><?php echo limittext($row["seatRow"],5) ?></span></span>
+                     <span class="">Assento: <span class="printvalue"><?php echo limittext($row["seatName"],5) ?></span></span>
+                  </div>
+                  <div class="">
+                     <span class="">Bilhete: <span class="printvalue"><?php echo limittext($row["ticket"],25) ?></span></span>
+                  </div>
+                  <div class="">
+                     <span class="">ID: <span class="printvalue"><?php echo $row["purchaseCode"]."-".$row["purchaseCodeInt"]."-".$row["seatIndice"] ?></span></span>
+                  </div>
+                  <div class="">
+                     <span class="">Emitido para: <span class="printvalue"><?php echo limittext($row["buyer"],36) ?></span></span>
+                  </div>
+                  <div class="">
+                     <span class="">CPF/CNPJ: <span class="printvalue"><?php echo documentformatBR($row["buyerDoc"]) ?></span></span>
+                  </div>
+                  <div class="forcetwolines">
+                    <span class=""><?php echo limittextandforce($row["user"]." V:".$row["purchase_date"]." IM:".$row["print_date"],500) ?>
+                    </span>
+                  </div>
+                  <div class="printright">
+                     <span class="printqtd">
+                     Qtde: <span class=""><?php echo $row["howMany"] ?></span>
+                     </span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="">&nbsp;</div>
+         <div class="container givemesomespacemore">
+            <div class="fixed"><img class="image" style="visibility: hidden" src="data:image/png;base64,<?php echo $row["qrcode"]?>" alt="image 1" width="96" height="48"/></div>
+            <div class="flex-item">
+               <div class="printbase printsecondpart">
+                  <div class="printname"><?php echo limittext($row["name"],30) ?></div>
+                  <div class="printday">
+                     <span class=""><?php echo $row["weekdayName"] ?></span>
+                     <span class=""><?php echo $row["hour"] ?></span>
+                     <span class=""><?php echo $row["day"]."-".$row["monthName"]."-".$row["year"] ?></span>
+                  </div>
+                  <div class="">
+                     <span class="">Setor: <span class="printvalue"><?php echo limittext($row["roomName"],8) ?></span></span>
+                     <span class="">Fileira: <span class="printvalue"><?php echo limittext($row["seatRow"],5) ?></span></span>
+                     <span class="">Assento: <span class="printvalue"><?php echo limittext($row["seatName"],5) ?></span></span>
+                  </div>
+                  <div class="">
+                     <span class="">Bilhete: <span class="printvalue"><?php echo limittext($row["ticket"],25) ?></span></span>
+                  </div>
+                  <div class="">
+                     <span class="">ID: <span class="printvalue"><?php echo $row["purchaseCode"]."-".$row["purchaseCodeInt"]."-".$row["seatIndice"] ?></span></span>
+                  </div>
+                  <div class="">
+                     <span class="">Emitido para: <span class="printvalue"><?php echo limittext($row["buyer"],36) ?></span></span>
+                  </div>
+                  <div class="">
+                     <span class="">CPF/CNPJ: <span class="printvalue"><?php echo documentformatBR($row["buyerDoc"]) ?></span></span>
+                  </div>
+                  <div class="forcetwolines">
+                    <span class=""><?php echo limittextandforce($row["user"]." V:".$row["purchase_date"]." IM:".$row["print_date"],500) ?>
+                    </span>
+                  </div>
+                  <div class="printright">
+                     <span class="printqtd">
+                     Qtde: <span class=""><?php echo $row["howMany"] ?></span>
+                     </span>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <?php } ?>
+      <div class="pagebreak"></div>
+      <script lang="javascript">
+         <?php 
+            if ($dontprint == false) {
+               //echo "window.print();";
+            }
+            if ($dontclose == false) {
+               // echo "window.close();";
+            }
+            ?>
+      </script>
+   </body>
 </html>
