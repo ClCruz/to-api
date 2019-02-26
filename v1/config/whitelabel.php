@@ -1,5 +1,5 @@
 <?php
-    function getuniquefromdomain($fullHost) {
+    function getuniquefromdomain($fullHost = "") {
         $ret = "";
         $jsonFile = $_SERVER['DOCUMENT_ROOT']."/jsons/domains.json";
 
