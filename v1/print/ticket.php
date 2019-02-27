@@ -295,7 +295,7 @@
             </div>
          </div>
          <div class="container givemesomespace">
-            <div class="fixed"><img class="image" style="<?php echo ($count == 1 || $count == "1") ? "top:-90px" : "" ?>" src="data:image/png;base64,<?php echo $row["qrcode"]?>" alt="image 1" width="96" height="48"/></div>
+            <div class="fixed"><img class="image" style="<?php echo ($count == 1 || $count == "1") ? "" : "" ?>" src="data:image/png;base64,<?php echo $row["qrcode"]?>" alt="image 1" width="96" height="48"/></div>
             <div class="flex-item">
                <div class="printbase printsecondpart">
                   <div class="printname"><?php echo limittext($row["name"],30) ?></div>
