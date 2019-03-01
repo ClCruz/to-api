@@ -342,6 +342,20 @@
         $params = array($id_pedido_venda);
         $result = db_exec($query, $params);
     }
+    function change_situacao_boleto($id) {
+        $query = "EXEC pr_sell_web_boleto ?";
+        $params = array($id);
+        $result = db_exec($query, $params);
+
+        $json = array();
+        foreach ($result as &$row) {
+            $json = array("success"=>$row["success"]
+            ,"email_address"=>$row["email_address"]
+            ,"email_name"=>$row["email_name"]
+            ,"msg"=>$row["msg"]);
+        }
+        return $json;
+    }
     
 
     function getbases4purchase($id_session) {
