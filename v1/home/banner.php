@@ -16,7 +16,7 @@
                 "ds_nome_teatro" => $row["ds_nome_teatro"],
                 "ds_municipio" => $row["ds_municipio"],
                 "sg_estado" => $row["sg_estado"],
-                //"datas" => $row["datas"],
+                "datas" => $row["dates"],
                 "bannerDescription" => $row["bannerDescription"],
                 "imgcard" => getDefaultMediaHost() . str_replace("{id}", $row["id_evento"],str_replace("{default_card}", getDefaultCardImageName(),$row["cardimage"])),
                 "img" => getDefaultMediaHost() . str_replace("{id}", $row["id_evento"],str_replace("{default_big}", getBigCardImageName(),$row["cardbigimage"])),
