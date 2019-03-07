@@ -63,9 +63,11 @@
         $result = db_exec($query, $params, $id_base);
 
         $id_evento = 0;
+        $msg = "Falha ao salvar.";
 
         foreach ($result as &$row) {
             $id_evento = $row["id_evento"];
+            $msg = $row["msg"];
         }
 
         //die("ddd".$id_evento);
@@ -74,7 +76,7 @@
 
         if ($id_evento == 0) {
             $json = array("success"=>false
-            ,"msg"=>"Falha ao salvar");
+            ,"msg"=>$msg);
         }
 
 
