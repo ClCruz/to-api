@@ -54,6 +54,7 @@
                 "voucher_event_amount_total" => $row["voucher_event_amount_total"],
                 "voucher_event_service_total" => $row["voucher_event_service_total"],
                 "voucher_event_value_total" => $row["voucher_event_value_total"],
+                "voucher_event_installment" => $row["nr_parcelas_pgto"],
                 "voucher_printcodehas" => $row["printcodehas"],
                 "voucher_linkold" => getwhitelabelURI_legacy("/comprar/reimprimirEmail.php?pedido=".$row["voucher_id"]),
                 "voucher_link" => getwhitelabelURI_api("/v1/email/ticket?code=".$row["printcode"]),
@@ -92,6 +93,7 @@
                 "voucher_event_service_total" => $row["voucher_event_service_total"],
                 "voucher_event_value_total" => $row["voucher_event_value_total"],
                 "voucher_printcodehas" => $row["printcodehas"],
+                "voucher_event_installment" => 1,
                 "voucher_linkold" => getwhitelabelURI_legacy("/comprar/reimprimirEmail.php?pedido=".$row["voucher_id"]),
                 "voucher_link" => getwhitelabelURI_api("/v1/email/ticket?code=".$row["printcode"]),
             );
@@ -154,6 +156,7 @@
                                             "buyer_name" => $obj[0]["buyer_name"],
                                             "buyer_email" => $obj[0]["buyer_email"],
                                             "buyer_document" => $obj[0]["buyer_document"],
+                                            "voucher_event_installment" => $obj[0]["voucher_event_installment"],
                                             "voucher_id" => $obj[0]["voucher_id"],
                                             "voucher_code" => $obj[0]["voucher_code"],
                                             "voucher_event_amount_total" => $obj[0]["voucher_event_amount_total"],
