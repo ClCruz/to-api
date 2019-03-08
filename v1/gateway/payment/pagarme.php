@@ -484,15 +484,15 @@
             $data = array("api_key" => $conf["apikey"], "amount" => $amount);
             $post_data = json_encode($data);     
         }
-        
+        // die("ddd");
         set_time_limit(0);
         $ch = curl_init($url); 
         //curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);                                                                  
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);           
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0); 
-        curl_setopt($curl, CURLOPT_TIMEOUT, 3600);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0); 
+        curl_setopt($ch, CURLOPT_TIMEOUT, 3600);
                                                            
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
             'Content-Type: application/json',                                                                                

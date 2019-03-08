@@ -8,16 +8,16 @@
 
     function refundme($id_pedido_venda) {
 
-        
-        $transaction = gettransactionbypedido($id_pedido_venda);
-                
+      $transaction = gettransactionbypedido($id_pedido_venda);
+      
+      //die("ddd".json_encode($transaction["cd_numero_transacao"]));
         $aux = pagarme_refund($transaction["cd_numero_transacao"], 0);
   
         echo json_encode($aux);
         logme();
         die();    
     }
-  //refundme($_POST["id_pedido_venda"]);
-  refundme($_REQUEST["id_pedido_venda"]);
+  refundme($_POST["id_pedido_venda"]);
+  // refundme($_REQUEST["id_pedido_venda"]);
 
 ?>
