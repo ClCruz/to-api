@@ -24,6 +24,8 @@
                 ,"isTrial"=> $row["isTrial"]
                 ,"isDev"=> $row["isDev"]
                 ,"type"=> $row["type"]
+                ,"fb_appid" => $row["fb_appid"]
+                ,"recaptchaid" => $row["recaptchaid"]
             );
         }
 
