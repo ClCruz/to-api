@@ -67,7 +67,7 @@
 
 $testlogin = $_REQUEST["login"];
 if ($testlogin == '') {
-    $testlogin = $_POST["login"]
+    $testlogin = $_POST["login"];
 }
 
 login($testlogin, $_POST["pass"]);
