@@ -380,10 +380,10 @@
       <script lang="javascript">
          <?php 
             if ($dontprint == false) {
-               //echo "window.print();";
+               echo "window.print();";
             }
             if ($dontclose == false) {
-               // echo "window.close();";
+               echo "window.close();";
             }
             ?>
       </script>
