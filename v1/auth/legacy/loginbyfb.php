@@ -1,11 +1,11 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function loginbyfb($fb) {
+    function loginbyfb($fb, $email) {
         //sleep(5);
         //die("ddd: ".md5($password));
-        $query = "EXEC pr_login_client_fb ?";
-        $params = array($fb);
+        $query = "EXEC pr_login_client_fb ?,?,?";
+        $params = array($fb, $email,gethost());
         $result = db_exec($query, $params);
 
         $json = array();
@@ -56,6 +56,6 @@
         die();    
     }
 
-loginbyfb($_POST["fb"]);
+loginbyfb($_POST["fb"], $_POST["email"]);
 
 ?>
