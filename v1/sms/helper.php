@@ -3,6 +3,9 @@
 
 
     function sms_insert($id_cliente, $id_to_admin_user, $type, $cellphone, $content) {
+        if ($id_to_admin_user == null) { 
+            $id_to_admin_user = "00000000-0000-0000-0000-000000000000";
+        }
         $query = "EXEC pr_sms_add ?,?,?,?, 'notsent', 0, NULL, ?";
         $params = array($id_cliente, $id_to_admin_user, $type, $cellphone, $content);
         $result = db_exec($query, $params);
@@ -26,9 +29,9 @@
         db_exec($query, $params);
     }
 
-    function sms_response($id, $status) {
-        $query = "EXEC pr_sms_response ?,?";
-        $params = array($id, $status);
+    function sms_response($id, $status, $data) {
+        $query = "EXEC pr_sms_response ?,?,?";
+        $params = array($id, $status, $data);
         db_exec($query, $params);
     }
 
