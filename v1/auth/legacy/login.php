@@ -65,11 +65,11 @@
         die();    
     }
 
-$testlogin = $_REQUEST["login"];
-if ($testlogin == '') {
-    $testlogin = $_POST["login"];
-}
+// $testlogin = $_REQUEST["login"];
+// if ($testlogin == '') {
+//     $testlogin = $_POST["login"];
+// }
 
-login($testlogin, $_POST["pass"]);
+login($_POST["login"], $_POST["pass"]);
 
 ?>
