@@ -102,6 +102,50 @@
 
         return $json;
     }
+    function setHtml_email_boleto($name,$link) { 
+        $templatefolder = $_SERVER['DOCUMENT_ROOT'].$templatefolder = getwhitelabelobj()["templates"]["emails"]["folder"];
+
+        $replacement = getonlyReplacement(gethost());
+        
+        $wlsite = "";
+        $wlsitewithwww = "";
+        $wlsitelogomedia = "";
+        $wluniquename = "";
+        $wlsitewithoutwww = "";
+
+        
+        foreach($replacement as $tocheck){
+            if (strpos("__wl-site__", $tocheck["from"])  !== false) {
+                $wlsite = $tocheck["to"];
+            }
+            if (strpos("__wl-sitewithwww__", $tocheck["from"])  !== false) {
+                $wlsitewithwww = $tocheck["to"];
+            }
+            if (strpos("__wl-site-logo-media__", $tocheck["from"])  !== false) {
+                $wlsitelogomedia = $tocheck["to"];
+            }
+            if (strpos("__wl-uniquename__", $tocheck["from"])  !== false) {
+                $wluniquename = $tocheck["to"];
+            }
+            if (strpos("__wl-sitewithoutwww__", $tocheck["from"])  !== false) {
+                $wlsitewithoutwww = $tocheck["to"];
+            }
+        }
+        // die(json_encode($wlsitewithwww));
+
+        $loader = new Twig_Loader_Filesystem($templatefolder);
+        $twig = new Twig_Environment($loader);
+        $htmlname = "buyer_boleto.html";
+        return $twig->render($htmlname, [
+                                            "wlsite" => $wlsite,
+                                            "wlsitewithwww" => $wlsitewithwww,
+                                            "wlsitelogomedia" => $wlsitelogomedia,
+                                            "wluniquename" => $wluniquename,
+                                            "wlsitewithoutwww" => $wlsitewithoutwww,
+                                            "user_name" => $name,
+                                            "boleto_link" => $link,// getwhitelabelURI_home("/resetpass/".$code),
+                                        ] );
+    }
     function setHtml_purchase_email($obj, $isgift, $vouchername,$voucheremail, $type) { 
         $templatefolder = $_SERVER['DOCUMENT_ROOT'].$templatefolder = getwhitelabelobj()["templates"]["emails"]["folder"];
 
@@ -164,6 +208,26 @@
                                             "voucher_event_value_total" => $obj[0]["voucher_event_value_total"],
                                             "voucher_link" => ($obj[0]["voucher_printcodehas"] == 1 ? $obj[0]["voucher_link"] : $obj[0]["voucher_linkold"]), 
                                         ] );
+    }
+
+    function make_purchase_boleto_email($id_pedido_venda, $link) {//, $barcode, $expiredate) {
+        $obj = get_purchase_email($id_pedido_venda);
+
+       $to = $obj[0]["buyer_email"];
+       $toName = $obj[0]["buyer_name"];
+        // $to = "blcoccaro@gmail.com";// $obj[0]["buyer_email"];
+        // $toName = "blcoccaro";//$obj[0]["buyer_name"];
+
+        $html = setHtml_email_boleto($toName, $link);
+
+        $from = getwhitelabelemail()["noreply"]["email"];
+        $fromName = getwhitelabelemail()["noreply"]["from"];
+
+        $subject = "Boleto para pagamento";
+        $msg = $html;
+
+        sendToAPI($from, $fromName, $to, $toName, $subject, $msg);
+        logme();
     }
 
     function make_purchase_email($id_pedido_venda, $vouchername,$voucheremail) {
