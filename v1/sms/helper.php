@@ -1,6 +1,59 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
+    function sms_sendnow($id_cliente, $id_to_admin_user, $type, $cellphone, $content) {
+        $id = sms_insert($id_cliente, $id_to_admin_user, $type, $cellphone, $content);
+        sms_sendToAPI($cellphone, $content, $id);
+        return $id;
+    }
+
+    function sms_sendToAPI($cellphone, $content, $id) {	
+
+        try {
+            $metodo = "envio";
+            $usuario = "leonel.costa@ticketoffice.com.br";
+            $pass = "397982";
+
+            $url = 'http://www.iagentesms.com.br/webservices/http.php';
+            $fields = array(
+                'metodo' => urlencode($metodo),
+                'usuario' => urlencode($usuario),
+                'senha' => urlencode($pass),
+                'celular' => urlencode($cellphone),
+                'mensagem' => urlencode($content),
+                'codigosms' => urlencode($id),
+            );
+            $fields_string = "";
+            echo json_encode($fields);
+            //url-ify the data for the POST
+            foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+            rtrim($fields_string, '&');
+        
+            //open connection
+            $ch = curl_init();
+        
+            //set the url, number of POST vars, POST data
+            curl_setopt($ch,CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch,CURLOPT_POST, count($fields));
+            curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+        
+            //execute post
+            $result = curl_exec($ch);
+            //close connection
+            curl_close($ch);
+
+            echo json_encode($result);
+        
+            return $result;
+    
+        } catch (Exception $e) {
+            return "";
+    
+        }
+    
+    }
+
 
     function sms_insert($id_cliente, $id_to_admin_user, $type, $cellphone, $content) {
         if ($id_to_admin_user == null) { 
