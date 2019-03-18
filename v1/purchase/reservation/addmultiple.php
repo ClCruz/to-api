@@ -1,14 +1,14 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function set($id_base, $id_apresentacao, $indice, $id, $NIN, $codCliente, $codReserva) {
+    function set($id_base, $id_apresentacao, $indice, $id, $NIN, $codCliente, $codReserva, $overwrite) {
         $query = "";
         if ($codCliente == "null") {
             $codCliente = null;
             $codReserva = null;
         }
-        $query = "EXEC pr_seat_reservation_multi ?, ?, ?, ?, ?, ?, ?";
-        $params = array($id_apresentacao, $indice, $id, $NIN, purchaseMinutesToExpireReservation(), $codCliente, $codReserva);
+        $query = "EXEC pr_seat_reservation_multi ?, ?, ?, ?, ?, ?, ?, ?";
+        $params = array($id_apresentacao, $indice, $id, $NIN, purchaseMinutesToExpireReservation(), $codCliente, $codReserva, $overwrite);
         
         $result = db_exec($query, $params, $id_base);
 
@@ -71,5 +71,5 @@
         die();    
     }
 
-set($_POST["id_base"], $_POST["id_apresentacao"], $_POST["indice"], $_POST["id"], $_POST["nin"], $_POST["codCliente"], $_POST["codReserva"]);
+set($_POST["id_base"], $_POST["id_apresentacao"], $_POST["indice"], $_POST["id"], $_POST["nin"], $_POST["codCliente"], $_POST["codReserva"], $_POST["overwrite"]);
 ?>

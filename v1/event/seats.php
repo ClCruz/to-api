@@ -19,6 +19,7 @@
                 "PosX" => $row["PosX"],
                 "PosY" => $row["PosY"],
                 "status" => $row["status"],
+                "STACADEIRA" => $row["STACADEIRA"],
                 "id_session" => $row["id_session"],
                 "imgvisaolugarfoto" => $row["imgvisaolugarfoto"],
                 "CodCliente" => $row["CodCliente"],
