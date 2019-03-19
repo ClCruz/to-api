@@ -66,7 +66,7 @@
                ,"ticket"=>$row["ticket"]
                ,"payment"=>$row["payment"]
                ,"paymentType"=>$row["paymentType"]
-               ,"transaction"=>$row["transaction"]
+               ,"transaction"=>"4585548885"//$row["transaction"]
                ,"buyer"=>$row["buyer"]
                ,"buyerDoc"=>$row["buyerDoc"]
                ,"insurance_policy"=>$row["insurance_policy"]
@@ -80,7 +80,7 @@
                ,"purchase_date"=>$row["purchase_date"]
                ,"print_date"=>$row["print_date"]                    
                ,"domain"=>$row["domain"]             
-               ,"amount_topay"=>$row["amount_topay"]                      
+               ,"amount_topay"=>"R$ 1898.99"//$row["amount_topay"]                      
                ,"howMany"=>$row["howMany"]           
                ,"IngressoNumerado"=>$row["IngressoNumerado"]
            );
@@ -95,6 +95,10 @@
    $dontbreakline = $_REQUEST["dontbreakline"] != null && $_REQUEST["dontbreakline"] != '';
    $dontclose = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
    $dontprint = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
+   // $moretextteste = " Bacon ipsum dolor amet cow ball tip corned beef ribeye pancetta andouille pastrami jowl shoulder.";
+   // $moretextteste2 = " Baconipsumdolorametcowballtipcornedbeefribeyepancettaandouillepastramijowlshoulder.";
+   // $moretextteste = "";
+   // $moretextteste2 = "";
    ?>
 <!DOCTYPE html>
 <html>
@@ -106,6 +110,9 @@
          .cut {
          line-height: 0px;
          padding-bottom: 1px;
+         }
+         .leftdonttouchme {
+            padding-left:10px;
          }
          .cutoutside {
          line-height: 0px;
@@ -121,8 +128,11 @@
          position: relative;
          }
          .qrcode {
-         padding-left: 10px;
          width: 110px;
+         height: 110px;
+         position: relative;
+         }
+         .logobottom {
          height: 110px;
          position: relative;
          }
@@ -132,6 +142,9 @@
          .fixed{
          width: 90px;
          height: 90px;
+         }
+         .smalltext{
+            font-size:10px;
          }
          .flex-item{
          flex-grow: 1;
@@ -143,7 +156,7 @@
          font-family: "Lucida Console";
          line-height: 12px;
          text-transform: uppercase;
-         width: 309px;
+         width: 420px;
          }
          .printbase div {
          padding-bottom: 2px;
@@ -161,6 +174,10 @@
          font-weight: bold;
          font-size: 13px;
          }
+         .imbiggerthanyou {
+            font-size: 22px;
+            font-weight: bold;
+         }
          .printbase .printvalue {
          font-weight: bold;
          }
@@ -169,9 +186,13 @@
          }
          .printbase .printqtd {
          font-size: 10px;
+         padding-right: 10px;
          }
          .printfirstpart {
-         text-align: center;
+         
+         }
+         .textcenter {
+            text-align: center;
          }
          .printsecondpart {
          text-align: center;
@@ -180,6 +201,10 @@
          }
          .center {
          width: 50%;
+         }
+         .somethingisbetweenus {
+            margin-top: 2px;
+            /* border-bottom: black solid 2px;    */
          }
          .givemesomespace {
          padding-top: 15px;
@@ -193,6 +218,22 @@
          .forcetwolines {
             min-height:24px;
          }
+         .forcethreelines {
+            min-height:36px;
+         }
+
+         .top_partnerinfo{
+         display: flex;
+         }
+         .top_partnerinfo_img{
+         width: 200px;
+         }
+         .top_partnerinfo_text{
+         flex-grow: 1;
+         }
+         .theskiesisoutoflimit {
+            padding-top:12px;
+         }
       </style>
    </head>
    <body>
@@ -203,82 +244,149 @@
       <?php $count = $count +1; ?>
       <?php if ($count != 1) { ?>
       <?php if ($dontbreakline) {
-         echo "";
+            echo "";
          }
          else {
-         echo "<div class='pagebreak'></div>";
+            echo "<div class='pagebreak'></div>";
          }
          ?>
       <?php } ?>
-      <div>
+      <div style="border: black solid 2px; padding: 2px 2px 2px 2px;">
          <div class="container" style="width: 858px;">
-            <div class="printbase printfirstpart center">
-               <img src="<?php echo getwhitelabelobj()["logo"] ?>" style="height: 55px; filter: invert(100%); text-align: center; margin: 0 auto; display: flex;" />
-               <div class="forcetwolines"><?php echo limittext(getwhitelabelobj()["info"]["companyName"],62) ?></div>
-               <div class="">CNPJ: <?php echo getwhitelabelobj()["info"]["CNPJ"] ?></div>
-               <div class="">Site: <?php echo limittext($row["domain"],32); ?></div>
+            <div class="printbase printfirstpart">
+               <div class="top_partnerinfo center">
+                  <span>
+                     <img src="<?php echo getwhitelabelobj()["logo"] ?>" style="height: 55px; filter: invert(100%); margin-top: 40px;margin-right: 10px;" />
+                  </span>
+                  <span class="textcenter" style="padding-left: 48px;">
+                     <div class="forcetwolines theskiesisoutoflimit"><?php echo limittext(getwhitelabelobj()["info"]["companyName"].$moretextteste,50) ?></div>
+                     <div class="smalltext">CNPJ: <?php echo getwhitelabelobj()["info"]["CNPJ"] ?></div>
+                     <div class="forcetwolines smalltext"><?php echo limittext(getwhitelabelobj()["uri"].$moretextteste2,48); ?></div>
+                     <div class="">&nbsp;</div>
+                     <div class="forcetwolines"><?php echo limittext($row["local"].$moretextteste,50); ?></div>
+                     <div class="forcethreelines"><?php echo limittext($row["address"].$moretextteste,75); ?></div>
+                  </span>
+               </div>
                <div class="">&nbsp;</div>
-               <div class="">&nbsp;</div>
-               <div class=""><?php echo limittext($row["local"]); ?></div>
-               <div class="forcetwolines"><?php echo limittextandforce($row["address"],98); ?></div>
-               <div class="">&nbsp;</div>
-               <div class="">&nbsp;</div>
-               <div class="printname forcetwolines"><?php echo limittext($row["name"],80) ?></div>
-               <div class="">&nbsp;</div>
-               <div class="">&nbsp;</div>
-               <div class="printday">
+               <div class="leftdonttouchme printname forcethreelines"><?php echo limittext($row["name"].$moretextteste,81) ?></div>
+               <div class="printday leftdonttouchme">
                   <span class=""><?php echo limittext($row["weekdayName"]) ?></span>
                   <span class=""><?php echo limittext($row["day"]."-".$row["monthName"]."-".$row["year"]) ?></span>
                   <span class=""><?php echo limittext($row["hour"]) ?></span>
                </div>
-               <div class="">Abertura: <span class="printvalue"><?php echo limittext($row["opening_time"]) ?></span></div>
-               <div class="">
-                  <span class="">Setor: <span class="printvalue"><?php echo limittext($row["roomName"],10) ?></span></span>
-                  <span class="">Fileira: <span class="printvalue"><?php echo limittext($row["seatRow"],5) ?></span></span>
-                  <span class="">Assento: <span class="printvalue"><?php echo limittext($row["seatName"],5) ?></span></span>
+               <div class="leftdonttouchme">Abertura: <span class="printvalue"><?php echo limittext($row["opening_time"].$moretextteste,36) ?></span></div>
+               <div class="leftdonttouchme">
+                  <span class="">Bilh.e: <span class="printvalue"><?php echo limittext($row["ticket"].$moretextteste,15) ?></span></span>
+                  <span class="">- <span class="" style="font-size:12px;"><?php echo limittext($row["purchaseCode"]."-".$row["purchaseCodeInt"]."-".$row["seatIndice"].$moretextteste,25) ?></span></span>
                </div>
-               <div class="">
-                  <span class="">Bilhete: <span class="printvalue"><?php echo limittext($row["ticket"],7) ?></span></span>
-                  <span class="">ID: <span class="printvalue"><?php echo limittext($row["purchaseCode"]."-".$row["purchaseCodeInt"]."-".$row["seatIndice"],26) ?></span></span>
-               </div>
-               <div class="">&nbsp;</div>
                <div class="givemesomespaceless">
-                  <span class="">Emitido para: <span class="printvalue"><?php echo limittext($row["buyer"],33) ?></span></span>
+                  <span class="leftdonttouchme">Emitido para: <span class="printvalue"><?php echo limittext($row["buyer"].$moretextteste,30) ?></span></span>
                </div>
                <div class="">
-                  <span class="">CPF/CNPJ: <span class="printvalue"><?php echo documentformatBR($row["buyerDoc"]) ?></span></span>
+                  <span class="leftdonttouchme">CPF/CNPJ: <span class="printvalue"><?php echo documentformatBR($row["buyerDoc"]) ?></span></span>
                </div>
-               <div class="">&nbsp;</div>
-               <div class="">
-                  <span class="">Pagamento: 
+               <div class="givemesomespaceless leftdonttouchme">
+                  <span class="">Pgto.: 
                   <span class="printvalue">
-                  <?php echo limittext($row["paymentType"],10) ?>
+                  <?php echo limittext($row["paymentType"].$moretextteste,25) ?>
                   <?php if ($row["transaction"] != "") {?>
-                  <span class="">(<?php echo $row["transaction"] ?>)</span>
+                  <span class="">(<?php echo limittext($row["transaction"],10) ?>)</span>
                   <?php }?>
                   </span>
                   </span>
                </div>
-               <div class="">Valor: <span class="printvalue"><?php echo limittext($row["amount_topay"]) ?></span></div>
+               <div class="leftdonttouchme">Valor: <span class="printvalue"><?php echo limittext($row["amount_topay"]) ?></span></div>
+               <div class="somethingisbetweenus" style="margin-bottom: 12px;"></div>
+               <div class="leftdonttouchme imbiggerthanyou" style="text-align: center;">
+                  <span class="">Setor: <span class="printvalue"><?php echo limittext($row["roomName"].$moretextteste, 24) ?></span></span>
+               </div>
+               <div class="leftdonttouchme imbiggerthanyou" style="padding-top:5px;margin-top:10px; text-align: center;">
+                  <?php if ($row["IngressoNumerado"] == 1) {?>
+                  <span class="">Assento: <span class="printvalue"><?php echo limittext($row["seatRow"]."-".$row["seatName"].$moretextteste,20) ?></span></span>
+                  <?php } ?>
+                  <?php if ($row["IngressoNumerado"] == 0) {?>
+                  <span class="">Assento: <span class="printvalue"><?php echo limittext($row["seatName"].$moretextteste,20) ?></span></span>
+                  <?php } ?>
+               </div>
+               <div class="somethingisbetweenus" style="margin-top: 10px !important;"></div>
                <div class="">&nbsp;</div>
-               <div class="">
+               <div class="leftdonttouchme">
                   <span class="">
-                  Apol. Seg.: <span class="printvalue"><?php echo limittext($row["insurance_policy"],35) ?></span>
+                  Apol. Seg.: <span class="printvalue"><?php echo limittext($row["insurance_policy"].$moretextteste,35) ?></span>
+                  </span>
+               </div>
+               <div class="leftdonttouchme">
+                  <span class="">
+                  Responsável: <span class="printvalue"><?php echo limittext($row["eventRespName"].$moretextteste,34) ?></span>
+                  </span>
+               </div>
+               <div class="leftdonttouchme">
+                  <span class="">
+                  CNPJ/CPF: <span class="printvalue"><?php echo documentformatBR($row["eventRespDoc"].$moretextteste) ?></span>
+                  </span>
+               </div>
+               <div class="leftdonttouchme forcetwolines">
+                    <span class=""><?php echo limittext($row["user"].$moretextteste,12).limittext(" V:".$row["purchase_date"]." IM:".$row["print_date"]) ?>
+                  </span>
+
+               </div>
+               <div class="">&nbsp;</div>
+               <div class="printright">
+                  <span class="printqtd">
+                  Qtde: <span class=""><?php echo $row["howMany"] ?></span>
                   </span>
                </div>
                <div class="">&nbsp;</div>
-               <div class="">
-                  <span class="">
-                  Responsável: <span class="printvalue"><?php echo limittext($row["eventRespName"],34) ?></span>
-                  </span>
+               <div class="">&nbsp;</div>
+               <div class="">&nbsp;</div>
+               <div class="">&nbsp;</div>
+            </div>
+         </div>
+         <div class="container" style="width: 858px;">
+            <div class="printbase printfirstpart">
+               <div class="leftdonttouchme printname forcethreelines" style="text-align: center;"><?php echo limittext($row["name"].$moretextteste,81) ?></div>
+            </div>
+         </div>
+         <div class="container" style="width: 858px;">
+            <div class="printbase printfirstpart textcenter">
+            <img class="qrcode" style="<?php echo ($count == 1 || $count == "1") ? "" : "" ?>" src="data:image/png;base64,<?php echo $row["qrcode"]?>" alt="image 1" width="96" height="48"/>
+            </div>
+         </div>
+         <div class="container" style="width: 858px;padding-top:10px;">
+            <div class="printbase printfirstpart">
+               <div class="printday leftdonttouchme">
+                  <span class=""><?php echo limittext($row["weekdayName"]) ?></span>
+                  <span class=""><?php echo limittext($row["day"]."-".$row["monthName"]."-".$row["year"]) ?></span>
+                  <span class=""><?php echo limittext($row["hour"]) ?></span>
+               </div>
+               <div class="leftdonttouchme">
+                  <span class="">Bilh.e: <span class="printvalue"><?php echo limittext($row["ticket"].$moretextteste,15) ?></span></span>
+                  <span class="">- <span class="" style="font-size:12px;"><?php echo limittext($row["purchaseCode"]."-".$row["purchaseCodeInt"]."-".$row["seatIndice"].$moretextteste,25) ?></span></span>
+               </div>
+               <div class="givemesomespaceless">
+                  <span class="leftdonttouchme">Emitido para: <span class="printvalue"><?php echo limittext($row["buyer"].$moretextteste,30) ?></span></span>
                </div>
                <div class="">
-                  <span class="">
-                  CNPJ/CPF: <span class="printvalue"><?php echo documentformatBR($row["eventRespDoc"]) ?></span>
+                  <span class="leftdonttouchme">CPF/CNPJ: <span class="printvalue"><?php echo documentformatBR($row["buyerDoc"]) ?></span></span>
+               </div>
+               <div class="givemesomespaceless leftdonttouchme">
+                  <span class="">Pgto.: 
+                  <span class="printvalue">
+                  <?php echo limittext($row["paymentType"].$moretextteste,28) ?>
+                  <?php if ($row["transaction"] != "") {?>
+                  <span class="">(<?php echo limittext($row["transaction"],10) ?>)</span>
+                  <?php }?>
+                  </span>
                   </span>
                </div>
-               <div class="forcetwolines">
-                    <span class=""><?php echo limittextandforce($row["user"]." V:".$row["purchase_date"]." IM:".$row["print_date"],500) ?>
+               <div class="leftdonttouchme">
+                  <span class="">Setor: <span class="printvalue"><?php echo limittext($row["roomName"].$moretextteste, ($row["IngressoNumerado"] == 1 ? 18 : 38)) ?></span></span>
+                  <?php if ($row["IngressoNumerado"] == 1) {?>
+                  <span class="">| Assento: <span class="printvalue"><?php echo limittext($row["seatRow"]."-".$row["seatName"].$moretextteste,10) ?></span></span>
+                  <?php } ?>
+               </div>
+               <div class="leftdonttouchme forcetwolines">
+                    <span class=""><?php echo limittext($row["user"].$moretextteste,12).limittext(" V:".$row["purchase_date"]." IM:".$row["print_date"]) ?>
                   </span>
 
                </div>
@@ -289,100 +397,64 @@
                </div>
                <div class="">&nbsp;</div>
                <div class="">&nbsp;</div>
+            </div>
+         </div>
+
+         <div class="">&nbsp;</div>
+         <div class="container" style="width: 858px;">
+            <div class="printbase printfirstpart textcenter">
+            <img class="logobottom" src="<?php echo getwhitelabelobj()["logo"] ?>" style="height: 65px; filter: invert(100%);" alt="image 1"/>
+            </div>
+         </div>
+         <div class="container" style="width: 858px;margin-top:5px;">
+            <div class="printbase printfirstpart">
+               <div class="leftdonttouchme printname forcethreelines" style="text-align: center;"><?php echo limittext($row["name"].$moretextteste,81) ?></div>
+            </div>
+         </div>
+         <div class="container" style="width: 858px;">
+            <div class="printbase printfirstpart">
+               <div class="printday leftdonttouchme">
+                  <span class=""><?php echo limittext($row["weekdayName"]) ?></span>
+                  <span class=""><?php echo limittext($row["day"]."-".$row["monthName"]."-".$row["year"]) ?></span>
+                  <span class=""><?php echo limittext($row["hour"]) ?></span>
+               </div>
                <div class="">&nbsp;</div>
-            </div>
-         </div>
-         <?php //."12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789" ?>
-         <div class="container" style="width: 858px;">
-            <div class="printbase printfirstpart center">
-            <img src="<?php echo getwhitelabelobj()["logo"] ?>" style="height: 55px; filter: invert(100%); text-align: center; margin: 0 auto; display: flex;" />
-            </div>
-         </div>
-         <div class="container givemesomespace">
-            <div class="fixed"><img class="qrcode" style="<?php echo ($count == 1 || $count == "1") ? "" : "" ?>" src="data:image/png;base64,<?php echo $row["qrcode"]?>" alt="image 1" width="96" height="48"/></div>
-            <div class="flex-item">
-               <div class="printbase printsecondpart">
-                  <div class="printname forcetwolines"><?php echo limittext($row["name"],50) ?></div>
-                  <div class="">&nbsp;</div>
-                  <div class="printday">
-                     <span class=""><?php echo $row["weekdayName"] ?></span>
-                     <span class=""><?php echo $row["day"]."-".$row["monthName"]."-".$row["year"] ?></span>
-                     <span class=""><?php echo $row["hour"] ?></span>
-                  </div>
-                  <div class="">&nbsp;</div>
-                  <div class="">
-                     <span class="">Setor: <span class="printvalue"><?php echo limittext($row["roomName"],8) ?></span></span>
-                     <span class="">Fileira: <span class="printvalue"><?php echo limittext($row["seatRow"],5) ?></span></span>
-                     <span class="">Assento: <span class="printvalue"><?php echo limittext($row["seatName"],5) ?></span></span>
-                  </div>
-                  <div class="">
-                     <span class="">Bilhete: <span class="printvalue"><?php echo limittext($row["ticket"],25) ?></span></span>
-                  </div>
-                  <div class="">
-                     <span class="">ID: <span class="printvalue"><?php echo $row["purchaseCode"]."-".$row["purchaseCodeInt"]."-".$row["seatIndice"] ?></span></span>
-                  </div>
-                  <div class="">
-                     <span class="">Emitido para: <span class="printvalue"><?php echo limittext($row["buyer"],36) ?></span></span>
-                  </div>
-                  <div class="">
-                     <span class="">CPF/CNPJ: <span class="printvalue"><?php echo documentformatBR($row["buyerDoc"]) ?></span></span>
-                  </div>
-                  <div class="">
-                    <span class="">Vendido por: <?php echo limittextandforce($row["user"],35) ?>
-                    </span>
-                  </div>
-                  <div class="">
-                    <span class="forcetwolines"><?php echo limittextandforce(" V:".$row["purchase_date"]." IM:".$row["print_date"],80) ?>
-                    </span>
-                  </div>
-                  <div class="">&nbsp;</div>
-                  <div class="">&nbsp;</div>
-                  <div class="">&nbsp;</div>
-                  <div class="printright">
-                     <span class="printqtd">
-                     Qtde: <span class=""><?php echo $row["howMany"] ?></span>
-                     </span>
-                  </div>
+               <div class="leftdonttouchme">
+                  <span class="">Bilh.e: <span class="printvalue"><?php echo limittext($row["ticket"].$moretextteste,15) ?></span></span>
+                  <span class="">- <span class="" style="font-size:12px;"><?php echo limittext($row["purchaseCode"]."-".$row["purchaseCodeInt"]."-".$row["seatIndice"].$moretextteste,25) ?></span></span>
                </div>
-            </div>
-         </div>
-         <div class="">&nbsp;</div>
-         <div class="">&nbsp;</div>
-         <div class="">&nbsp;</div>
-         <div class="container" style="width: 858px;">
-            <div class="printbase printsecondpart center">
-               <img src="<?php echo getwhitelabelobj()["logo"] ?>" style="height: 55px; filter: invert(100%); text-align: center; margin: 0 auto; display: flex;" />
-               <div class="printname"><?php echo limittext($row["name"],30) ?></div>
-               <div class="printday">
-                  <span class=""><?php echo $row["weekdayName"] ?></span>
-                  <span class=""><?php echo $row["day"]."-".$row["monthName"]."-".$row["year"] ?></span>
-                  <span class=""><?php echo $row["hour"] ?></span>
+               <div class="">&nbsp;</div>
+               <div class="givemesomespaceless">
+                  <span class="leftdonttouchme">Emitido para: <span class="printvalue"><?php echo limittext($row["buyer"].$moretextteste,30) ?></span></span>
                </div>
                <div class="">
-                  <span class="">Setor: <span class="printvalue"><?php echo limittext($row["roomName"],8) ?></span></span>
-                  <span class="">Fileira: <span class="printvalue"><?php echo limittext($row["seatRow"],5) ?></span></span>
-                  <span class="">Assento: <span class="printvalue"><?php echo limittext($row["seatName"],5) ?></span></span>
+                  <span class="leftdonttouchme">CPF/CNPJ: <span class="printvalue"><?php echo documentformatBR($row["buyerDoc"]) ?></span></span>
                </div>
-               <div class="">
-                  <span class="">Bilhete: <span class="printvalue"><?php echo limittext($row["ticket"],25) ?></span></span>
-               </div>
-               <div class="">
-                  <span class="">ID: <span class="printvalue"><?php echo $row["purchaseCode"]."-".$row["purchaseCodeInt"]."-".$row["seatIndice"] ?></span></span>
-               </div>
-               <div class="">
-                  <span class="">Emitido para: <span class="printvalue"><?php echo limittext($row["buyer"],36) ?></span></span>
-               </div>
-               <div class="">
-                  <span class="">CPF/CNPJ: <span class="printvalue"><?php echo documentformatBR($row["buyerDoc"]) ?></span></span>
-               </div>
-               <div class="">
-                  <span class="">Vendido por: <?php echo limittextandforce($row["user"],35) ?>
+               <div class="">&nbsp;</div>
+               <div class="givemesomespaceless leftdonttouchme">
+                  <span class="">Pgto.: 
+                  <span class="printvalue">
+                  <?php echo limittext($row["paymentType"].$moretextteste,28) ?>
+                  <?php if ($row["transaction"] != "") {?>
+                  <span class="">(<?php echo limittext($row["transaction"],10) ?>)</span>
+                  <?php }?>
+                  </span>
                   </span>
                </div>
-               <div class="">
-                  <span class="forcetwolines"><?php echo limittextandforce(" V:".$row["purchase_date"]." IM:".$row["print_date"],80) ?>
-                  </span>
+               <div class="">&nbsp;</div>
+               <div class="leftdonttouchme">
+                  <span class="">Setor: <span class="printvalue"><?php echo limittext($row["roomName"].$moretextteste, ($row["IngressoNumerado"] == 1 ? 18 : 38)) ?></span></span>
+                  <?php if ($row["IngressoNumerado"] == 1) {?>
+                  <span class="">| Assento: <span class="printvalue"><?php echo limittext($row["seatRow"]."-".$row["seatName"].$moretextteste,10) ?></span></span>
+                  <?php } ?>
                </div>
+               <div class="">&nbsp;</div>
+               <div class="leftdonttouchme forcetwolines">
+                    <span class=""><?php echo limittext($row["user"].$moretextteste,12).limittext(" V:".$row["purchase_date"]." IM:".$row["print_date"]) ?>
+                  </span>
+
+               </div>
+               <div class="">&nbsp;</div>
                <div class="printright">
                   <span class="printqtd">
                   Qtde: <span class=""><?php echo $row["howMany"] ?></span>
@@ -392,7 +464,7 @@
          </div>
       </div>
       <?php } ?>
-      <div class="pagebreak"></div>
+      <!-- <div class="pagebreak"></div> -->
       <script lang="javascript">
          <?php 
             if ($dontprint == false) {
