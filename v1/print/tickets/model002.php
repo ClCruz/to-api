@@ -66,7 +66,7 @@
                ,"ticket"=>$row["ticket"]
                ,"payment"=>$row["payment"]
                ,"paymentType"=>$row["paymentType"]
-               ,"transaction"=>"4585548885"//$row["transaction"]
+               ,"transaction"=>$row["transaction"]
                ,"buyer"=>$row["buyer"]
                ,"buyerDoc"=>$row["buyerDoc"]
                ,"insurance_policy"=>$row["insurance_policy"]
@@ -80,7 +80,7 @@
                ,"purchase_date"=>$row["purchase_date"]
                ,"print_date"=>$row["print_date"]                    
                ,"domain"=>$row["domain"]             
-               ,"amount_topay"=>"R$ 1898.99"//$row["amount_topay"]                      
+               ,"amount_topay"=>$row["amount_topay"]                      
                ,"howMany"=>$row["howMany"]           
                ,"IngressoNumerado"=>$row["IngressoNumerado"]
            );
