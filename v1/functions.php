@@ -28,7 +28,7 @@ function documentformatBR($cpf_cnpj){
     }
     switch($tipo_dado){
         default:
-            $cpf_cnpj_formatado = "Não foi possível definir tipo de dado";
+            $cpf_cnpj_formatado = $cpf_cnpj;
         break;
 
         case "cpf":
@@ -277,6 +277,18 @@ function isuservalidordie($id) {
         logme();
         die();    
     }
+}
+function getbasefromorder($id) {
+    if ($id == '' || $id == null || $id == 0)
+        return false;
+    $query = "EXEC pr_getbase_from_id_pedido_venda ?";
+    $params = array($id);
+    $result = db_exec($query, $params);
+    $id_base = 0;
+    foreach ($result as &$row) {
+        $id_base = $row["id_base"];
+    }
+    return $id_base;
 }
 function isuservalid($id) {
     if ($id == '' || $id == null)

@@ -1,11 +1,11 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function get($id_user,$id,$uniquename,$name,$domain,$dateStart,$dateEnd,$type,$active, $fb_appid, $recaptchaid) {
+    function get($id_user,$id,$uniquename,$name,$domain,$dateStart,$dateEnd,$type,$active, $fb_appid, $recaptchaid, $sell_email, $send_sell_email) {
         
         //sleep(5);
-        $query = "EXEC pr_admin_partner_save ?,?,?,?,?,?,?,?,?,?,?";
-        $params = array($id_user, db_paramid($id),$uniquename, $name,$domain,$dateStart,$dateEnd,$type,$active, db_param($fb_appid), db_param($recaptchaid));
+        $query = "EXEC pr_admin_partner_save ?,?,?,?,?,?,?,?,?,?,?,?,?";
+        $params = array($id_user, db_paramid($id),$uniquename, $name,$domain,$dateStart,$dateEnd,$type,$active, db_param($fb_appid), db_param($recaptchaid),$sell_email, $send_sell_email);
         //die("aaa.".json_encode($params));        
         $result = db_exec($query, $params);
 
@@ -19,5 +19,5 @@
         die();    
     }
 
-get($_POST["id_user"],$_POST["id"],$_POST["uniquename"],$_POST["name"],$_POST["domain"],$_POST["dateStart"],$_POST["dateEnd"],$_POST["type"],$_POST["active"],$_POST["fb_appid"], $_POST["recaptchaid"]);
+get($_POST["id_user"],$_POST["id"],$_POST["uniquename"],$_POST["name"],$_POST["domain"],$_POST["dateStart"],$_POST["dateEnd"],$_POST["type"],$_POST["active"],$_POST["fb_appid"], $_POST["recaptchaid"], $_POST["sell_email"], $_POST["send_sell_email"]);
 ?>

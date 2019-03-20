@@ -26,6 +26,8 @@
                 ,"type"=> $row["type"]
                 ,"fb_appid" => $row["fb_appid"]
                 ,"recaptchaid" => $row["recaptchaid"]
+                ,"sell_email" => $row["sell_email"]
+                ,"send_sell_email" => $row["send_sell_email"]
             );
         }
 

@@ -5,6 +5,7 @@
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/gateway/payment/pagarme.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/email/purchasehelp.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/purchase/site/session.php");
+    require_once($_SERVER['DOCUMENT_ROOT']."/v1/email/purchaseb2b.php");
 
     function check_halfpricestudents_lot_validate($id_purchase, $id_client, $id_session) {
 
@@ -276,6 +277,7 @@
                 if ($isCreditCard == true) {
                     traceme($id_purchase, "sending email card", json_encode(array("id_pedido_venda"=>$pedidovenda["id_pedido_venda"], "vouchername"=>$vouchername,"voucheremail"=>$voucheremail)),1);
                     make_purchase_email($pedidovenda["id_pedido_venda"], $vouchername,$voucheremail);
+                    make_purchase_email_b2b($pedidovenda["id_pedido_venda"]);
                     traceme($id_purchase, "sending email card", 'ok',1);
                 }
                 else {
