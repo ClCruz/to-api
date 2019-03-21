@@ -276,7 +276,7 @@
 
                 if ($isCreditCard == true) {
                     traceme($id_purchase, "sending email card", json_encode(array("id_pedido_venda"=>$pedidovenda["id_pedido_venda"], "vouchername"=>$vouchername,"voucheremail"=>$voucheremail)),1);
-                    make_purchase_email($pedidovenda["id_pedido_venda"], $vouchername,$voucheremail);
+                    make_purchase_email($pedidovenda["id_pedido_venda"], $vouchername,$voucheremail,"");
                     make_purchase_email_b2b($pedidovenda["id_pedido_venda"]);
                     traceme($id_purchase, "sending email card", 'ok',1);
                 }

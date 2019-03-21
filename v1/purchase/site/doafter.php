@@ -7,7 +7,7 @@
         $ret = change_situacao_boleto($id);
 
         if ($ret["success"] == true) {
-            make_purchase_email($id_pedido_venda, $ret["email_address"],$ret["email_name"]);
+            make_purchase_email($id_pedido_venda, $ret["email_address"],$ret["email_name"],"");
             make_purchase_email_b2b($id_pedido_venda);
         }
 
