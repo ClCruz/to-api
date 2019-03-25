@@ -3,5 +3,5 @@
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/sms/helper.php");
 
 
-    sms_response($_REQUEST["codigosms"], $_REQUEST["status"], $_REQUEST["data"]);
+    die(sms_sendnow(30, null, 'login', '5513996736933', 'localhost codigo 12548'));
 ?>

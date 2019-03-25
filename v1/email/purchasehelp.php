@@ -230,7 +230,7 @@
         logme();
     }
 
-    function make_purchase_email($id_pedido_venda, $vouchername,$voucheremail) {
+    function make_purchase_email($id_pedido_venda, $vouchername,$voucheremail,$forceemail) {
         if ($vouchername == null && $voucheremail != null) {
             $vouchername = $voucheremail;
         } 
@@ -240,6 +240,12 @@
 
         $to = $obj[0]["buyer_email"];
         $toName = $obj[0]["buyer_name"];
+
+        if ($forceemail!= "") {
+            $to = $forceemail;
+            $toName = $forceemail;
+        }
+
 
         $from = getwhitelabelemail()["noreply"]["email"];
         $fromName = getwhitelabelemail()["noreply"]["from"];

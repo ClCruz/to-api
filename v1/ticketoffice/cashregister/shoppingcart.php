@@ -28,6 +28,7 @@
                     ,"StaCadeira"=>$row["StaCadeira"]
                     ,"amountSubTotalSector"=>$row["amountSubTotalSector"]
                     ,"amountSubTotalTicket"=>$row["amountSubTotalTicket"]
+                    ,"isFixedAmount"=>$row["isFixedAmount"]
                     ,"valid"=>$row["valid"]);
 
             array_push($json,$aux);

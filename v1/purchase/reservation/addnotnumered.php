@@ -1,9 +1,10 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function set($id_base, $id_apresentacao, $qtd, $id, $NIN) {
-        $query = "EXEC pr_seat_reservation_notnumered ?, ?, ?, ?, ?";
-        $params = array(intval($id_apresentacao), $id, intval($qtd), $NIN, purchaseMinutesToExpireReservation());
+    function set($id_base, $id_apresentacao, $qtd, $id, $NIN, $caller, $codReserva, $codCliente, $sellreservation) {
+        // falta fazer o retorno da sp com o codreserva, e ela fazer a reserva e tbm tratar do lado da pagina para recuperar o codigo
+        $query = "EXEC pr_seat_reservation_notnumered ?, ?, ?, ?, ?, ?, ?, ?";
+        $params = array(intval($id_apresentacao), $id, intval($qtd), $NIN, purchaseMinutesToExpireReservation(), $codReserva, $codCliente, $sellreservation);
         $result = db_exec($query, $params, $id_base);
 
         $json = array();
@@ -17,7 +18,12 @@
         }
         if ($aux["error"] == 0)
         {
-            $json = array("success"=>1, "message"=>"Assento escolhido.");
+            if ($caller == "sell") {
+                $json = array("success"=>1, "message"=>"Assento escolhido.");
+            }
+            else {
+                $json = array("success"=>1, "message"=>"Assento reservado.");
+            }
         }
         else {
             switch ($aux["code"]) {
@@ -56,5 +62,5 @@
         die();    
     }
 
-set($_REQUEST["id_base"], $_REQUEST["id_apresentacao"], $_REQUEST["qtd"], $_REQUEST["id"], $_REQUEST["nin"]);
+set($_POST["id_base"], $_POST["id_apresentacao"], $_POST["qtd"], $_POST["id"], $_POST["nin"], $_POST["caller"], $_POST["codReserva"], $_POST["codCliente"], $_POST["sellreservation"]);
 ?>

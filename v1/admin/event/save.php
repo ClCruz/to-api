@@ -30,10 +30,11 @@
     ,$free_installments
     ,$max_installments
     ,$interest_rate
+    ,$ticketoffice_ticketmodel
     ) {
         //die("aqui: $imagechanged / $imagebase64");
         //sleep(5);
-        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
         $params = array($apikey
         ,$id_produtor
         ,$id_to_admin_user
@@ -57,6 +58,7 @@
         ,$free_installments
         ,$max_installments
         ,$interest_rate
+        ,$ticketoffice_ticketmodel
     );
 
         //die("aqui".json_encode($params));
@@ -169,5 +171,6 @@ execute($_REQUEST["apikey"]
 ,$_POST["imagebase64"]
 ,$_POST["free_installments"]
 ,$_POST["max_installments"]
-,$_POST["interest_rate"]);
+,$_POST["interest_rate"]
+,$_POST["ticketoffice_ticketmodel"]);
 ?>

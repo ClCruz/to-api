@@ -1,9 +1,9 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function get($id_base, $nin, $codReserva, $id_apresentacao) {
-        $query = "EXEC pr_reservation_list ?, ?, ?";
-        $params = array($nin, $codReserva, $id_apresentacao);
+    function get($id_base, $nin, $codReserva, $id_apresentacao, $name) {
+        $query = "EXEC pr_reservation_list ?, ?, ?, ?";
+        $params = array($nin, $codReserva, $id_apresentacao, $name);
         $result = db_exec($query, $params, $id_base);
 
         $json = array();
@@ -37,5 +37,5 @@
         logme();
         die();    
     }
-get($_REQUEST["id_base"], $_REQUEST["nin"], $_REQUEST["codReserva"], $_REQUEST["id_apresentacao"]);
+get($_POST["id_base"], $_POST["nin"], $_POST["codReserva"], $_POST["id_apresentacao"], $_POST["name"]);
 ?>
