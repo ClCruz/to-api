@@ -5,7 +5,7 @@
   "api": "http://localhost:2002",
   "pinpad": "http://localhost:7001/api",
   "legacy": "http://localhost:2004",
-  "apikey": "live_185e1621cf994a99ba945fe9692d4bf6d66ef03a1fcc47af8ac909dbcea53fb5",
+  "apikey": "live_578abaf329f84119bb7c1e55dfdc7e0f4f20e693cd2c4bc7a5bc0a0965fae322",
   "geokey": "AIzaSyCH0_IkJUiB8TLRuIJFvnI-JKLvuKx1zl8",
   "ga": "",
   "scss": "./src/scss/themes/vivaingressos/main.scss",

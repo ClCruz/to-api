@@ -24,6 +24,8 @@
             ,"weekdayName"=>$row["weekdayName"]
             ,"CodSala"=>$row["CodSala"]
             ,"HorSessao"=>$row["HorSessao"]
+            ,"istoday"=>$row["istoday"]
+            ,"istomorrow"=>$row["istomorrow"]
             ,"ValPeca"=>$row["ValPeca"]);
 
             array_push($json,$aux);
