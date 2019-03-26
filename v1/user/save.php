@@ -276,6 +276,7 @@
             ,"login"=>$row["login"]
             ,"token"=>$row["token"]
             ,"dologin"=>$isadd==1 && $row["success"] == 1
+            ,"isnew"=> $row["isnew"]
             );
 
             $firstname = $row["firstname"];
@@ -295,8 +296,10 @@
             $subject = "Cadastro realizado com sucesso.";
     
             $msg = $html;
-    
-            sendToAPI($from, $fromName, $to, $toName, $subject, $msg);
+
+            if ($json["isnew"] == 1) {
+                sendToAPI($from, $fromName, $to, $toName, $subject, $msg);
+            }
         }
 
         echo json_encode($json);
