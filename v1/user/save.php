@@ -15,7 +15,7 @@
     , $neighborhood, $address, $address_number
     , $address_more, $login, $pass
     , $newsletter, $agree, $fb
-    , $isforeign) {
+    , $isforeign, $loggedtoken) {
         $ret = array("success"=>1,"msg"=>"","id"=>0);;
 
         if ($agree!=1) {
@@ -146,14 +146,16 @@
             }
         }
         if (validatefield($pass)==false) {
-            $continueerror = true;
+            if ($loggedtoken == '') {
+                $continueerror = true;
 
-            if ($fb != '') {
-                $continueerror = false;
-            }
-
-            if ($continueerror) {
-                return array("success"=>0,"msg"=>"Senha é obrigatória.","id"=>0);
+                if ($fb != '') {
+                    $continueerror = false;
+                }
+    
+                if ($continueerror) {
+                    return array("success"=>0,"msg"=>"Senha é obrigatória.","id"=>0);
+                }
             }
         }
         else {
@@ -217,7 +219,7 @@
         , $neighborhood, $address, $address_number
         , $address_more, $login, $pass
         , $newsletter, $agree, $fb
-        , $isforeign, $isadd
+        , $isforeign, $isadd, $loggedtoken
     ) {
 
         $isok = validateall($firstname, $lastname, $gender
@@ -227,7 +229,7 @@
         , $neighborhood, $address, $address_number
         , $address_more, $login, $pass
         , $newsletter, $agree, $fb
-        , $isforeign, $isadd);
+        , $isforeign, $isadd, $loggedtoken);
 
         if ($isok["success"] == 0) {
             echo json_encode($isok);
@@ -235,14 +237,18 @@
             die();
         }
 
+
         $token = hash('ripemd160', $email.strtotime(date_default_timezone_get()));
-        $passwordHash = md5($pass);
+        $passwordHash = "";
+        if ($pass != '') {
+            $passwordHash = md5($pass);
+        }
 
         $birthdateSplit = explode("/", $birthdate);
 
         $birthdate = $birthdateSplit[2]."-".$birthdateSplit[1]."-".$birthdateSplit[0];
 
-        $query = "EXEC pr_user_save ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+        $query = "EXEC pr_user_save ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
         $params = array($firstname, $lastname, $gender
         , $birthdate, $document, $documenttype
         , $brazilian_rg, $phone_ddd, $phone_number
@@ -250,7 +256,7 @@
         , $neighborhood, $address, $address_number
         , $address_more, $login, $passwordHash
         , $newsletter, $agree, $fb
-        , $isforeign, gethost(), $isadd, $token);
+        , $isforeign, gethost(), $isadd, $token, $loggedtoken);
         $result = db_exec($query, $params);
 
         $json = array();
@@ -270,6 +276,7 @@
             ,"login"=>$row["login"]
             ,"token"=>$row["token"]
             ,"dologin"=>$isadd==1 && $row["success"] == 1
+            ,"isnew"=> $row["isnew"]
             );
 
             $firstname = $row["firstname"];
@@ -289,8 +296,10 @@
             $subject = "Cadastro realizado com sucesso.";
     
             $msg = $html;
-    
-            sendToAPI($from, $fromName, $to, $toName, $subject, $msg);
+
+            if ($json["isnew"] == 1) {
+                sendToAPI($from, $fromName, $to, $toName, $subject, $msg);
+            }
         }
 
         echo json_encode($json);
@@ -305,5 +314,5 @@ set($_POST["firstname"], $_POST["lastname"], $_POST["gender"]
     , $_POST["neighborhood"], $_POST["address"], $_POST["address_number"]
     , $_POST["address_more"], $_POST["login"], $_POST["pass"]
     , $_POST["newsletter"], $_POST["agree"], $_POST["fb"]
-    , $_POST["isforeign"], $_POST["type"]);
+    , $_POST["isforeign"], $_POST["type"], $_POST["loggedtoken"]);
 ?>
