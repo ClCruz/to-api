@@ -6,10 +6,10 @@
         $query = "EXEC pr_partner_static_page_check ?";
         $params = array($apikey);
         $result = db_exec($query, $params);
-
+        
         $json = array();
-        foreach ($result as &$row) {
-            $json = array(
+        foreach ($result as $row) {
+            $json[] = array(
                 "id" => $row["id"]
                 ,"name" => $row["name"]
                 ,"isvisible"=> $row["isvisible"]
@@ -18,7 +18,7 @@
 
         echo json_encode($json);
         logme();
-        die();    
+        die();
     }
 
     get($_REQUEST["apikey"]);
