@@ -53,6 +53,12 @@ function documentformatBR($cpf_cnpj){
 function getDefaultCardImageName() {
     return "card.jpg";
 }
+function getDefaultCardAdImageName() {
+    return "card.jpg";
+}
+function getDefaultBannerAdImageName() {
+    return "banner.jpg";
+}
 function getVideoFilename() {
     return "demo";
 }
@@ -249,6 +255,22 @@ function modifyDate($value) {
         return $ret;
     }
     return null;
+}
+function modifyDateWithHour($value, $defaulttime = "00:00") {
+    if ($value == "") return $value;
+    
+    $dateplit1 = explode(" ", $value);
+    $date = $dateplit1[0];
+    $time = $defaulttime;
+    if (sizeof($dateplit1) != 1) {
+        $time = $dateplit1[1];
+    }
+
+    $dateSplit2 = explode("/", $date);
+
+    $ret = $dateSplit2[2]."-".$dateSplit2[1]."-".$dateSplit2[0]." ".$time;
+
+    return $ret;
 }
 function mask($val, $mask)
 {
