@@ -9,7 +9,7 @@
     function get(
         $id,$id_partner,$isactive
         ,$startdate,$enddate,$title
-        ,$content,$link,$type
+        ,$content,$link,$adtype
         ,$imagebase64,$campaign,$name
         ,$priority,$index,$saveimage
     ) {
@@ -23,7 +23,7 @@
         $query = "EXEC pr_ad_save ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
         $params = array($id,$id_partner,$isactive
         ,$startdate,$enddate,$title
-        ,$content,$link,$type
+        ,$content,$link,$adtype
         ,$campaign,$name,$priority
         ,$index);
         $result = db_exec($query, $params);
@@ -61,7 +61,7 @@
                     }
 
                     $filename = getDefaultCardAdImageName();
-                    if ($type=="banner") {
+                    if ($adtype=="banner") {
                         $filename = getDefaultBannerAdImageName();
                     }
                     
@@ -85,7 +85,7 @@
                     $imagelog = $imagelog."saved";
 
                     $imageResizer = new ImageResize('/var/www/media/ori_discovery/'.$directoryname.'/'.$filename);
-                    if ($type == "card") {
+                    if ($adtype == "card") {
                         $imageResizer->resize(600,314, $allow_enlarge = true);
                     }
                     else
