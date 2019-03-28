@@ -61,7 +61,7 @@
                     }
 
                     $filename = getDefaultCardAdImageName();
-                    if ($type!="card") {
+                    if ($type!="banner") {
                         $filename = getDefaultBannerAdImageName();
                     }
                     
