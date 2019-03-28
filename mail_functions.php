@@ -54,7 +54,7 @@ function sendToSMTP($from, $fromName, $to, $toName, $subject, $msg) {
 }
 function sendToAPI($from, $fromName, $to, $toName, $subject, $msg) {	
 	//die( "oi");
-	return sendToSMTP($from, $fromName, $to, $toName, $subject, $msg);
+	//return sendToSMTP($from, $fromName, $to, $toName, $subject, $msg);
 	//return;
 	try {
 		$tomultiple = explode(',', $to);
