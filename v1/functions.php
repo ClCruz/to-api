@@ -50,6 +50,12 @@ function documentformatBR($cpf_cnpj){
     }
     return $cpf_cnpj_formatado;
 }
+function randomintbydate() {
+    $date = new DateTime();
+    $result = $date->format('Y-m-d H:i:s');
+    $aux = strtotime($result);
+    return $aux;
+}
 function getDefaultCardImageName() {
     return "card.jpg";
 }

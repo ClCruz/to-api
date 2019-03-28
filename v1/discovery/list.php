@@ -13,14 +13,14 @@
             $imageURIOriginal = "";
             if ($row["type"]=="banner")
             {
-                $imageURI = getDefaultMediaHost()."/discovery/".$row["id"]."/".getDefaultBannerAdImageName();
-                $imageURIOriginal = getDefaultMediaHost()."/ori_discovery/".$row["id"]."/".getDefaultBannerAdImageName();
+                $imageURI = getDefaultMediaHost()."/discovery/".$row["id"]."/".getDefaultBannerAdImageName()."?".randomintbydate();
+                $imageURIOriginal = getDefaultMediaHost()."/ori_discovery/".$row["id"]."/".getDefaultBannerAdImageName()."?".randomintbydate();
             }
 
             if ($row["type"]=="card")
             {
-                $imageURI = getDefaultMediaHost()."/discovery/".$row["id"]."/".getDefaultCardAdImageName();
-                $imageURIOriginal = getDefaultMediaHost()."/ori_discovery/".$row["id"]."/".getDefaultCardAdImageName();
+                $imageURI = getDefaultMediaHost()."/discovery/".$row["id"]."/".getDefaultCardAdImageName()."?".randomintbydate();
+                $imageURIOriginal = getDefaultMediaHost()."/ori_discovery/".$row["id"]."/".getDefaultCardAdImageName()."?".randomintbydate();
             }
             $json[] = array(
                 "id" => $row["id"]
