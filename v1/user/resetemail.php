@@ -41,8 +41,9 @@
     
             $msg = $html;
     
-            $teste = sendToAPI($from, $fromName, $to, $toName, $subject, $msg);
-            die(json_encode($teste));
+            //$teste = 
+            sendToAPI($from, $fromName, $to, $toName, $subject, $msg);
+            //die(json_encode($teste));
         }
 
         echo json_encode($json);
