@@ -28,6 +28,7 @@
                 // ,"isactive" => $row["isactive"]
                 // ,"startdate" => $row["startdate"]
                 // ,"enddate" => $row["enddate"]
+                ,"isdiscovery"=>1
                 ,"imageURI" => $imageURI
                 ,"imageURIOriginal" => $imageURIOriginal
                 ,"title" => $row["title"]

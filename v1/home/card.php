@@ -16,7 +16,8 @@
 
         foreach ($result as &$row) {
             $json[] = array(
-                "id_evento" => $row["id_evento"],
+                "isdiscovery"=>0
+                ,"id_evento" => $row["id_evento"],
                 "ds_evento" => $row["ds_evento"],
                 "ds_nome_teatro" => $row["ds_nome_teatro"],
                 "ds_municipio" => $row["ds_municipio"],
