@@ -1,6 +1,61 @@
 <?php
-function sendToAPI($from, $fromName, $to, $toName, $subject, $msg) {	
 
+require_once($_SERVER['DOCUMENT_ROOT']."/lib/phpmailer/PHPMailer.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/lib/phpmailer/SMTP.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/lib/phpmailer/Exception.php");
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+function sendToSMTP($from, $fromName, $to, $toName, $subject, $msg) {
+
+	try {
+		$mail = new PHPMailer();
+		//$mail->SMTPDebug = 1;
+		//$mail->SMTPDebug = 3; //Alternative to above constant
+
+		$mail->SetLanguage('br');
+		$mail->IsSMTP();
+		$mail->Host = 'smtp1.iagentesmtp.com.br';
+		$mail->Port = 25;
+		$mail->SMTPAuth = true;
+		$mail->Timeout = 20;
+		$mail->Username = 'leonel.costa@tixs.me';
+		$mail->Password = '54534c';
+
+		// $mail->Debugoutput = function($str, $level) {echo "debug level $level; message: $str";};
+
+		$mail->From = $from;
+		$mail->FromName = $fromName;
+
+		$mail->AddAddress($to, $toName);
+		$mail->IsHTML(true);
+		$mail->CharSet = 'utf8';
+
+		$mail->Subject  = $subject;
+		$mail->Body = $msg;
+		//$mail->AltBody = 'plain text';
+
+		$enviado = $mail->Send();
+		echo $enviado;
+		echo $mail->ErrorInfo;
+		//die("oi");
+
+		$mail->ClearAllRecipients();
+		$mail->ClearAttachments();
+
+		return "";
+	} catch (Exception $e) {
+		die(json_encode($e));
+		//return "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+		//return "";
+	}
+}
+function sendToAPI($from, $fromName, $to, $toName, $subject, $msg) {	
+	//die( "oi");
+	sendToSMTP($from, $fromName, $to, $toName, $subject, $msg);
+	//return;
 	try {
 		$tomultiple = explode(',', $to);
 		$fields_string = "";
@@ -62,7 +117,7 @@ function sendToAPI($from, $fromName, $to, $toName, $subject, $msg) {
 		$result = curl_exec($ch);
 		//close connection
 		curl_close($ch);
-	
+		//die($result);
 		return $result;
 
 	} catch (Exception $e) {
