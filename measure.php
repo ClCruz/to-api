@@ -1,5 +1,12 @@
 <?php
+require_once($_SERVER['DOCUMENT_ROOT']."/mail_functions.php");
+
+die(sendToSMTP("noreply@ciadeingressos.com", "noreply", "blcoccaro@gmail.com", "blcoccaro", "teste", "teste"));
+
 //die("dd");
+
+
+die("oi");
 $aux = $_REQUEST["json"];
 
 $passwordHash = hash('ripemd160', '123');
