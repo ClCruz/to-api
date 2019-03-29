@@ -124,7 +124,7 @@ function mailToAPI($from, $fromName, $to, $toName, $subject, $msg) {
 	}
 }
 function sendToAPI($from, $fromName, $to, $toName, $subject, $msg) {	
-	//mailToAPI($from, $fromName, $to, $toName, $subject, $msg);
-	mailToSMTP($from, $fromName, $to, $toName, $subject, $msg);
+	mailToAPI($from, $fromName, $to, $toName, $subject, $msg);
+	//mailToSMTP($from, $fromName, $to, $toName, $subject, $msg);
 }
 ?>
