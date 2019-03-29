@@ -1,9 +1,20 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT']."/mail_functions.php");
 
-die(sendToSMTP("noreply@ciadeingressos.com", "noreply", "blcoccaro@gmail.com", "blcoccaro", "teste", "teste"));
+echo sendToSMTP("noreply@ciadeingressos.com", "noreply", "blcoccaro@gmail.com", "blcoccaro", "this is smtp", "Bacon ipsum dolor amet venison pig chicken, sirloin kevin porchetta tri-tip pork t-bone salami pork loin pastrami ham boudin. Pig boudin pork, venison spare ribs strip steak hamburger jowl ribeye meatloaf ball tip shankle short ribs bacon. Hamburger kielbasa pastrami t-bone, meatball tenderloin chuck pork. Tri-tip salami short ribs landjaeger shankle ground round. Pork loin cow ham hock pancetta, alcatra t-bone drumstick short loin pig ball tip.");
 
-//die("dd");
+echo "<br />";
+echo "<br />";
+echo "<br />";
+echo "<br />";
+echo "<br />";
+
+echo "----------------------------------------";
+echo "<br />";
+
+echo sendToAPI("noreply@ciadeingressos.com", "noreply", "blcoccaro@gmail.com", "blcoccaro", "this is api", "Bacon ipsum dolor amet venison pig chicken, sirloin kevin porchetta tri-tip pork t-bone salami pork loin pastrami ham boudin. Pig boudin pork, venison spare ribs strip steak hamburger jowl ribeye meatloaf ball tip shankle short ribs bacon. Hamburger kielbasa pastrami t-bone, meatball tenderloin chuck pork. Tri-tip salami short ribs landjaeger shankle ground round. Pork loin cow ham hock pancetta, alcatra t-bone drumstick short loin pig ball tip.");
+
+die("final.");
 
 
 die("oi");
