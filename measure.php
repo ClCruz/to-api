@@ -1,7 +1,55 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT']."/mail_functions.php");
+    require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
+    require_once($_SERVER['DOCUMENT_ROOT']."/vendor/autoload.php");
+    require_once($_SERVER['DOCUMENT_ROOT']."/v1/admin/partner/scaffolderhelp/help.php");
+    require_once($_SERVER['DOCUMENT_ROOT']."/mail_functions.php");
 
-echo sendToSMTP("noreply@ciadeingressos.com", "noreply", "blcoccaro@gmail.com", "blcoccaro", "this is smtp", "Bacon ipsum dolor amet venison pig chicken, sirloin kevin porchetta tri-tip pork t-bone salami pork loin pastrami ham boudin. Pig boudin pork, venison spare ribs strip steak hamburger jowl ribeye meatloaf ball tip shankle short ribs bacon. Hamburger kielbasa pastrami t-bone, meatball tenderloin chuck pork. Tri-tip salami short ribs landjaeger shankle ground round. Pork loin cow ham hock pancetta, alcatra t-bone drumstick short loin pig ball tip.");
+function teste($name,$code) { 
+    $templatefolder = $_SERVER['DOCUMENT_ROOT'].$templatefolder = getwhitelabelobj()["templates"]["emails"]["folder"];
+
+    $replacement = getonlyReplacement(gethost());
+    
+    $wlsite = "";
+    $wlsitewithwww = "";
+    $wlsitelogomedia = "";
+    $wluniquename = "";
+    $wlsitewithoutwww = "";
+
+    
+    foreach($replacement as $tocheck){
+        if (strpos("__wl-site__", $tocheck["from"])  !== false) {
+            $wlsite = $tocheck["to"];
+        }
+        if (strpos("__wl-sitewithwww__", $tocheck["from"])  !== false) {
+            $wlsitewithwww = $tocheck["to"];
+        }
+        if (strpos("__wl-site-logo-media__", $tocheck["from"])  !== false) {
+            $wlsitelogomedia = $tocheck["to"];
+        }
+        if (strpos("__wl-uniquename__", $tocheck["from"])  !== false) {
+            $wluniquename = $tocheck["to"];
+        }
+        if (strpos("__wl-sitewithoutwww__", $tocheck["from"])  !== false) {
+            $wlsitewithoutwww = $tocheck["to"];
+        }
+    }
+    // die(json_encode($wlsitewithwww));
+
+    $loader = new Twig_Loader_Filesystem($templatefolder);
+    $twig = new Twig_Environment($loader);
+    $htmlname = "resetpass.html";
+    return $twig->render($htmlname, [
+                                        "wlsite" => $wlsite,
+                                        "wlsitewithwww" => $wlsitewithwww,
+                                        "wlsitelogomedia" => $wlsitelogomedia,
+                                        "wluniquename" => $wluniquename,
+                                        "wlsitewithoutwww" => $wlsitewithoutwww,
+                                        "user_name" => $name,
+                                        "reset_link" => getwhitelabelURI_home("/resetpass/".$code),
+                                    ] );
+}
+
+echo mailToSMTP("noreply@aecloja.com.br", "noreply", "producao@amigosecia.com.br", "teste", "enviado via smtp", teste("Matt Murdock", "KKKDD"));
 
 echo "<br />";
 echo "<br />";
@@ -12,7 +60,9 @@ echo "<br />";
 echo "----------------------------------------";
 echo "<br />";
 
-echo sendToAPI("noreply@ciadeingressos.com", "noreply", "blcoccaro@gmail.com", "blcoccaro", "this is api", "Bacon ipsum dolor amet venison pig chicken, sirloin kevin porchetta tri-tip pork t-bone salami pork loin pastrami ham boudin. Pig boudin pork, venison spare ribs strip steak hamburger jowl ribeye meatloaf ball tip shankle short ribs bacon. Hamburger kielbasa pastrami t-bone, meatball tenderloin chuck pork. Tri-tip salami short ribs landjaeger shankle ground round. Pork loin cow ham hock pancetta, alcatra t-bone drumstick short loin pig ball tip.");
+echo mailToAPI("noreply@aecloja.com.br", "noreply", "producao@amigosecia.com.br", "teste", "enviado via api", teste("Matt Murdock", "KKKDD"));
+
+echo sendToAPI("noreply@aecloja.com.br", "noreply", "producao@amigosecia.com.br", "teste", "teste default", teste("Matt Murdock", "KKKDD"));
 
 die("final.");
 

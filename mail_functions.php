@@ -7,12 +7,12 @@ require_once($_SERVER['DOCUMENT_ROOT']."/lib/phpmailer/Exception.php");
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-function sendToSMTP($from, $fromName, $to, $toName, $subject, $msg) {
+function mailToSMTP($from, $fromName, $to, $toName, $subject, $msg) {
 
 	try {
 		$mail = new PHPMailer();
 		//$mail->SMTPDebug = 1;
-		$mail->SMTPDebug = 3; //Alternative to above constant
+		// $mail->SMTPDebug = 3; //Alternative to above constant
 
 		$mail->SetLanguage('br');
 		$mail->SMTPSecure = false;
@@ -25,7 +25,7 @@ function sendToSMTP($from, $fromName, $to, $toName, $subject, $msg) {
 		$mail->Username = 'leonel.costa@tixs.me';
 		$mail->Password = '54534c';
 
-		$mail->Debugoutput = function($str, $level) {echo "<br />debug level $level; message: $str";};
+		// $mail->Debugoutput = function($str, $level) {echo "<br />debug level $level; message: $str";};
 
 		$mail->From = $from;
 		$mail->FromName = $fromName;
@@ -53,10 +53,7 @@ function sendToSMTP($from, $fromName, $to, $toName, $subject, $msg) {
 		//return "";
 	}
 }
-function sendToAPI($from, $fromName, $to, $toName, $subject, $msg) {	
-	//die( "oi");
-	//return sendToSMTP($from, $fromName, $to, $toName, $subject, $msg);
-	//return;
+function mailToAPI($from, $fromName, $to, $toName, $subject, $msg) {
 	try {
 		$tomultiple = explode(',', $to);
 		$fields_string = "";
@@ -125,6 +122,9 @@ function sendToAPI($from, $fromName, $to, $toName, $subject, $msg) {
 		return "";
 
 	}
-
+}
+function sendToAPI($from, $fromName, $to, $toName, $subject, $msg) {	
+	//mailToAPI($from, $fromName, $to, $toName, $subject, $msg);
+	mailToSMTP($from, $fromName, $to, $toName, $subject, $msg);
 }
 ?>
