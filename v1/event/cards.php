@@ -29,7 +29,6 @@
     }
     function splitBadge($value) {
         $ret = array();
-
         if ($value === null)
             return $ret;
 
