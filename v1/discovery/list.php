@@ -6,7 +6,8 @@
         $query = "EXEC pr_ad_home_list ?";
         $params = array($apikey);
         $result = db_exec($query, $params);
-
+        
+        // die(json_encode($result));
         $json = array();
         foreach ($result as &$row) {
             $imageURI = "";
