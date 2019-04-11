@@ -12,6 +12,7 @@
             $json[] = array(
                 "id" => $row["id"]
                 ,"code" => $row["code"]
+                ,"group" => $row["group"]
                 ,"name" => $row["name"]
                 ,"description" => $row["description"]
                 ,"active" => $row["active"]
