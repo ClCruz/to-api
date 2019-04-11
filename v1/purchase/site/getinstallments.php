@@ -11,7 +11,7 @@
 
       $values = getvaluesofmyshoppig($codCliente);
       $amount = $values[0]["totalwithservice"];
-      $id_purchase = get_id_purchase($id_session, $codCliente);
+      $id_purchase = get_id_purchase($idSession, $codCliente);
 
       $installment_config = getinstallments($id_purchase, $codCliente);
       $installment_gateway = pagarme_installments($id_purchase, $installment_config["free_installments"], $installment_config["max_installments"], $installment_config["interest_rate"], $amount);
