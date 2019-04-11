@@ -5,18 +5,14 @@
     use \Gumlet\ImageResize;
     
     function execute($apikey
-    ,$id_base
-    ,$id_to_admin_user
-    ,$id_evento
+    ,$data
     ) {
 
        // echo json_encode($json);
        // logme();
-        die("oi");    
+        die("oi".json_encode($data));    
     }
 
 execute($_REQUEST["apikey"]
-,$_POST["id_base"]
-,$_POST["id_to_admin_user"]
-,$_POST["id_evento"]);
+,$_POST["data"]);
 ?>
