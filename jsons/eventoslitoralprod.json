@@ -1,7 +1,7 @@
 {
   "env": "production",
-  "host": "ingressoslitoral.com.br",
-  "uri": "https://ingressoslitoral.com.br",
+  "host": "www.ingressoslitoral.com.br",
+  "uri": "https://www.ingressoslitoral.com.br",
   "api": "https://api.ingressoslitoral.com.br",
   "pinpad": "http://localhost:7001/api",
   "admin": "https://admin.ingressoslitoral.com.br",
