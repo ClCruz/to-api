@@ -13,67 +13,67 @@
     }
   },
   "formto": {
-    "email":"teatroitalia.escritorio@gmail.com",
+    "email":"atendimento@ingressoparatodos.com.br",
     "from": "formto",
     "pass":""
   },
   "noreply": {
-    "email":"noreply@sazarte.com",
+    "email":"noreply@ingressoparatodos.com.br",
     "from": "noreply",
     "pass":""
   },
   "register": {
-    "email":"cadastro@sazarte.com",
+    "email":"cadastro@ingressoparatodos.com.br",
     "from": "cadastro",
     "pass":""
   },
   "shopping": {
-    "email":"pedido@sazarte.com",
+    "email":"pedido@ingressoparatodos.com.br",
     "from": "pedido",
     "pass":""
   },
   "lembrete": {
-    "email":"pedido@sazarte.com",
+    "email":"pedido@ingressoparatodos.com.br",
     "from": "pedido",
     "pass":""
   },
   "marketing": {
-    "email":"pedido@sazarte.com",
+    "email":"pedido@ingressoparatodos.com.br",
     "from": "pedido",
     "pass":""
   },
   "info": {
-    "email":"pedido@sazarte.com",
+    "email":"pedido@ingressoparatodos.com.br",
     "from": "pedido",
     "pass":""
   },
   "sac": {
-    "email":"teatroitalia.escritorio@gmail.com",
+    "email":"pedido@ingressoparatodos.com.br",
     "from": "noreply",
     "pass":""
   },
   "pedido": {
-    "email":"administracao@teatroitalia.com.br",
+    "email":"pedido@ingressoparatodos.com.br",
     "from": "pedido",
     "pass":""
   },
   "assinantea@siscompre": {
-    "email":"administracao@teatroitalia.com.br",
+    "email":"pedido@ingressoparatodos.com.br",
     "from": "pedido",
     "pass":""
   },
   "compreingressospedidos@hotmail": {
-    "email":"administracao@teatroitalia.com.br",
+    "email":"pedido@ingressoparatodos.com.br",
     "from": "pedido",
     "pass":""
   },
   "compreingressos@siscompre": {
-    "email":"administracao@teatroitalia.com.br",
+    "email":"pedido@ingressoparatodos.com.br",
     "from": "pedido",
     "pass":""
   },
   "compreingressos@gmail": {
-    "email":"administracao@teatroitalia.com.br",
+    "email":"pedido@ingressoparatodos.com.br",
     "from": "pedido",
     "pass":""
   }

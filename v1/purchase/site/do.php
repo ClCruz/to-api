@@ -200,7 +200,7 @@
         traceme($id_purchase, "charge gateway", json_encode($charge),0);
 
         $buyer = array("name"=> $client["fullname"]
-                        ,"document"=> $client["cd_cpf"]
+                        ,"document"=> ($client["cd_cpf"] == null || $client["cd_cpf"] == "" ? $client["cd_rg"] : $client["cd_cpf"])
                         ,"email"=> $client["cd_email_login"]
                         ,"sex"=> $client["in_sexo"]
                         ,"born"=> $client["dt_nascimento"]

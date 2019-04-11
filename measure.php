@@ -49,7 +49,7 @@ function teste($name,$code) {
                                     ] );
 }
 
-echo mailToSMTP("noreply@aecloja.com.br", "noreply", "producao@amigosecia.com.br", "teste", "enviado via smtp", teste("Matt Murdock", "KKKDD"));
+echo mailToSMTP("noreply@aecloja.com.br", "noreply", "blcoccaro@gmail.com", "teste", "enviado via smtp", teste("Matt Murdock", "KKKDD"));
 
 echo "<br />";
 echo "<br />";
@@ -60,9 +60,9 @@ echo "<br />";
 echo "----------------------------------------";
 echo "<br />";
 
-echo mailToAPI("noreply@aecloja.com.br", "noreply", "producao@amigosecia.com.br", "teste", "enviado via api", teste("Matt Murdock", "KKKDD"));
+echo mailToAPI("noreply@aecloja.com.br", "noreply", "blcoccaro@gmail.com", "teste", "enviado via api", teste("Matt Murdock", "KKKDD"));
 
-echo sendToAPI("noreply@aecloja.com.br", "noreply", "producao@amigosecia.com.br", "teste", "teste default", teste("Matt Murdock", "KKKDD"));
+echo sendToAPI("noreply@aecloja.com.br", "noreply", "blcoccaro@gmail.com", "teste", "teste default", teste("Matt Murdock", "KKKDD"));
 
 die("final.");
 
