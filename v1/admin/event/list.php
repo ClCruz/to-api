@@ -20,6 +20,8 @@
                 ,"in_ativo" => $row["in_ativo"]
                 ,"ds_evento" => $row["ds_evento"]
                 ,"showInBanner" => $row["showInBanner"]
+                ,"showonline" => $row["showonline"]
+                ,"hasshowyet" => $row["hasshowyet"]
                 ,"imageURI" => $imageURI
                 ,"uri" => $row["uri"]
                 ,"ds_local_evento" => $row["ds_local_evento"]

@@ -10,9 +10,10 @@
 
         $json = array();
         foreach ($result as &$row) {
-            $imageOriginalURI = getDefaultMediaHost().str_replace("{default_ori}",getOriginalCardImageName(),str_replace("{id}",$row["id_evento"],$row["imageoriginal"]));
-            $imageBigURI = getDefaultMediaHost().str_replace("{default_big}",getBigCardImageName(),str_replace("{id}",$row["id_evento"],$row["cardbigimage"]));
-            $imageURI = getDefaultMediaHost().str_replace("{default_card}",getDefaultCardImageName(),str_replace("{id}",$row["id_evento"],$row["cardimage"]));
+            $imageOriginalURI = getDefaultMediaHost().str_replace("{default_ori}",getOriginalCardImageName(),str_replace("{id}",$row["id_evento"],$row["imageoriginal"]))."?".randomintbydate();
+            $imageBigURI = getDefaultMediaHost().str_replace("{default_big}",getBigCardImageName(),str_replace("{id}",$row["id_evento"],$row["cardbigimage"]))."?".randomintbydate();
+            $imageURI = getDefaultMediaHost().str_replace("{default_card}",getDefaultCardImageName(),str_replace("{id}",$row["id_evento"],$row["cardimage"]))."?".randomintbydate();
+
             $json = array(
                 "CodPeca" => $row["CodPeca"]
                 ,"id_produtor" => $row["id_produtor"]
@@ -25,6 +26,8 @@
                 ,"TemDurPeca" => $row["TemDurPeca"]
                 ,"CenPeca" => $row["CenPeca"]
                 ,"id_local_evento" => $row["id_local_evento"]
+                ,"showonline" => $row["showonline"]
+                ,"hasshowyet" => $row["hasshowyet"]
                 ,"id_municipio" => $row["id_municipio"]
                 ,"id_estado" => $row["id_estado"]
                 ,"ValIngresso" => $row["ValIngresso"]
@@ -42,9 +45,9 @@
                 ,"DatIniPeca" => $row["DatIniPeca"]
                 ,"DatFinPeca" => $row["DatFinPeca"]
                 ,"hasPresentantion" => $row["hasPresentantion"]
-                ,"imageOriginalURI" => $imageOriginalURI
-                ,"imageBigURI" => $imageBigURI
-                ,"imageURI" => $imageURI,
+                ,"imageURIOriginal" => $imageOriginalURI
+                ,"imageURIBanner" => $imageBigURI
+                ,"imageURICard" => $imageURI,
                 "free_installments" => $row["free_installments"],
                 "max_installments" => $row["max_installments"],
                 "interest_rate" => $row["interest_rate"],
