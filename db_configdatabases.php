@@ -24,13 +24,15 @@ function getDatabaseName($id_base) {
 	$aux = json_decode(file_get_contents($jsonFile), true);
 
 	$ret = '';
-
-    if ($id_base == null) { 
+	
+	if ($id_base == null) { 
 		$ret = $aux["default"];
 	}
 	else {
 		$id_base_h = (string)$id_base;
-		$ret = $aux[$id_base_h];
+		if (array_key_exists($id_base_h, $aux)) {
+			$ret = $aux[$id_base_h];
+		}
 	}
 
 	if ($ret == '')

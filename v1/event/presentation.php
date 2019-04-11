@@ -20,7 +20,7 @@
             ,"ds_estado"=>$row["ds_estado"]
             ,"sg_estado"=>$row["sg_estado"]
             ,"NomSala"=>$row["NomSala"]
-            ,"NomSetor"=>$row["NomSetor"]
+            ,"NomSetor"=>""//$row["NomSetor"]
             ,"weekdayName"=>$row["weekdayName"]
             ,"CodSala"=>$row["CodSala"]
             ,"HorSessao"=>$row["HorSessao"]
