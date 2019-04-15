@@ -10,12 +10,17 @@
         $retPagarme = "";
         $aux = array();
         foreach ($result as &$row) {
+
+            if ($row["success"] == "1" || $row["success"] == 1) {
+                $retPagarme = pagarme_refund($aux["key"], $aux["amount"]);
+            }
+            else {
+
+            }
+
             $aux = array("key"=>$row["key"]
             ,"amount"=>$row["amount"]);
 
-            //if ($dogateway == 1)
-            $retPagarme = pagarme_refund($aux["key"], $aux["amount"]);
-            
             array_push($json,$aux);
         }
 
