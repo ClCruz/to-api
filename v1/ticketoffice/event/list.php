@@ -9,6 +9,10 @@
         $json = array();
         $isValid = false;
         foreach ($result as &$row) {
+            $text = $row["NomPeca"];
+            if ($row["splitok"] == 0) {
+                $text .= " - (Split não configurado)";
+            }
             $aux = array("codPeca"=>$row["CodPeca"]
                     ,"NomPeca"=>$row["NomPeca"]
                     ,"img" => getDefaultMediaHost() . str_replace("{id}", $row["id_evento"],str_replace("{default_card}", getDefaultCardImageName(),$row["cardimage"]))
@@ -16,8 +20,9 @@
                     ,"in_vende_site"=>$row["in_vende_site"]
                     ,"days"=>$row["days"]
                     ,"TemDurPeca"=>$row["TemDurPeca"]
+                    ,"splitok"=>$row["splitok"]
                     ,"TipPeca"=>$row["TipPeca"]
-                    ,"text"=>$row["NomPeca"]
+                    ,"text"=> $text
                     ,"value"=>$row["CodPeca"]);
 
             array_push($json,$aux);
