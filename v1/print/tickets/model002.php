@@ -44,6 +44,7 @@
    
            $json[] = array(
                "id"=>$row["id"]
+               ,"reprint"=>$row["reprint"]
                ,"qrcode"=>base64_encode($imagedata)
                ,"local"=>$row["local"]
                ,"address"=>$row["address"]
@@ -333,6 +334,13 @@
                <div class="">&nbsp;</div>
                <div class="printright">
                   <span class="printqtd">
+                     <?php 
+                     if ($row["reprint"] > 1) {
+                     ?>
+                        <span>Reimpressão - </span>
+                     <?php
+                     }
+                     ?>
                   Qtde: <span class=""><?php echo $row["howMany"] ?></span>
                   </span>
                </div>
@@ -392,6 +400,13 @@
                </div>
                <div class="printright">
                   <span class="printqtd">
+                  <?php 
+                     if ($row["reprint"] > 1) {
+                     ?>
+                        <span>Reimpressão - </span>
+                     <?php
+                     }
+                     ?>
                   Qtde: <span class=""><?php echo $row["howMany"] ?></span>
                   </span>
                </div>
@@ -448,15 +463,22 @@
                   <span class="">| Assento: <span class="printvalue"><?php echo limittext($row["seatRow"]."-".$row["seatName"].$moretextteste,10) ?></span></span>
                   <?php } ?>
                </div>
-               <div class="">&nbsp;</div>
+               <!-- <div class="">&nbsp;</div> -->
                <div class="leftdonttouchme forcetwolines">
                     <span class=""><?php echo limittext($row["user"].$moretextteste,12).limittext(" V:".$row["purchase_date"]." IM:".$row["print_date"]) ?>
                   </span>
 
                </div>
-               <div class="">&nbsp;</div>
+               <!-- <div class="">&nbsp;</div> -->
                <div class="printright">
                   <span class="printqtd">
+                  <?php 
+                     if ($row["reprint"] > 1) {
+                     ?>
+                        <span>Reimpressão - </span>
+                     <?php
+                     }
+                     ?>
                   Qtde: <span class=""><?php echo $row["howMany"] ?></span>
                   </span>
                </div>
@@ -468,12 +490,14 @@
       <script lang="javascript">
          <?php 
             if ($dontprint == false) {
-               echo "window.print();";
+         ?>
+               setTimeout(function() { 
+                  window.print();
+                  window.close();
+               }, 1000);
+         <?php
             }
-            if ($dontclose == false) {
-               echo "window.close();";
-            }
-            ?>
+         ?>
       </script>
    </body>
 </html>

@@ -47,6 +47,7 @@
    
            $json[] = array(
                "id"=>$row["id"]
+               ,"reprint"=>$row["reprint"]
                ,"qrcode"=>base64_encode($imagedata)
                ,"local"=>$row["local"]
                ,"address"=>$row["address"]
