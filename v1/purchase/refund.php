@@ -9,17 +9,20 @@
         $result = db_exec($query, $params, $id_base);
         $retPagarme = "";
         $aux = array();
+        $info = array();
         foreach ($result as &$row) {
-            $aux = array("key"=>$row["key"]
-            ,"amount"=>$row["amount"]);
+            if ($row["success"] == "1" || $row["success"] == 1) {
+                $info = array("key" => $row["key"], "amount" => $row["amount"]);
+                $retPagarme = pagarme_refund($row["key"], $row["amount"]);
+            }
 
-            //if ($dogateway == 1)
-            $retPagarme = pagarme_refund($aux["key"], $aux["amount"]);
-            
-            array_push($json,$aux);
+//            $aux = array("key"=>$row["key"]
+//            ,"amount"=>$row["amount"]);
+
+ //           array_push($json,$aux);
         }
 
-        $json = array("success"=>true, "msg"=>$retPagarme);
+        $json = array("success"=>true, "msg"=>$retPagarme, "moreinfo"=>$info);
 
         echo json_encode($json);
         logme();
