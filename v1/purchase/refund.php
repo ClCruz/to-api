@@ -12,10 +12,7 @@
         foreach ($result as &$row) {
 
             if ($row["success"] == "1" || $row["success"] == 1) {
-                $retPagarme = pagarme_refund($aux["key"], $aux["amount"]);
-            }
-            else {
-
+                $retPagarme = pagarme_refund($row["key"], $row["amount"]);
             }
 
             $aux = array("key"=>$row["key"]
