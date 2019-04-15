@@ -515,7 +515,7 @@
                     $ret = array("success"=>false, "msg"=>$aux->errors[0]->message);
                 }
                 else {
-                    $ret["success"] = isset($aux["refunded_amount"]);
+                    $ret["success"] = isset($aux->refunded_amount);
                 }
             }
             
