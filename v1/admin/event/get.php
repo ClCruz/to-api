@@ -24,6 +24,8 @@
                 ,"CodTipPeca" => $row["CodTipPeca"]
                 ,"id_genre" => $row["id_genre"]
                 ,"TemDurPeca" => $row["TemDurPeca"]
+                ,"amountMax" => $row["amountMax"]
+                ,"amountMin" => $row["amountMin"]
                 ,"CenPeca" => $row["CenPeca"]
                 ,"id_local_evento" => $row["id_local_evento"]
                 ,"showonline" => $row["showonline"]
