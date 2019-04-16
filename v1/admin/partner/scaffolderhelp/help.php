@@ -264,6 +264,22 @@
         //dev
         //git_reset($currentgit);
     }
+    function do_toadmin($db, $replacement, $idexec) {
+        $doecho = false;
+        $dir = '/var/www/gitauto/';
+        git_clone_toadmin($dir);
+        $currentgit = $dir."to-admin";
+
+        execshell($dir."scaffolder/to-admin/", "rsync -rR * ".$dir."to-admin/", false);
+
+        replaceindomain($db, $replacement, $dir."to-admin/jsons/domains.json");         
+
+        //production
+        git_createbranch_push($currentgit, $db["uniquename"], $idexec);
+        git_mergetomaster($currentgit, $db["uniquename"], $idexec);
+        //dev
+        //git_reset($currentgit);
+    }
     function do_legacy($db, $replacement, $idexec,$logoext) {
         $doecho = false;
         $dir = '/var/www/gitauto/';
@@ -301,6 +317,7 @@
     function resetall() {
         git_gotomaster("/var/www/gitauto/scaffolder/");
         git_gotomaster("/var/www/gitauto/to-site/");
+        git_gotomaster("/var/www/gitauto/to-admin/");
         git_gotomaster("/var/www/gitauto/to-legacy/");
         git_gotomaster("/var/www/gitauto/to-api/");
         git_gotomaster("/var/www/gitauto/to-database/");
@@ -309,7 +326,7 @@
         logme();
         die();
     }
-    function doall($id, $do_site, $do_legacy, $do_api, $logoext) {
+    function doall($id, $do_site, $do_legacy, $do_api, $do_admin, $logoext) {
         $idexec = date("Ymdhis");
         $db = getinfofromdb($id, '');
         $replacement = getReplacement($db,$logoext);
@@ -323,6 +340,9 @@
         }
         if ($do_api) {
             do_toapi($db, $replacement, $idexec);
+        }
+        if ($do_admin) {
+            do_toadmin($db, $replacement, $idexec);
         }
 
         echo json_encode(array("success"=>true, "msg"=>"Criado com sucesso."));
