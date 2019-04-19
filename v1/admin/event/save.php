@@ -63,6 +63,12 @@
         ,$showonline
     );
 
+    // sleep(15);
+    // $json = array("success"=>true
+    // ,"msg"=>"Salvo com sucesso");
+    // echo json_encode($json);
+    // die();    
+
         //die("aqui".json_encode($params));
         $result = db_exec($query, $params, $id_base);
 
