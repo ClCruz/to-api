@@ -26,6 +26,8 @@
                 ,"TemDurPeca" => $row["TemDurPeca"]
                 ,"amountMax" => $row["amountMax"]
                 ,"amountMin" => $row["amountMin"]
+                ,"minAmount" => $row["minAmount"]
+                ,"maxAmount" => $row["maxAmount"]
                 ,"CenPeca" => $row["CenPeca"]
                 ,"id_local_evento" => $row["id_local_evento"]
                 ,"showonline" => $row["showonline"]

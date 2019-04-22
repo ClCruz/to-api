@@ -32,10 +32,14 @@
     ,$interest_rate
     ,$ticketoffice_ticketmodel
     ,$showonline
+    ,$minAmount
+    ,$maxAmount
     ) {
+        $minAmount = $minAmount*100;
+        $maxAmount = $maxAmount*100;
         //die("aqui: $imagechanged / $imagebase64");
         //sleep(5);
-        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
         $params = array($apikey
         ,$id_produtor
         ,$id_to_admin_user
@@ -61,6 +65,8 @@
         ,$interest_rate
         ,$ticketoffice_ticketmodel
         ,$showonline
+        ,$minAmount
+        ,$maxAmount
     );
 
     // sleep(15);
@@ -181,5 +187,7 @@ execute($_REQUEST["apikey"]
 ,$_POST["max_installments"]
 ,$_POST["interest_rate"]
 ,$_POST["ticketoffice_ticketmodel"]
-,$_POST["showonline"]);
+,$_POST["showonline"]
+,$_POST["minAmount"]
+,$_POST["maxAmount"]);
 ?>
