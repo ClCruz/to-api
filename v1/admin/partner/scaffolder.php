@@ -32,7 +32,7 @@
         }
 
         if ($doimage) {      
-            $aux = getinfofromdb($id_partner);
+            $aux = getinfofromdb($id_partner,"");
 
             $imagelog =  $imagelog."altered image|";
             if (preg_match('/^data:image\/(\w+);base64,/', $imagebase64, $type)) {
@@ -77,7 +77,8 @@
             $do_site = $generate == 1 || $generate == 2;
             $do_legacy = $generate == 1 || $generate == 4;
             $do_api = $generate == 1 || $generate == 3;
-            doall($id_partner, $do_site, $do_legacy, $do_api, $type);
+            $do_admin = $generate == 1 || $generate == 5;
+            doall($id_partner, $do_site, $do_legacy, $do_api, $do_admin, $type);
             savegitexec($id_partner, 0);
         }
 

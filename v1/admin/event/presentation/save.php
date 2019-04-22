@@ -4,7 +4,6 @@
 
     function printtoxml($item, $key, $xml)
     {
-        //$child = $xml->addChild("item",$key);
         $child = $xml->addChild('item');
         array_walk($item, 'printtoxml2', $child);
     }
@@ -14,23 +13,16 @@
         //$xml->addChild($key,$item);
     }
 
-    function execute($data) {
-        //die(json_encode($data));
+    function execute($data, $loggedId, $id_base) {
         $xml = new SimpleXMLElement('<root/>');
         array_walk($data, 'printtoxml', $xml);
-        //array_walk_recursive($data, array ($xml, 'addChild'));
-        //print $xml->asXML();
-        //die();
-
         $query = "EXEC pr_admin_presentation_add ?";
         $params = array($xml->asXML());
-        //die("aaa.".print_r(db_param($startAt),true));
-        $result = db_exec($query, $params);
+        $result = db_exec($query, $params, $id_base);
 
-        $json = array("success"=>true);
         foreach ($result as &$row) {
-            // $json = array("success"=>$row["success"] == "1" || $row["success"] == 1
-            //             ,"msg"=>$row["msg"]);
+            $json = array("success"=>$row["success"] == "1" || $row["success"] == 1
+                        ,"msg"=>$row["msg"]);
         }
 
         echo json_encode($json);
@@ -38,5 +30,5 @@
         die();      
     }
 
-execute($_POST["data"]);
+execute($_POST["data"], $_POST["loggedId"], $_POST["id_base"]);
 ?>

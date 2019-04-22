@@ -19,6 +19,7 @@
                 ,"DatApresentacao" => $row["DatApresentacao"]
                 ,"HorSessao" => $row["HorSessao"]
                 ,"ValPeca" => $row["ValPeca"]
+                ,"amount" => $row["amount"]
                 ,"StaAtivoWeb" => $row["StaAtivoWeb"]
                 ,"StaAtivoBilheteria" => $row["StaAtivoBilheteria"]
             );
