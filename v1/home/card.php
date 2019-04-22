@@ -19,6 +19,9 @@
                 "isdiscovery"=>0
                 ,"id_evento" => $row["id_evento"],
                 "ds_evento" => $row["ds_evento"],
+                "valores" => $row["valores"],
+                "minAmount" => $row["minAmount"],
+                "maxAmount" => $row["maxAmount"],
                 "ds_nome_teatro" => $row["ds_nome_teatro"],
                 "ds_municipio" => $row["ds_municipio"],
                 "sg_estado" => $row["sg_estado"],
