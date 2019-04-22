@@ -78,7 +78,8 @@
         return $ret;
     }
     $obj = get($_REQUEST["id"]);
-    $uniquename = getuniquefromdomain($_REQUEST["host"]);
+    //die($_REQUEST["host"]);
+    $uniquename = getuniquefromdomainforced($_REQUEST["host"]);
     $title = getwhitelabelobjforced($uniquename)["info"]["title"];
     $appName = getwhitelabelobjforced($uniquename)["host"];
     $name = getwhitelabelobjforced($uniquename)["host"];

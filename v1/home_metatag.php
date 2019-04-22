@@ -22,7 +22,7 @@
     $id = $_REQUEST["id"];
     $params = explode("/",$id);
 
-    $uniquename = getuniquefromdomain($_REQUEST["host"]);
+    $uniquename = getuniquefromdomainforced($_REQUEST["host"]);
     $replacement = getonlyReplacement($uniquename);
     $logo = "";
 
