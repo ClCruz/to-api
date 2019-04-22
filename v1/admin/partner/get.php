@@ -25,6 +25,7 @@
                 ,"isDev"=> $row["isDev"]
                 ,"type"=> $row["type"]
                 ,"fb_appid" => $row["fb_appid"]
+                ,"ga_id" => $row["ga_id"]
                 ,"recaptchaid" => $row["recaptchaid"]
                 ,"sell_email" => $row["sell_email"]
                 ,"send_sell_email" => $row["send_sell_email"]
