@@ -1,8 +1,9 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/lib/php-image-resize/ImageResize.php");
-
+    
     use \Gumlet\ImageResize;
+    // die($_POST["minAmount"]*100);
     
     function execute($apikey
     ,$id_base
@@ -35,8 +36,13 @@
     ,$minAmount
     ,$maxAmount
     ) {
-        $minAmount = $minAmount*100;
-        $maxAmount = $maxAmount*100;
+        $minAmount = intval(round(($minAmount*100), 0, PHP_ROUND_HALF_UP)) ;
+        $maxAmount = intval(round(($maxAmount*100), 0, PHP_ROUND_HALF_UP)) ;
+
+
+        // die(json_encode($minAmount));
+
+        // echo('oi');
         //die("aqui: $imagechanged / $imagebase64");
         //sleep(5);
         $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
