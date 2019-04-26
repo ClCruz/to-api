@@ -25,6 +25,8 @@
         ,$isFixed
         ,$isPlus
         ,$isAllotment
+        ,$isNoValue
+        ,$isPOS
         ,$vl_preco_fixo
         ,$PerDesconto
         ,$CotaMeiaEstudante
@@ -44,7 +46,7 @@
         
         //die(json_encode($_POST));
 
-        $query = "EXEC pr_tickettype_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        $query = "EXEC pr_tickettype_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
         $params = array($id
         ,$id_base
         ,$nameWeb
@@ -65,6 +67,8 @@
         ,$isFixed
         ,$isPlus
         ,$isAllotment
+        ,$isNoValue
+        ,$isPOS
         ,$vl_preco_fixo
         ,$PerDesconto
         ,$CotaMeiaEstudante
@@ -175,6 +179,8 @@ get(
     ,$_POST["isFixed"]
     ,$_POST["isPlus"]
     ,$_POST["isAllotment"]
+    ,$_POST["isNoValue"]
+    ,$_POST["isPOS"]
     ,$_POST["vl_preco_fixo"]
     ,$_POST["PerDesconto"]
     ,$_POST["CotaMeiaEstudante"]
