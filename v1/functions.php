@@ -129,6 +129,22 @@ function performance() {
     $params = array(json_encode($profilerPerfTimer), json_encode($_REQUEST), json_encode($_POST));
     $result = db_exec($query, $params);
 }
+function get_uniquename_by_apikey($forced) {
+    $apikey = $_REQUEST["apikey"];
+    if ($forced!=null && $forced!='') { 
+        $apikey = $forced;
+    }
+    $query = "EXEC pr_partner_uniquename_bykey ?";
+    $params = array($apikey);
+    $result = db_exec($query, $params);
+
+    $ret = 0;
+    foreach ($result as &$row) {
+        $ret = $row["uniquename"];
+    }
+
+    return $ret;
+}
 function get_id_base_from_id_evento($id_evento) {
     $query = "EXEC pr_admin_event_getbase ?";
     $params = array($id_evento);
