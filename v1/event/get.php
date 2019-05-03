@@ -47,6 +47,7 @@
                 "cardimage" => $row["cardimage"],
                 "cardbigimage" => $row["cardbigimage"],
                 "id_base" => $row["id_base"],
+                "created" => $row["created"],
                 "meta_keyword" => $row["meta_keyword"],
                 "meta_description" => $row["meta_description"],
                 "ds_municipio" => $row["ds_municipio"],

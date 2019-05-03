@@ -3,11 +3,12 @@
 
 //    stopIfApiNotExist();
 
-    function getCardUP($city = null, $state = null, $api = null, $date = null) {
+
+function getCardUP($city = null, $state = null, $api = null, $date = null, $filter = null) {
         //die("teste: ".getwhitelabeldb()["host"]);
         //createTimer("getCardUP","Creating query...");
-        $query = "EXEC pr_geteventsforcards ?, ?, ?, ?";
-        $params = array(db_param($city), db_param($state), $api, $date);
+        $query = "EXEC pr_geteventsforcards ?, ?, ?, ?, ?";
+        $params = array(db_param($city), db_param($state), $api, $date, $filter);
         //createTimer("getCardUP","Calling database...");
         $result = db_exec($query, $params);
         //createTimer("getCardUP","Database executed...");
@@ -26,6 +27,8 @@
                 "ds_municipio" => $row["ds_municipio"],
                 "sg_estado" => $row["sg_estado"],
                 "datas" => $row["dates"],
+                "orderhelper" => $row["orderhelper"],
+                "created" => $row["created"],
                 "img" => getDefaultMediaHost() . str_replace("{id}", $row["id_evento"],str_replace("{default_card}", getDefaultCardImageName(),$row["cardimage"])),
                 "uri" => $row["uri"],
                 "badge"=> splitBadge($row["badges"]),
@@ -74,6 +77,6 @@
         return $ret;
     }
  //splitBadge('CompreIngressos|/badge/ci.png,ItauCard|/badge/itaucard.png');
-getCardUP($_POST["city"],$_POST["state"], $_REQUEST["apikey"], $_POST["date"]);
+getCardUP($_POST["city"],$_POST["state"], $_REQUEST["apikey"], $_POST["date"], $_POST["filter"]);
 
 ?>
