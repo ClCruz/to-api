@@ -115,15 +115,7 @@
         
         if ($isCreditCard) {
             $card_number = preg_replace("/[^0-9]/", "", $card_number);
-            $bin = substr($card_number, 0, 5);
-
-            // $binValidate = validateBIN($id_purchase, $id_client, "itau", $id_session, $bin);
-            // if ($binValidate["success"] == false) {
-            //     echo json_encode($binValidate);
-            //     logme();
-            //     traceme($id_purchase, "Finished purchase", '',0);
-            //     die();
-            // }
+            $bin = substr($card_number, 0, 6);
         }
 
         // $halfValidate = check_halfpricestudents_lot_validate($id_purchase, $id_client, $id_session);
@@ -133,6 +125,16 @@
         //     traceme($id_purchase, "Finished purchase", '',0);
         //     die();
         // }
+
+        if ($isCreditCard) {
+            $binok = checkbin($id_purchase, $id_session, $bin);
+            if ($binok["success"] == false) {
+                echo json_encode($binok);
+                logme();
+                traceme($id_purchase, "Finished purchase", '',0);
+                die();
+            }
+        }
 
         $ispaymentmethodok = ispaymentmethodok($id_purchase, $id_client, $id_session, $id_payment_method, $shopping);
         if ($ispaymentmethodok["success"] == false) {

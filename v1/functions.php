@@ -234,7 +234,7 @@ function logme() {
     $uri = $_SERVER["REQUEST_URI"];
     $file = $_SERVER["PHP_SELF"];
     $start = $_SERVER["REQUEST_TIME"];
-    $agent = $_SERVER["HTTP_USER_AGENT"];
+    $agent = @$_SERVER["HTTP_USER_AGENT"];
     $ip = "";
 
     if (array_key_exists("HTTP_X_FORWARDED_FOR", $_SERVER)) {

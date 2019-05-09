@@ -267,6 +267,27 @@
         return $ret;
     }
 
+    function checkbin($id_purchase, $id_session, $bin) {
+        traceme($id_purchase, "check bin - start", json_encode(array("bin"=>$bin)),0);
+        $query = "EXEC pr_purchase_get_bin ?";
+        $params = array($id_session);
+        $result = db_exec($query, $params);
+        $ret = array("success"=>true,"msg"=>"","msgtobuyer"=>"");
+
+        foreach ($result as &$row) {
+            if ($row["cd_binitau"]!=$bin && $row["cd_binitau"]!=null) {
+                $ret = array("success"=>false
+                            ,"msg"=>"BIN não está correto."
+                            ,"msgtobuyer"=>"O BIN do cartão não está correto.");
+                break;
+            }
+        }
+        
+        traceme($id_purchase, "check bin - end", json_encode($ret),0);
+
+        return $ret;
+    }
+
     function checkmultipleevents($id_purchase, $id_client) {
 
         traceme($id_purchase, "check multiples events - start", '',0);
@@ -605,7 +626,7 @@
     function traceme($id_purchase, $title, $values, $isforeign) {
         $uri = $_SERVER["REQUEST_URI"];
         $file = $_SERVER["PHP_SELF"];
-        $agent = $_SERVER["HTTP_USER_AGENT"];
+        $agent = @$_SERVER["HTTP_USER_AGENT"];
         $ip = "";
 
         if (array_key_exists("HTTP_X_FORWARDED_FOR", $_SERVER)) {
