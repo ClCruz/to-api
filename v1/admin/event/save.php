@@ -63,7 +63,7 @@
         ,$showInBanner == "" ? "0" : $showInBanner
         ,$bannerDescription
         ,$QtIngrPorPedido
-        ,$in_obriga_cpf == "" ? "0" : $in_obriga_cpf
+        ,$in_obriga_cpf == "" ? "0" : ($in_obriga_cpf == "false" || $in_obriga_cpf == false ? "0" : "1")
         ,$qt_ingressos_por_cpf
         ,$ticketoffice_askemail == "" ? "0" : $ticketoffice_askemail
         ,$free_installments
