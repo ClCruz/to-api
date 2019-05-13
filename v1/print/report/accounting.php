@@ -94,20 +94,31 @@
       foreach ($result as &$row) {    
           $json[] = array(
               "CodForPagto"=>$row["CodForPagto"]
-              ,"ForPagto"=>$row["ForPagto"]
-              ,"taxa_administrativa"=>$row["taxa_administrativa"]
-              ,"taxa_administrativaformatted"=>$row["taxa_administrativaformatted"]
-              ,"sold"=>$row["sold"]
-              ,"soldamount"=>$row["soldamount"]
-              ,"soldamountformatted"=>$row["soldamountformatted"]
-              ,"discount"=>$row["discount"]
-              ,"discountformatted"=>$row["discountformatted"]
-              ,"total"=>$row["total"]
-              ,"totalformatted"=>$row["totalformatted"]
-              ,"PrzRepasseDias"=>$row["PrzRepasseDias"]
-              ,"transfer_date"=>$row["transfer_date"]
-              ,"percentage"=>$row["percentage"]
-              ,"percentageformatted"=>$row["percentageformatted"]
+               ,"ForPagto"=>$row["ForPagto"]
+               ,"taxa_administrativa"=>$row["taxa_administrativa"]
+               ,"taxa_administrativa_formatted"=>$row["taxa_administrativa_formatted"]
+               ,"sold"=>$row["sold"]
+               ,"percentage"=>$row["percentage"]
+               ,"percentage_formatted"=>$row["percentage_formatted"]
+               ,"soldamount"=>$row["soldamount"]
+               ,"soldamount_formatted"=>$row["soldamount_formatted"]
+               ,"discount"=>$row["discount"]
+               ,"discount_formatted"=>$row["discount_formatted"]
+               ,"total"=>$row["total"]
+               ,"total_formatted"=>$row["total_formatted"]
+               ,"PrzRepasseDias"=>$row["PrzRepasseDias"]
+               ,"transfer_date"=>$row["transfer_date"]
+               ,"sold_total"=>$row["sold_total"]
+               ,"sold_total_formatted"=>$row["sold_total_formatted"]
+               ,"percentage_total"=>$row["percentage_total"]
+               ,"percentage_total_formatted"=>$row["percentage_total_formatted"]
+               ,"soldamount_total"=>$row["soldamount_total"]
+               ,"soldamount_total_formatted"=>$row["soldamount_total_formatted"]
+               ,"discount_total"=>$row["discount_total"]
+               ,"discount_total_formatted"=>$row["discount_total_formatted"]
+               ,"total_total"=>$row["total_total"]
+               ,"total_total_formatted"=>$row["total_total_formatted"]
+          
           );
       }
   
@@ -501,15 +512,38 @@
       <?php foreach ($objPayment as &$row) {?>
          <tr style="font-size: 9px;">
             <td class="printonly_lines_values" style="text-align:left"><?php echo $row["ForPagto"] ?></td>
-            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["percentageformatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["percentage_formatted"] ?></td>
             <td class="printonly_lines_values" style="text-align:right"><?php echo $row["sold"] ?></td>
-            <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["soldamountformatted"] ?></td>
-            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["taxa_administrativaformatted"] ?></td>
-            <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["discountformatted"] ?></td>
-            <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["totalformatted"] ?></td>
-            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["transfer_date"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["soldamount_formatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["taxa_administrativa_formatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["discount_formatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["total_formatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["transfer_date"] ?></td>     
          </tr>
          <?php } ?>
+         <tr style="font-size: 9px;">
+            <td class="printonly_lines_values" style="text-align:left; font-weight: bold;">
+               Total:
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               <?php echo $objPayment[0]["percentage_total_formatted"] ?>
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               <?php echo $objPayment[0]["sold_total"] ?>
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               R$ <?php echo $objPayment[0]["soldamount_total_formatted"] ?>
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               R$ <?php echo $objPayment[0]["discount_total_formatted"] ?>
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               R$ <?php echo $objPayment[0]["total_total_formatted"] ?>
+            </td>
+         </tr>
    </table>
       <script lang="javascript">
          <?php 
