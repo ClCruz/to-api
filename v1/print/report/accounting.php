@@ -84,10 +84,44 @@
    
        return $json;
    }
+   function getpayments($id_base, $key) {
+      $query = "EXEC pr_accounting_payment ?";
+      // die("dd".json_encode($codVenda));
+      $params = array($key);
+      $result = db_exec($query, $params, $id_base);
+  
+      $json = array();
+      foreach ($result as &$row) {    
+          $json[] = array(
+              "CodForPagto"=>$row["CodForPagto"]
+              ,"ForPagto"=>$row["ForPagto"]
+              ,"taxa_administrativa"=>$row["taxa_administrativa"]
+              ,"taxa_administrativaformatted"=>$row["taxa_administrativaformatted"]
+              ,"sold"=>$row["sold"]
+              ,"soldamount"=>$row["soldamount"]
+              ,"soldamountformatted"=>$row["soldamountformatted"]
+              ,"discount"=>$row["discount"]
+              ,"discountformatted"=>$row["discountformatted"]
+              ,"total"=>$row["total"]
+              ,"totalformatted"=>$row["totalformatted"]
+              ,"PrzRepasseDias"=>$row["PrzRepasseDias"]
+              ,"transfer_date"=>$row["transfer_date"]
+              ,"percentage"=>$row["percentage"]
+              ,"percentageformatted"=>$row["percentageformatted"]
+          );
+      }
+  
+      logme();
+  
+      return $json;
+   }
+   
    $obj = get($_REQUEST["id_base"], $_REQUEST["id"]);
    $objDeb = getdebs($_REQUEST["id_base"], $_REQUEST["id"]);
+   $objPayment = getpayments($_REQUEST["id_base"], $_REQUEST["id"]);
    //die(json_encode($obj));
    //die(json_encode($objDeb));
+   // die(json_encode($objPayment));
 
    $dontbreakline = $_REQUEST["dontbreakline"] != null && $_REQUEST["dontbreakline"] != '';
    $dontclose = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
@@ -166,6 +200,11 @@
             background-color: #e0e0e0;
          }
          .grid2 {
+            margin-top: 10px;
+            font-size: 14px;
+            background-color: #e0e0e0;
+         }
+         .grid3 {
             margin-top: 10px;
             font-size: 14px;
             background-color: #e0e0e0;
@@ -442,12 +481,42 @@
             </td>
          </tr>
    </table>
+   <table class="principal grid3">
+   <tr>
+         <td colspan="8" style="text-align:center;font-weight: bold;font-size: 14px;">3 - DETALHAMENTO POR FORMA DE PAGAMENTO</td>
+      </tr>
+      <tr>
+         <td colspan="8" style="text-align:center;font-weight: bold;font-size: 14px;">(apenas para conferência de valores e quantidades)</td>
+      </tr>
+      <tr style="font-weight: bold;font-size: 8px">
+         <td style="text-align:left">Tipo de forma de pagamento</td>
+         <td style="text-align:right">%</td>
+         <td style="text-align:right">Qtde de Transações</td>
+         <td style="text-align:right">Valores brutos</td>
+         <td style="text-align:right">Taxa</td>
+         <td style="text-align:right">Desconto Taxa</td>
+         <td style="text-align:right">Repasses</td>
+         <td style="text-align:right">Data de repasse</td>
+      </tr>         
+      <?php foreach ($objPayment as &$row) {?>
+         <tr style="font-size: 9px;">
+            <td class="printonly_lines_values" style="text-align:left"><?php echo $row["ForPagto"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["percentageformatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["sold"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["soldamountformatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["taxa_administrativaformatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["discountformatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["totalformatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["transfer_date"] ?></td>
+         </tr>
+         <?php } ?>
+   </table>
       <script lang="javascript">
          <?php 
             if ($dontprint == false) {
          ?>
                setTimeout(function() { 
-                  window.print();
+//                  window.print();
                }, 1000);
          <?php
             }
