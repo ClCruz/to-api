@@ -11,11 +11,16 @@
         $id_evento = 0;
         $codPeca = 0;
         $id_base = 0;
+        $show_partner_info = 0;
+        $name_site = '';
 
         foreach ($result as &$row) {
             $id_evento = $row["id_evento"];
             $id_base = $row["id_base"];
             $codPeca = $row["CodPeca"];
+            $name_site = $row["name_site"];
+            $show_partner_info = $row["show_partner_info"];
+
         }
         //die("ddd".print_r($result,true));
         if ($id_base == 0 && $codPeca == 0) {
@@ -55,7 +60,9 @@
                 "badge_city_text" => $row["badge_city_text"],
                 "img" => getDefaultMediaHost() . str_replace("{id}", $row["id_evento"],str_replace("{default_card}", getDefaultCardImageName(),$row["cardimage"])),
                 "badge"=> splitBadge($row["badges"]),
-                "promo"=> splitPromotion($row["promotion"])
+                "promo"=> splitPromotion($row["promotion"]),
+                "name_site" => $name_site,
+                "show_partner_info" => $show_partner_info,
             );
         }
 
