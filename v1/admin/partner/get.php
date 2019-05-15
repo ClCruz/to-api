@@ -29,6 +29,7 @@
                 ,"recaptchaid" => $row["recaptchaid"]
                 ,"sell_email" => $row["sell_email"]
                 ,"send_sell_email" => $row["send_sell_email"]
+                ,"show_partner_info" => $row["show_partner_info"]
             );
         }
 
