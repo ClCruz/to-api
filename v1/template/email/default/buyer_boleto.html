@@ -311,6 +311,12 @@
                                     <br />
                                     <br />
                                     Para continuar com o processo é necessário o pagamento do boleto abaixo, após a compensação do mesmo você receberá um e-mail confirmando o pagamento. </h3>
+                                    <p style="Margin:0;
+                                    margin-top:10px;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:20px;color:#999999;"> 
+                                      {% if show_partner_info == 1 %}
+                                          Vendido e entregue por: {{name_site}}
+                                      {% endif %}
+                                    </p>
                                 </td>
                               </tr>
                               <tr style="border-collapse:collapse;">
