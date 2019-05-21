@@ -1,5 +1,8 @@
 <?php
    require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
+   require_once($_SERVER['DOCUMENT_ROOT']."/vendor/autoload.php");
+
+   use Spipu\Html2Pdf\Html2Pdf;
    
    function get($comission, $dtinit, $dtend) {
       $uniquename = gethost();
@@ -66,7 +69,7 @@
       header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
       readfile('bordero.pdf'); 
    }
-
+   // ob_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -76,104 +79,26 @@
       <style>
          .pagebreak { page-break-after: always; } 
          .principal {
-            width: 820px;
-            font-family: tahoma,verdana,arial;
-         }
-         .logo img {
-            max-width: 60px;
-         }
-         .right-side-header {
-            padding-top: 15px;
-            padding-bottom: 15px;
-            padding-left: 15px;
-            padding-right: 15px;
-            text-align: center;
-            width: 282px;
-            float: right;
-            background-color: #e0e0e0;
-            /* border: solid 1px red; */
-         }
-         .right-side-header span {
-            display: block;
-            font-weight: bold;
-            text-transform: uppercase;
+            
          }
          .printonly_lines_values {
             border-bottom: solid 1px #e0e0e0;
          }
-         .right-side-header span:first-child {
-            font-size: 18px;
-         }
-         .right-side-header span:last-child {
-            font-size: 14px;
-         }
-         .left-side-header {
-            /* border: solid 1px green; */
-         }
-         .label-info {
-            font-size: 10px;
-            font-weight: bold;
-         }
-         .value-info {
-            font-size: 10px;
-         }
          .grid1 {
-            font-size: 14px;
-            background-color: #e0e0e0;
+            font-size: 13px;
+            
          }
          .grid2 {
             margin-top: 10px;
-            font-size: 14px;
-            background-color: #e0e0e0;
+            font-size: 13px;
+            
          }
-         .total_discount {
-            font-size: 10px;
-            text-transform: uppercase;
-            text-align: right;
-            font-weight: bold;
-         }
-         .disclaimer {
-            background-color: #fff;
-            font-size: 11px;
-         }
-         .signature {
-            background-color: #fff;
-            font-size: 8px;
-         }
-         .signaturetable {
-            border: none; 
-            width: 390px;
-            padding-top: 56px;
-         }
-         .signaturetable_line {
-            font-size: 10px;
-         }
+
       </style>
    </head>
    <body>
-   <table class="principal">
-      <tr>
-         <td class="left-side-header">
-            <div class="logo">
-               <img src="<?php echo $logo ?>" />
-            </div>
-         </td>  
-      </tr>
-   </table>
-   <table class="principal">
-      <tr style="line-height: 10px;">
-         <td style="text-align:left">
-            <span class="label-info">Total de venda :: </span>
-            <span class="value-info">R$ <?php echo $obj[0]["total_formatted"] ?></span>
-         </td>
-         <td style="text-align:right">
-            <span class="label-info">Total da comissão :: </span>
-            <span class="value-info">R$ <?php echo $obj[0]["total_comission_formatted"] ?></span>
-         </td>
-      </tr>
-   </table>
    <table class="principal grid1">
-         <tr style="font-weight: bold;font-size: 10px">
+         <tr style="">
             <td style="text-align:left">Data venda</td>
             <td style="text-align:left">Evento</td>
             <td style="text-align:left">Data/Hora</td>
@@ -183,7 +108,7 @@
             <td style="text-align:right">Comissão</td>
          </tr>
          <?php foreach ($obj as &$row) {?>
-            <tr style="font-size: 11px;">
+            <tr style="font-size: 13px;">
                <td class="printonly_lines_values" style="text-align:left"><?php echo $row["dt_pedido_venda"] ?></td>
                <td class="printonly_lines_values" style="text-align:left"><?php echo $row["ds_evento"] ?></td>
                <td class="printonly_lines_values" style="text-align:left"><?php echo $row["dt_apresentacao"].' '.$row["hr_apresentacao"] ?></td>
@@ -193,17 +118,28 @@
                <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["comission_amount_formatted"] ?></td>
             </tr>
          <?php } ?>
+      <tr>
+         <td style="text-align:left;font-size: 13px;" colspan="3">
+            <span class="label-info">Total de venda :: </span>
+            <span class="value-info">R$ <?php echo $obj[0]["total_formatted"] ?></span>
+         </td>
+         <td style="text-align:right;font-size: 13px;" colspan="4">
+            <span class="label-info">Total da comissão :: </span>
+            <span class="value-info">R$ <?php echo $obj[0]["total_comission_formatted"] ?></span>
+         </td>
+      </tr>
    </table>
-      <script lang="javascript">
-         <?php 
-            if ($dontprint == false) {
-         ?>
-               setTimeout(function() { 
-                  //window.print();$uniquename
-               }, 1000);
-         <?php
-            }
-         ?>
-      </script>
    </body>
 </html>
+<?php 
+// $content = ob_get_clean();
+
+// $html2pdf = new Html2Pdf('P', 'A4', 'fr', true, 'UTF-8', array(15, 5, 15, 5));
+//     $html2pdf->pdf->SetDisplayMode('fullpage');
+//     $html2pdf->writeHTML($content);
+//     $html2pdf->output("printsale.pdf");
+//die("dd");  
+//echo "oiii";
+//die($content);
+
+?>
