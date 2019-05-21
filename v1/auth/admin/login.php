@@ -1,7 +1,19 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function login($login, $password) {
+    function checkPartner($id, $apikey) {
+        $query = "EXEC pr_login_checkpartner ?,?";
+        $params = array($id, $apikey);
+        $result = db_exec($query, $params);
+        $isok = false;
+
+        foreach ($result as &$row) {
+            $isok = $row["isok"] == 1;
+        }        
+        return $isok;
+    }
+
+    function login($login, $password,$apikey) {
         //sleep(5);
         $query = "EXEC pr_login_admin ?";
         $params = array(db_param($login));
@@ -43,23 +55,29 @@
         }
 
         if ($hasLogin && $hasActive && $passwordOk) {
-            
-            $token = hash('ripemd160', $email.strtotime(date_default_timezone_get()));
+            if (checkPartner($id,$apikey)) {
+                $token = hash('ripemd160', $email.strtotime(date_default_timezone_get()));
 
-            $json = array("logged"=>true
-                        ,"name"=>$name
-                        ,"email"=>$email
-                        ,"document"=>$document
-                        ,"token"=>$token
-                        ,"login"=>$login
-                        ,"tokenValidUntil"=>$tokenValidUntil
-                        ,"id"=>$id
-                        ,"operator"=>$operator
-                        ,"lastLogin"=>$lastLogin);
-
-            $query = "EXEC pr_login_admin_successfully ?, ?";
-            $params = array(db_param($login),$token);
-            db_exec($query, $params);
+                $json = array("logged"=>true
+                            ,"name"=>$name
+                            ,"email"=>$email
+                            ,"document"=>$document
+                            ,"token"=>$token
+                            ,"login"=>$login
+                            ,"tokenValidUntil"=>$tokenValidUntil
+                            ,"id"=>$id
+                            ,"operator"=>$operator
+                            ,"lastLogin"=>$lastLogin);
+    
+                $query = "EXEC pr_login_admin_successfully ?, ?";
+                $params = array(db_param($login),$token);
+                db_exec($query, $params);    
+            } 
+            else {
+                $json = array("logged"=>false
+                ,"login"=>$login
+                ,"msg"=>"Sem permissão de dominío.");
+            }            
         }
         else {
             $json = array("logged"=>false
@@ -72,6 +90,6 @@
         die();    
     }
 
-login($_REQUEST["login"], $_POST["pass"]);
+login($_REQUEST["login"], $_POST["pass"],$_REQUEST["apikey"]);
 
 ?>

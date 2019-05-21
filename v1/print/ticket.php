@@ -33,6 +33,21 @@
       }
       
    }
+   function checkisok($codVenda) {
+      $query = "EXEC pr_print_ticket_check ?";
+      $params = array($codVenda);
+      $result = db_exec($query, $params);  
+      $isok = 1;
+      foreach ($result as &$row) {      
+         $isok = $row["isok"];
+      }
+      if ($isok == 0) {
+
+         logme();
+         echo "Não foi possível imprimir o ingresso.";
+         die();
+      }
+   }
 
    function tellmethemodel($id_base, $codVenda) {
       $ret = "model001";
@@ -47,7 +62,11 @@
       logme();
       return $ret;
   }
+  
+  checkisok($_REQUEST["id"]);
+  
   $model = tellmethemodel($_REQUEST["id_base"], $_REQUEST["id"]);
+  
 
   require_once($_SERVER['DOCUMENT_ROOT']."/v1/print/tickets/".$model.".php");
 ?>
