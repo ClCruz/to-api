@@ -279,6 +279,14 @@ function modifyDate($value) {
     }
     return null;
 }
+function modifyDateUStoBR($value) {
+    if ($value!=null && $value!='') {
+        $aux = explode("-", $value);
+        $ret = $aux[2].'/'.$aux[1].'/'.$aux[0];
+        return $ret;
+    }
+    return null;
+}
 function modifyDateWithHour($value, $defaulttime = "00:00") {
     if ($value == "") return $value;
     
