@@ -278,6 +278,12 @@ function modifyDate($value) {
     }
     return null;
 }
+function uniqueidentifier_default($value) {
+    if ($value=='' || $value ==null) {
+        $value = '00000000-0000-0000-0000-000000000000';
+    }
+    return $value;
+}
 function modifyDateWithHour($value, $defaulttime = "00:00") {
     if ($value == "") return $value;
     

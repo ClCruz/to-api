@@ -3,9 +3,8 @@
 
     function get($id, $name, $api, $active) {
         //sleep(5);
-        if ($id=='' || $id ==null) {
-            $id = '00000000-0000-0000-0000-000000000000';
-        }
+        $id = uniqueidentifier_default($id);
+
         $query = "EXEC pr_quotapartner_save ?, ?, ?, ?";
         $params = array($id, $name, $api, $active);
         $result = db_exec($query, $params);
