@@ -13,67 +13,67 @@
     }
   },
   "formto": {
-    "email":"nproducoes13@gmail.com",
+    "email":"atendimento@parteventos.ticketoffice.me",
     "from": "formto",
     "pass":""
   },
   "noreply": {
-    "email":"noreply@eventoaju.com.br",
+    "email":"noreply@parteventos.ticketoffice.me",
     "from": "noreply",
     "pass":""
   },
   "register": {
-    "email":"cadastro@eventoaju.com.br",
+    "email":"cadastro@parteventos.ticketoffice.me",
     "from": "cadastro",
     "pass":""
   },
   "shopping": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@parteventos.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "lembrete": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@parteventos.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "marketing": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@parteventos.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "info": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@parteventos.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "sac": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@parteventos.ticketoffice.me",
     "from": "noreply",
     "pass":""
   },
   "pedido": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@parteventos.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "assinantea@siscompre": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@parteventos.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "compreingressospedidos@hotmail": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@parteventos.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "compreingressos@siscompre": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@parteventos.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "compreingressos@gmail": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@parteventos.ticketoffice.me",
     "from": "pedido",
     "pass":""
   }

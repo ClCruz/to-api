@@ -1,7 +1,7 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function set($id_base, $nin, $rg,$name,$email,$cardBin,$phone,$makeCode,$partner) {
+    function set($id_base, $nin, $rg,$name,$email,$cardBin,$phone,$makeCode,$partner,$id_quotapartner) {
         $hasError = false;
         $jsonError = array();
 
@@ -30,14 +30,18 @@
         $phonenumber = "";
         $phoneramal = "";
 
+        if ($id_quotapartner == "") {
+            $id_quotapartner = '00000000-0000-0000-0000-000000000000';
+        }
+
         if (isset($phone)) {
             $phoneddd = $phone["ddd"];
             $phonenumber = $phone["number"];
             $phoneramal = $phone["ramal"];
         }
 
-        $query = "EXEC pr_client ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
-        $params = array($nin, $rg,$name,$email,$cardBin,$phoneddd,$phonenumber,$phoneramal, $makeCode, $partner);
+        $query = "EXEC pr_client ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+        $params = array($nin, $rg,$name,$email,$cardBin,$phoneddd,$phonenumber,$phoneramal, $makeCode, $partner, $id_quotapartner);
         $result = db_exec($query, $params, $id_base);
 
         $json = array();
@@ -52,5 +56,5 @@
         die();    
     }
 
-    set($_REQUEST["id_base"], $_POST["nin"], $_POST["rg"], $_POST["name"],$_POST["email"],$_POST["cardBin"],$_POST["phone"],$_POST["makeCode"],$_POST["partner"]);
+    set($_REQUEST["id_base"], $_POST["nin"], $_POST["rg"], $_POST["name"],$_POST["email"],$_POST["cardBin"],$_POST["phone"],$_POST["makeCode"],$_POST["partner"],$_POST["id_quotapartner"]);
 ?>

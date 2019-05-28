@@ -13,67 +13,67 @@
     }
   },
   "formto": {
-    "email":"nproducoes13@gmail.com",
+    "email":"atendimento@compreingressos.com",
     "from": "formto",
     "pass":""
   },
   "noreply": {
-    "email":"noreply@eventoaju.com.br",
+    "email":"noreply@compreingressos.com",
     "from": "noreply",
     "pass":""
   },
   "register": {
-    "email":"cadastro@eventoaju.com.br",
+    "email":"cadastro@compreingressos.com",
     "from": "cadastro",
     "pass":""
   },
   "shopping": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@compreingressos.com",
     "from": "pedido",
     "pass":""
   },
   "lembrete": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@compreingressos.com",
     "from": "pedido",
     "pass":""
   },
   "marketing": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@compreingressos.com",
     "from": "pedido",
     "pass":""
   },
   "info": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@compreingressos.com",
     "from": "pedido",
     "pass":""
   },
   "sac": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@compreingressos.com",
     "from": "noreply",
     "pass":""
   },
   "pedido": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@compreingressos.com",
     "from": "pedido",
     "pass":""
   },
   "assinantea@siscompre": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@compreingressos.com",
     "from": "pedido",
     "pass":""
   },
   "compreingressospedidos@hotmail": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@compreingressos.com",
     "from": "pedido",
     "pass":""
   },
   "compreingressos@siscompre": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@compreingressos.com",
     "from": "pedido",
     "pass":""
   },
   "compreingressos@gmail": {
-    "email":"pedido@eventoaju.com.br",
+    "email":"pedido@compreingressos.com",
     "from": "pedido",
     "pass":""
   }
