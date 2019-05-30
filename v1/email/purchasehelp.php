@@ -229,7 +229,7 @@
         $from = getwhitelabelemail()["noreply"]["email"];
         $fromName = getwhitelabelemail()["noreply"]["from"];
 
-        $subject = "Boleto para pagamento";
+        $subject = "Boleto para pagamento - ".$id_pedido_venda;
         $msg = $html;
 
         sendToAPI($from, $fromName, $to, $toName, $subject, $msg);
@@ -256,7 +256,7 @@
         $from = getwhitelabelemail()["noreply"]["email"];
         $fromName = getwhitelabelemail()["noreply"]["from"];
 
-        $subject = "Agradecemos sua compra";
+        $subject = "Agradecemos sua compra - ".$id_pedido_venda;
         if ($voucheremail != null) {
             $to = $voucheremail;
             $toName = $vouchername;
