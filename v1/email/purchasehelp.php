@@ -39,6 +39,7 @@
                 "buyer_email" => $row["buyer_email"],
                 "buyer_document" => $row["buyer_document"],
                 "voucher_id" => $row["voucher_id"],
+                "voucher_method" => $row["delivery_method"],
                 "voucher_code" => $row["voucher_code"],
                 "voucher_event_image" => getDefaultMediaHost(). str_replace("{id}", $row["id_evento"],str_replace("{default_card}", getDefaultCardImageName(),$row["cardimage"])),
                 "voucher_event_link" => getwhitelabelURI_home($row["uri"]),
@@ -77,6 +78,7 @@
                 "buyer_email" => $row["buyer_email"],
                 "buyer_document" => $row["buyer_document"],
                 "voucher_id" => $row["voucher_id"],
+                "voucher_method" => "e-ticket",
                 "voucher_code" => $row["voucher_code"],
                 "voucher_event_image" => getDefaultMediaHost(). str_replace("{id}", $row["id_evento"],str_replace("{default_card}", getDefaultCardImageName(),$row["cardimage"])),
                 "voucher_event_link" => getwhitelabelURI_home($row["uri"]),
@@ -180,10 +182,14 @@
         $loader = new Twig_Loader_Filesystem($templatefolder);
         $twig = new Twig_Environment($loader);
         if ($type == "web") {
-            $htmlname = "buyer.html";
+            $htmlname = "buyer";
             if ($isgift) {
-                $htmlname = "gift.html";
+                $htmlname = "gift";
             }
+            if ($obj[0]["voucher_method"] == "physical-ticket") {
+                $htmlname.= "_delivery";
+            }
+            $htmlname.=".html";
         }
         else {
             $htmlname = "ticketoffice_buyer.html";
@@ -223,7 +229,7 @@
         $from = getwhitelabelemail()["noreply"]["email"];
         $fromName = getwhitelabelemail()["noreply"]["from"];
 
-        $subject = "Boleto para pagamento";
+        $subject = "Boleto para pagamento - ".$id_pedido_venda;
         $msg = $html;
 
         sendToAPI($from, $fromName, $to, $toName, $subject, $msg);
@@ -250,7 +256,7 @@
         $from = getwhitelabelemail()["noreply"]["email"];
         $fromName = getwhitelabelemail()["noreply"]["from"];
 
-        $subject = "Agradecemos sua compra";
+        $subject = "Agradecemos sua compra - ".$id_pedido_venda;
         if ($voucheremail != null) {
             $to = $voucheremail;
             $toName = $vouchername;
