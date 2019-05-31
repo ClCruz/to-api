@@ -9,7 +9,7 @@
         $json = array();
 
         foreach ($result as &$row) {
-            $aux = array("date"=>$row["date"]);
+            $aux = array("date"=>$row["date"], "weekdayName"=>$row["weekdayName"]);
 
             array_push($json,$aux);
         }

@@ -51,11 +51,12 @@
                 ,"hasPresentantion" => $row["hasPresentantion"]
                 ,"imageURIOriginal" => $imageOriginalURI
                 ,"imageURIBanner" => $imageBigURI
-                ,"imageURICard" => $imageURI,
-                "free_installments" => $row["free_installments"],
-                "max_installments" => $row["max_installments"],
-                "interest_rate" => $row["interest_rate"],
-                "ticketoffice_ticketmodel" => $row["ticketoffice_ticketmodel"],
+                ,"imageURICard" => $imageURI
+                ,"in_entrega_ingresso" => $row["in_entrega_ingresso"] == 1
+                ,"free_installments" => $row["free_installments"]
+                ,"max_installments" => $row["max_installments"]
+                ,"interest_rate" => $row["interest_rate"]
+                ,"ticketoffice_ticketmodel" => $row["ticketoffice_ticketmodel"]
             );
         }
 
