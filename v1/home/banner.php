@@ -66,7 +66,7 @@
 
         return $ret;
     }
-//splitBadge('CompreIngressos|/badge/ci.png,ItauCard|/badge/itaucard.png');
+//splitBadge('CompreIngressos|/badge/ci.png,ItauCard|/badge/teatro.png');
 getCardUP($_REQUEST["apikey"]);
 
 ?>

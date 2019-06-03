@@ -76,7 +76,7 @@ function getCardUP($city = null, $state = null, $api = null, $date = null, $filt
 
         return $ret;
     }
- //splitBadge('CompreIngressos|/badge/ci.png,ItauCard|/badge/itaucard.png');
+ //splitBadge('CompreIngressos|/badge/ci.png,ItauCard|/badge/teatro.png');
 getCardUP($_POST["city"],$_POST["state"], $_REQUEST["apikey"], $_POST["date"], $_POST["filter"]);
 
 ?>
