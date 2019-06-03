@@ -11,10 +11,10 @@ function presentation($key, $date) {
 
     foreach ($result as &$row) {
         $json[] = array(
-            "event_id"=>$row["event_id"]
-            ,"id_presentantion"=>$row["id_presentantion"]
-            ,"dt_presentation"=>$row["dt_presentation"]
-            ,"hour_presentation"=>$row["hour_presentation"]
+            "id_event"=>$row["id_event"]
+            ,"id"=>$row["id_presentantion"]
+            ,"date"=>$row["dt_presentation"]
+            ,"hour"=>$row["hour_presentation"]
         );
     }
     return $json;
@@ -27,11 +27,12 @@ function seat($key, $date) {
 
     foreach ($result as &$row) {
         $json[] = array(
-            "event_id"=>$row["event_id"]
+            "id_event"=>$row["id_event"]
             ,"id_presentantion"=>$row["id_presentantion"]
             ,"sectorName"=>$row["sectorName"]
-            ,"seatName"=>$row["seatName"]
-            ,"seatId"=>$row["seatId"]
+            ,"name"=>$row["seatName"]
+            ,"id"=>$row["id_seat"]
+            ,"numered"=>$row["numered"]
         );
     }
     return $json;
@@ -44,16 +45,18 @@ function tickets($key, $date) {
 
     foreach ($result as &$row) {
         $json[] = array(
-            "event_id"=>$row["event_id"]
+            "id_event"=>$row["id_event"]
             ,"id_presentantion"=>$row["id_presentantion"]
             // ,"sectorName"=>$row["sectorName"]
             // ,"seatName"=>$row["seatName"]
-            ,"seatId"=>$row["seatId"]
+            ,"id_seat"=>$row["id_seat"]
             ,"price"=>$row["price"]
             ,"allowticketoffice"=>$row["allowticketoffice"]
             ,"allowweb"=>$row["allowweb"]
             // ,"PerDesconto"=>$row["PerDesconto"]
-            ,"ticketType"=>$row["ticketType"]
+            // ,"CodTipBilhete"
+            ,"id"=>$row["id_ticket"]
+            ,"type"=>$row["ticketType"]
             ,"sell_sun"=>$row["sell_sun"]
             ,"sell_mon"=>$row["sell_mon"]
             ,"sell_tue"=>$row["sell_tue"]
@@ -76,17 +79,27 @@ function get($key, $date) {
         $seats = seat($key,$date);
         $tickets = tickets($key,$date);
 
+        $uri_home = "";
+        $uri_media = "";
+
+        if (count($result)!=0) {
+            $uri_home = getwhitelabelobjforced($result[0]["baseName"])["uri"];
+            $uri_media = getDefaultMediaHost();
+        }
+
+        //die(json_encode(getwhitelabelobjforced($result[0]["baseName"])));
+
         foreach ($result as &$row) {
             $presentation = array();
             $seathelper = array();
             $tickethelper = array();
 
             foreach ($presentations as &$presentation_value) {
-                if ($presentation_value["event_id"] == $row["id"]) {
+                if ($presentation_value["id_event"] == $row["id"]) {
                     foreach ($seats as &$seat_value) {
-                        if ($seat_value["event_id"] == $row["id"] && $seat_value["id_presentantion"] == $presentation_value["id_presentantion"]) {
+                        if ($seat_value["id_event"] == $row["id"] && $seat_value["id_presentantion"] == $presentation_value["id"]) {
                             foreach ($tickets as &$ticket_value) {
-                                if ($seat_value["event_id"] == $row["id"] && $ticket_value["id_presentantion"] == $seat_value["id_presentantion"] && $ticket_value["seatId"] == $seat_value["seatId"]) {
+                                if ($seat_value["id_event"] == $row["id"] && $ticket_value["id_presentantion"] == $seat_value["id_presentantion"] && $ticket_value["id_seat"] == $seat_value["id"]) {
                                     $tickethelper[] = $ticket_value;
                                 }
                             }
@@ -98,6 +111,8 @@ function get($key, $date) {
                     $presentation[] = $presentation_value;
                 }
             }
+            $imageBigURI = getDefaultMediaHost().str_replace("{default_big}",getBigCardImageName(),str_replace("{id}",$row["id"],$row["image_big"]))."?".randomintbydate();
+            $imageURI = getDefaultMediaHost().str_replace("{default_card}",getDefaultCardImageName(),str_replace("{id}",$row["id"],$row["image_card"]))."?".randomintbydate();
 
             $json[] = array(
                 "id"=>$row["id"]
@@ -108,15 +123,16 @@ function get($key, $date) {
                 ,"city"=>$row["city"]
                 ,"state"=>$row["state"]
                 ,"state_acronym"=>$row["state_acronym"]
-                ,"image_card"=>$row["image_card"]
-                ,"image_big"=>$row["image_big"]
-                ,"uri"=>$row["uri"]
+                ,"image_card"=>$imageURI
+                ,"image_big"=>$imageBigURI
+                ,"uri"=>$uri_home.$row["uri"]
                 ,"dates"=>$row["dates"]
                 ,"genre"=>array(array("id"=>$row["id_genre"],"name"=>$row["genreName"]))
                 ,"created"=>$row["created"]
                 ,"amounts"=>$row["amounts"]
                 ,"minAmount"=>$row["minAmount"]
                 ,"maxAmount"=>$row["maxAmount"]
+                ,"changed"=>$row["changed"]
                 ,"presentations"=>$presentation
             );
         }
