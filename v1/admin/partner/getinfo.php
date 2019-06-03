@@ -20,6 +20,7 @@
                 ,"recaptchaid"=> $row["recaptchaid"]
                 ,"hasfb"=> $row["hasfb"]
                 ,"hasrecaptcha"=> $row["hasrecaptcha"]
+                ,"show_partner_info"=>$row["show_partner_info"]
             );
         }
 

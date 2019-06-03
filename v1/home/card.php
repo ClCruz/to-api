@@ -28,6 +28,8 @@ function getCardUP($city = null, $state = null, $api = null, $date = null, $filt
                 "sg_estado" => $row["sg_estado"],
                 "datas" => $row["dates"],
                 "orderhelper" => $row["orderhelper"],
+                "showPartnerInfo" => $row["show_partner_info"],
+                "partner" => $row["partner"],
                 "created" => $row["created"],
                 "img" => getDefaultMediaHost() . str_replace("{id}", $row["id_evento"],str_replace("{default_card}", getDefaultCardImageName(),$row["cardimage"])),
                 "uri" => $row["uri"],

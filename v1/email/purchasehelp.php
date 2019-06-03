@@ -4,6 +4,9 @@
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/admin/partner/scaffolderhelp/help.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/mail_functions.php");
 
+    // make_purchase_email(101,null,null,null); enviar email gabriel
+    // make_purchase_boleto_email(101,null); 
+
     function generate_email_print_code($id_pedido_venda, $codVenda, $id_base) {
         if ($id_pedido_venda == null)
             $id_pedido_venda = 0;
@@ -28,6 +31,14 @@
     }
 
     function get_purchase_email($id_pedido_venda) {
+
+        $query = "EXEC pr_show_partner_info_bypedido ?, ?";
+        $params = array(getwhitelabelobj()["apikey"],$id_pedido_venda);
+        //     die(json_encode($params));
+        $rs_show_partner_info = db_exec($query, $params);
+        // die(json_encode($rs_show_partner_info[0]["show_partner_info"]));
+
+        
         $query = "EXEC pr_purchase_info_email ?";
         $params = array($id_pedido_venda);
         $result = db_exec($query, $params);
@@ -59,9 +70,11 @@
                 "voucher_printcodehas" => $row["printcodehas"],
                 "voucher_linkold" => getwhitelabelURI_legacy("/comprar/reimprimirEmail.php?pedido=".$row["voucher_id"]),
                 "voucher_link" => getwhitelabelURI_api("/v1/email/ticket?code=".$row["printcode"]),
+                "name_site" => $row["name_site"],
+                "show_partner_info" => $rs_show_partner_info[0]["show_partner_info"]
             );
         }
-        //die(json_encode($json[1]["voucher_event_amount"]));
+        // die(json_encode($json));
 
         return $json;
     }
@@ -104,7 +117,7 @@
 
         return $json;
     }
-    function setHtml_email_boleto($name,$link) { 
+    function setHtml_email_boleto($name,$link,$obj) { 
         $templatefolder = $_SERVER['DOCUMENT_ROOT'].$templatefolder = getwhitelabelobj()["templates"]["emails"]["folder"];
 
         $replacement = getonlyReplacement(gethost());
@@ -146,6 +159,9 @@
                                             "wlsitewithoutwww" => $wlsitewithoutwww,
                                             "user_name" => $name,
                                             "boleto_link" => $link,// getwhitelabelURI_home("/resetpass/".$code),
+                                            "show_partner_info" => $obj[0]["show_partner_info"],
+                                            "name_site" => $obj[0]["name_site"]
+                                            
                                         ] );
     }
     function setHtml_purchase_email($obj, $isgift, $vouchername,$voucheremail, $type) { 
@@ -213,6 +229,8 @@
                                             "voucher_event_service_total" => $obj[0]["voucher_event_service_total"],
                                             "voucher_event_value_total" => $obj[0]["voucher_event_value_total"],
                                             "voucher_link" => ($obj[0]["voucher_printcodehas"] == 1 ? $obj[0]["voucher_link"] : $obj[0]["voucher_linkold"]), 
+                                            "show_partner_info" => $obj[0]["show_partner_info"],
+                                            "name_site" => $obj[0]["name_site"]
                                         ] );
     }
 
@@ -224,7 +242,7 @@
         // $to = "blcoccaro@gmail.com";// $obj[0]["buyer_email"];
         // $toName = "blcoccaro";//$obj[0]["buyer_name"];
 
-        $html = setHtml_email_boleto($toName, $link);
+        $html = setHtml_email_boleto($toName, $link,$obj);
 
         $from = getwhitelabelemail()["noreply"]["email"];
         $fromName = getwhitelabelemail()["noreply"]["from"];
