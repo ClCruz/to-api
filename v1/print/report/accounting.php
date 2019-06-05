@@ -137,7 +137,7 @@
    $dontbreakline = $_REQUEST["dontbreakline"] != null && $_REQUEST["dontbreakline"] != '';
    $dontclose = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
    $dontprint = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
-   $logo = getDefaultMediaHost()."/logos/".get_uniquename_by_apikey('').".png";
+   $logo = getDefaultMediaHost()."/logos/logo-".get_uniquename_by_apikey('').".png";
 
    if ($_REQUEST["exportto"]=="sheet") {
       header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
