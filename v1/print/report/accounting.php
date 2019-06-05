@@ -550,7 +550,7 @@
             if ($dontprint == false) {
          ?>
                setTimeout(function() { 
-//                  window.print();
+                 window.print();
                }, 1000);
          <?php
             }
