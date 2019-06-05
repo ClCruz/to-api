@@ -38,7 +38,6 @@
     "compra.ingressos.teatroumc.com.br": "teatroumc",
     "ingressos.teatroumc.com.br": "teatroumc",
     "admin.ingressos.teatroumc.com.br": "teatroumc",
-
     "www.viveremsantosdemo.tk": "viveremsantos",
     "api.viveremsantosdemo.tk": "viveremsantos",
     "compra.viveremsantosdemo.tk": "viveremsantos",
@@ -217,5 +216,9 @@
     "ingressos.rfse.com.br": "rfse",
     "api.ingressos.rfse.com.br": "rfse",
     "compra.ingressos.rfse.com.br": "rfse",
-    "admin.ingressos.rfse.com.br": "rfse"
+    "admin.ingressos.rfse.com.br": "rfse",
+    "www.santosrockfestival.com.br": "santosrockfestival",
+    "api.santosrockfestival.com.br": "santosrockfestival",
+    "compra.santosrockfestival.com.br": "santosrockfestival",
+    "admin.santosrockfestival.com.br": "santosrockfestival"
 }
