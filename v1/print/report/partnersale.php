@@ -222,7 +222,6 @@
             </td>
          </tr>
    </table>
-</page>  
 <?php 
 $content = ob_get_clean();
 

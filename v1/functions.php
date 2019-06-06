@@ -170,6 +170,18 @@ function get_id_base_by_codvenda($codVenda) {
 
     return $id_base;
 }
+function get_id_base_by_pedido($id_pedido_venda) {
+    $query = "EXEC pr_recover_base_by_pedido ?";
+    $params = array($id_pedido_venda);
+    $result = db_exec($query, $params);
+
+    $id_base = 0;
+    foreach ($result as &$row) {
+        $id_base = $row["id_base"];
+    }
+
+    return $id_base;
+}
 
 function stopthehammer($obj) {
     echo json_encode($obj);
