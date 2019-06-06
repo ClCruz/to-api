@@ -355,6 +355,12 @@
                                     <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:20px;color:#999999;">
                                       Valor: {{purchase.voucher_event_amount}} - Taxa: {{purchase.voucher_event_service}}
                                     </p>
+                                    <p style="Margin:0;
+                                    margin-top:10px;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:20px;color:#999999;"> 
+                                      {% if show_partner_info == 1 %}
+                                          Vendido e entregue por: {{name_site}}
+                                      {% endif %}
+                                    </p>
                                   {% endfor %}
                                   <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:20px;color:#999999;"><br></p>
                                   <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:13px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:20px;color:#000000;">

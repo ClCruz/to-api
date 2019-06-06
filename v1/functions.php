@@ -50,6 +50,7 @@ function documentformatBR($cpf_cnpj){
     }
     return $cpf_cnpj_formatado;
 }
+
 function randomintbydate() {
     $date = new DateTime();
     $result = $date->format('Y-m-d H:i:s');
@@ -273,6 +274,15 @@ function logme() {
 function modifyDate($value) {
     if ($value!=null && $value!='') {
         $aux = explode("/", $value);
+        $ret = $aux[2].'/'.$aux[1].'/'.$aux[0];
+        return $ret;
+    }
+    return null;
+}
+
+function modifyDateUStoBR($value) {
+    if ($value!=null && $value!='') {
+        $aux = explode("-", $value);
         $ret = $aux[2].'/'.$aux[1].'/'.$aux[0];
         return $ret;
     }

@@ -84,15 +84,60 @@
    
        return $json;
    }
+   function getpayments($id_base, $key) {
+      $query = "EXEC pr_accounting_payment ?";
+      // die("dd".json_encode($codVenda));
+      $params = array($key);
+      $result = db_exec($query, $params, $id_base);
+  
+      $json = array();
+      foreach ($result as &$row) {    
+          $json[] = array(
+              "CodForPagto"=>$row["CodForPagto"]
+               ,"ForPagto"=>$row["ForPagto"]
+               ,"taxa_administrativa"=>$row["taxa_administrativa"]
+               ,"taxa_administrativa_formatted"=>$row["taxa_administrativa_formatted"]
+               ,"sold"=>$row["sold"]
+               ,"percentage"=>$row["percentage"]
+               ,"percentage_formatted"=>$row["percentage_formatted"]
+               ,"soldamount"=>$row["soldamount"]
+               ,"soldamount_formatted"=>$row["soldamount_formatted"]
+               ,"discount"=>$row["discount"]
+               ,"discount_formatted"=>$row["discount_formatted"]
+               ,"total"=>$row["total"]
+               ,"total_formatted"=>$row["total_formatted"]
+               ,"PrzRepasseDias"=>$row["PrzRepasseDias"]
+               ,"transfer_date"=>$row["transfer_date"]
+               ,"sold_total"=>$row["sold_total"]
+               ,"sold_total_formatted"=>$row["sold_total_formatted"]
+               ,"percentage_total"=>$row["percentage_total"]
+               ,"percentage_total_formatted"=>$row["percentage_total_formatted"]
+               ,"soldamount_total"=>$row["soldamount_total"]
+               ,"soldamount_total_formatted"=>$row["soldamount_total_formatted"]
+               ,"discount_total"=>$row["discount_total"]
+               ,"discount_total_formatted"=>$row["discount_total_formatted"]
+               ,"total_total"=>$row["total_total"]
+               ,"total_total_formatted"=>$row["total_total_formatted"]
+          
+          );
+      }
+  
+      logme();
+  
+      return $json;
+   }
+   
    $obj = get($_REQUEST["id_base"], $_REQUEST["id"]);
    $objDeb = getdebs($_REQUEST["id_base"], $_REQUEST["id"]);
+   $objPayment = getpayments($_REQUEST["id_base"], $_REQUEST["id"]);
    //die(json_encode($obj));
    //die(json_encode($objDeb));
+   // die(json_encode($objPayment));
 
    $dontbreakline = $_REQUEST["dontbreakline"] != null && $_REQUEST["dontbreakline"] != '';
    $dontclose = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
    $dontprint = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
-   $logo = getDefaultMediaHost()."/logos/".get_uniquename_by_apikey('').".png";
+   $logo = getDefaultMediaHost()."/logos/logo-".get_uniquename_by_apikey('').".png";
 
    if ($_REQUEST["exportto"]=="sheet") {
       header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
@@ -166,6 +211,11 @@
             background-color: #e0e0e0;
          }
          .grid2 {
+            margin-top: 10px;
+            font-size: 14px;
+            background-color: #e0e0e0;
+         }
+         .grid3 {
             margin-top: 10px;
             font-size: 14px;
             background-color: #e0e0e0;
@@ -442,12 +492,65 @@
             </td>
          </tr>
    </table>
+   <table class="principal grid3">
+   <tr>
+         <td colspan="8" style="text-align:center;font-weight: bold;font-size: 14px;">3 - DETALHAMENTO POR FORMA DE PAGAMENTO</td>
+      </tr>
+      <tr>
+         <td colspan="8" style="text-align:center;font-weight: bold;font-size: 14px;">(apenas para conferência de valores e quantidades)</td>
+      </tr>
+      <tr style="font-weight: bold;font-size: 8px">
+         <td style="text-align:left">Tipo de forma de pagamento</td>
+         <td style="text-align:right">%</td>
+         <td style="text-align:right">Qtde de Transações</td>
+         <td style="text-align:right">Valores brutos</td>
+         <td style="text-align:right">Taxa</td>
+         <td style="text-align:right">Desconto Taxa</td>
+         <td style="text-align:right">Repasses</td>
+         <td style="text-align:right">Data de repasse</td>
+      </tr>         
+      <?php foreach ($objPayment as &$row) {?>
+         <tr style="font-size: 9px;">
+            <td class="printonly_lines_values" style="text-align:left"><?php echo $row["ForPagto"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["percentage_formatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["sold"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["soldamount_formatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["taxa_administrativa_formatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["discount_formatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["total_formatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["transfer_date"] ?></td>     
+         </tr>
+         <?php } ?>
+         <tr style="font-size: 9px;">
+            <td class="printonly_lines_values" style="text-align:left; font-weight: bold;">
+               Total:
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               <?php echo $objPayment[0]["percentage_total_formatted"] ?>
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               <?php echo $objPayment[0]["sold_total"] ?>
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               R$ <?php echo $objPayment[0]["soldamount_total_formatted"] ?>
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               R$ <?php echo $objPayment[0]["discount_total_formatted"] ?>
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               R$ <?php echo $objPayment[0]["total_total_formatted"] ?>
+            </td>
+         </tr>
+   </table>
       <script lang="javascript">
          <?php 
             if ($dontprint == false) {
          ?>
                setTimeout(function() { 
-                  window.print();
+                 window.print();
                }, 1000);
          <?php
             }
