@@ -17,8 +17,8 @@
         foreach ($result as &$row) {
             $id_evento = $row["id_evento"];
             $id_base = $row["id_base"];
-            $codPeca = $row["CodPeca"];
             $name_site = $row["name_site"];
+            $codPeca = $row["CodPeca"];
             $show_partner_info = $row["show_partner_info"];
 
         }
