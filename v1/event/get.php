@@ -63,6 +63,7 @@
                 "promo"=> splitPromotion($row["promotion"]),
                 "name_site" => $name_site,
                 "show_partner_info" => $show_partner_info,
+                "ontixsme"=>$row["ontixsme"]
             );
         }
 
