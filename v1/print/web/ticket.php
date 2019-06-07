@@ -3,8 +3,6 @@
     require_once($_SERVER['DOCUMENT_ROOT'].'/lib/Metzli/autoload.php');
     require_once($_SERVER['DOCUMENT_ROOT']."/vendor/autoload.php");
 
-    $mpdf = new \Mpdf\Mpdf();
-
     use Metzli\Encoder\Encoder;
     use Metzli\Renderer\PngRenderer;
 
@@ -140,9 +138,9 @@
                 ,"transaction"=>$row["transaction"]
                 ,"buyer"=>$row["buyer"]
                 ,"buyerDoc"=>documentformatBR($row["buyerDoc"])
+                ,"buyerEmail"=>$row["buyerEmail"]
                 ,"insurance_policy"=>$row["insurance_policy"]
                 ,"opening_time"=>$row["opening_time"]
-                ,"eventResp"=>$row["eventResp"]
                 ,"user"=>$row["user"]
                 ,"countTicket"=>$row["countTicket"]
                 ,"purchase_date"=>$row["purchase_date"]
@@ -172,7 +170,9 @@
         die("Falha na execução. ERR.02");
     }
 
-    $obj = getobj($primary_info["id_base"], $primary_info["codVenda"], '');    
+    $obj = getobj($primary_info["id_base"], $primary_info["codVenda"], '');
+    $uniquename = gethost();
+    $logo = getDefaultMediaHost()."/logos/logo-".$uniquename.".png";
 
     // die(json_encode($obj));
     // foreach ($obj as &$row) {
@@ -184,14 +184,14 @@
       <style>
          @page :first {
             size: auto;
-            header: html_header_first;
-            footer: html_footer;
+            /* header: html_header_first; */
+            /* footer: html_footer; */
          }
 
          @page {
             size: auto;
-            header: html_header_otherpages;
-            footer: html_footer;
+            /* header: html_header_otherpages; */
+            /* footer: html_footer; */
          }
          .principal {
             
@@ -258,39 +258,69 @@
       </style>
 </head>
 
-<body>
-<htmlpageheader name="header_first" style="display:none;padding-bottom:150px;">
-</htmlpageheader>
-<htmlpageheader name="header_otherpages" style="display:none;">
-</htmlpageheader>
-
-<htmlpagefooter name="footer">
-</htmlpagefooter>
-
-<?php
-$row = $obj[0];
-//foreach ($obj as &$row) {
-?>
-<div style="">
-    <div style="width:10px;">
-        <span style="font-size:11px;">
-            <?php echo $row["name"] ?>
+<body style="max-width: 960px">
+    <div>
+        <div style="font-weight: bold;font-size:20px;" class="left">Aqui está o seu voucher (e-ticket)</div>
+        <span>
+            <img style="float:right;max-width:200px;" src="<?php echo $logo ?>" />
         </span>
+        <span style="font-size:8px">É obrigatório a apresentação deste voucher na bilheteria, balcão ou diretamente no controle de acesso do local.</span>
+        <br /><br /><br />
+        <div style="font-family:Arial,Verdana;font-size:10px;font-weight:normal;color:#000000;line-height:16px;margin:0;padding:0;">
+        Olá <span style="font-size:11px;font-weight:bold;"><?php echo $obj[0]["buyer"] ?></span>, obrigado pela compra.<br>
+        <b>Confira abaixo as informações</b> da sua compra.
+        </div>
+        <div style="font-family:Arial,Verdana;font-size:10px;font-weight:normal;color:#000000;line-height:16px;margin:0;padding:0;">
+            > <b>Nome:</b> <?php echo $obj[0]["buyer"]; ?><br />
+            > <b>CPF/CNPJ/Passport:</b> <?php echo $obj[0]["buyerDoc"]; ?><br />
+            > <b>E-mail:</b> <?php echo $obj[0]["buyerEmail"]; ?>
+        </div>
+        <?php if ($obj[0]["show_partner_info"] == 1) {
+        ?>
+            <div style="font-family:Arial,Verdana;font-size:10px;font-weight:normal;color:#000000;line-height:16px;margin:0;padding:0;">
+                > <b>Compra realizada em:</b> <?php echo getwhitelabelobj()["uri"] ?>
+            </div>
+        <?php
+        }
+        ?>
+        <br />
+        <div style="height:1px;border-bottom:1px solid #EEEEEE;width:600px;"></div>
+        <div style="font-family:Arial,Verdana;font-size:14px;font-weight:bold;color:#000000;line-height:16px;margin:0;padding:0;text-transform:uppercase;">
+            LOCALIZADOR Nº <?php echo $obj[0]["purchaseCodeInt"]; ?>
+        </div>
     </div>
-</div>
-   
-<?php
- //urn($row["name"], $row["local"], $row["ticket"], $row["price_formatted"], $row["day"]."/".$row["month"]."/".$row["year"], $row["hour"], $row["sectorName"], $row["seatNameFull"]);
-//}
-echo "oi";
-?>
+    <table>
+        <?php
+        foreach ($obj as &$row) {
+        ?>
+            <tr>
+                <td>
+                 teste   
+                </td>
+                <td>
+                    oi2
+                </td>
+            </tr>
 
+        <?php
+        }
+        ?>
+    </table>
 </body>  
 <?php 
+
+
 $content = ob_get_clean();
+//ob_end_clean();
 // die($content);
 
+//$mpdf = new \Mpdf\Mpdf();
+$mpdf = new \Mpdf\Mpdf([
+    'debug' => true,
+    'allow_output_buffering' => true
+]);
 $mpdf->WriteHTML($content);
 $mpdf->Output();
 die();
+
 ?>
