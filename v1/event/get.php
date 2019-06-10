@@ -13,6 +13,9 @@
         $id_base = 0;
         $show_partner_info = 0;
         $name_site = '';
+        $dates = '';
+        $ontixsme = 0;
+        $uniquename = "";
 
         foreach ($result as &$row) {
             $id_evento = $row["id_evento"];
@@ -20,8 +23,26 @@
             $codPeca = $row["CodPeca"];
             $name_site = $row["name_site"];
             $show_partner_info = $row["show_partner_info"];
-
+            $dates = $row["dates"];
+            $ontixsme = $row["ontixsme"];
+            $uniquename = $row["uniquename"];
         }
+
+        // $ontixsme=0;
+
+        if (gethost() == "localhost") {
+        // if (gethost() == "compreingressos") {
+            $uri = "";
+            if ($ontixsme == 1) {
+                $uri = getwhitelabelobjforced("tixsme")["uri"];
+            }
+            else {
+                $uri = getwhitelabelobjforced($uniquename)["uri"];
+            }
+            $uri.="/evento/".$key;
+        }
+
+        //getwhitelabelobj_forced($uniquename);
         //die("ddd".print_r($result,true));
         if ($id_base == 0 && $codPeca == 0) {
             echo json_encode(array("error"=>true, "msg"=>"Não foi possível achar o evento.", "goto"=> "home"));    
@@ -63,7 +84,8 @@
                 "promo"=> splitPromotion($row["promotion"]),
                 "name_site" => $name_site,
                 "show_partner_info" => $show_partner_info,
-                "ontixsme"=>$row["ontixsme"]
+                "dates" => $dates,
+                "gotouri"=>$uri
             );
         }
 
