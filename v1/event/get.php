@@ -30,8 +30,8 @@
 
         // $ontixsme=0;
 
-        if (gethost() == "localhost") {
-        // if (gethost() == "compreingressos") {
+        // if (gethost() == "localhost") {
+        if (gethost() == "compreingressos") {
             $uri = "";
             if ($ontixsme == 1) {
                 $uri = getwhitelabelobjforced("tixsme")["uri"];
@@ -42,8 +42,6 @@
             $uri.="/evento/".$key;
         }
 
-        //getwhitelabelobj_forced($uniquename);
-        //die("ddd".print_r($result,true));
         if ($id_base == 0 && $codPeca == 0) {
             echo json_encode(array("error"=>true, "msg"=>"Não foi possível achar o evento.", "goto"=> "home"));    
             die();
@@ -52,7 +50,6 @@
         $query = "EXEC pr_event_bybase ?";
         $params = array($codPeca);
         $result = db_exec($query, $params, $id_base);
-        //die("oi".print_r($result,true));
 
         $json = array();
         foreach ($result as &$row) {
