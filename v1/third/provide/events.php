@@ -93,8 +93,11 @@ function get($key, $date) {
             $presentation = array();
             $seathelper = array();
             $tickethelper = array();
+            // die(json_encode($seats));
 
             foreach ($presentations as &$presentation_value) {
+                $seathelper = array();
+                $tickethelper = array();
                 if ($presentation_value["id_event"] == $row["id"]) {
                     foreach ($seats as &$seat_value) {
                         if ($seat_value["id_event"] == $row["id"] && $seat_value["id_presentantion"] == $presentation_value["id"]) {
@@ -108,6 +111,7 @@ function get($key, $date) {
                         }
                     }
                     $presentation_value["seats"] = $seathelper;
+                    $presentation_value["seat_total"] = count($seathelper);
                     $presentation[] = $presentation_value;
                 }
             }
