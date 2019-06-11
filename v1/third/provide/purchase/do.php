@@ -1,26 +1,35 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-//    stopIfApiNotExist();
+    $data = file_get_contents('php://input');
 
-
-function get($city = null, $state = null, $api = null, $date = null, $filter = null) {
-        $query = "EXEC pr_geteventsforcards ?, ?, ?, ?, ?";
-        $params = array(db_param($city), db_param($state), $api, $date, $filter);
-        $result = db_exec($query, $params);
-        $json = array();
-
-        foreach ($result as &$row) {
-            $json[] = array(
-                "isdiscovery"=>0
-            );
-        }
-
-        echo json_encode($json);
-        logme();
-        die();    
+    if (array_key_exists("key", getallheaders()) == false) {
+        die(json_encode(array("success"=>false, "msg"=> "Chave não encontrada.", "result"=>"")));
     }
 
-get($_POST["city"],$_POST["state"], $_REQUEST["apikey"], $_POST["date"], $_POST["filter"]);
+    $key = getallheaders()["key"];
+    if ($key == '') {
+        die(json_encode(array("success"=>false, "msg"=> "Chave não encontrada.", "result"=>"")));
+    }
+
+    die(json_encode($key));
+
+    if ($data == "") {
+        logme();
+        die(json_encode(array("success"=>false, "msg"=> "Nenhum dado encontrado. ERR.1.", "result"=>"")));
+    }
+    // die($data);
+    $json = json_decode($data);
+    // die(json_encode(json_last_error_msg()));
+
+    if (json_last_error() != JSON_ERROR_NONE) {
+        logme();
+        die(json_encode(array("success"=>false, "msg"=> "Nenhum dado encontrado. ERR.2.", "result"=>"")));
+    }
+
+    die(json_encode($json));
+
+
+//    stopIfApiNotExist();
 
 ?>
