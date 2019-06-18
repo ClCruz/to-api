@@ -30,8 +30,7 @@
 
         // $ontixsme=0;
 
-        // if (gethost() == "localhost") {
-        if (gethost() == "compreingressos") {
+        if (gethost() == "compreingressos" || gethost() == "localhost") {
             $uri = "";
             if ($ontixsme == 1) {
                 $uri = getwhitelabelobjforced("tixsme")["uri"];
