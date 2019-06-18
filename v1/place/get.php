@@ -9,8 +9,8 @@
 
         foreach ($result as &$row) {
             $json[] = array(
-                "isdiscovery"=>0
-                ,"id_evento" => $row["id_evento"],
+                "isdiscovery"=>0,
+                "id_evento" => $row["id_evento"],
                 "ds_evento" => $row["ds_evento"],
                 "valores" => $row["valores"],
                 "minAmount" => $row["minAmount"],
@@ -73,16 +73,23 @@
 
         $params = array($name);
         $result = db_exec($query, $params);
+        $uri = '';
 
         $json = array();
         foreach ($result as &$row) {
+            $uri = $row['url'];
+            
+            if (startsWith($row['url'], "http") == false) {
+                $uri = "http://".$row['url'];
+            }
+
             $json = array(
                 "id_local_evento" => $row["id_local_evento"],
                 "ds_local_evento" => $row["ds_local_evento"],
                 "id_tipo_local" => $row["id_tipo_local"],
                 "id_municipio" => $row["id_municipio"],
                 "ds_googlemaps" => $row["ds_googlemaps"],
-                "url" => $row["url"],
+                "url" => $uri,
                 "ticketbox_info" => $row["ticketbox_info"],
                 "occupation_info" => $row["occupation_info"],
                 "meta_description" => $row["meta_description"],
@@ -95,6 +102,8 @@
             );
         }
 
+
+
         $json["events"] = events($name, $api);
 
         echo json_encode($json);
@@ -102,5 +111,5 @@
         die();    
     }
 
-search($_REQUEST["api"], $_REQUEST["name"]);
+search($_REQUEST["apikey"], $_REQUEST["name"]);
 ?>
