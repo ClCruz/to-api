@@ -79,7 +79,7 @@
         foreach ($result as &$row) {
             $uri = $row['url'];
             
-            if (startsWith($row['url'], "http") == false) {
+            if (startsWith($row['url'], "http") == false && $row["url"]!='' && $row["url"]!=null) {
                 $uri = "http://".$row['url'];
             }
 
