@@ -378,17 +378,17 @@ echo "</tr></tbody></table>";
                                     <p style="font-family:Arial,Verdana;font-size:9px;font-weight:normal;color:#000000;line-height:14px;margin:0;padding:0;">
                                         <b>Localizador:</b> <?php echo $obj[0]["purchaseCodeInt"] ?>1935<br>
                                         <b>Data e hora de venda:</b><br>
-                                        <?php echo $obj[0]["purchase_date"] ?>06/06/2019<br>
+                                        <?php echo $obj[0]["purchase_date"] ?><br>
                                         <b>Data e hora de impressão:</b><br>
-                                        <?php echo $obj[0]["print_date"] ?>14/06/2019 15:11<br>
+                                        <?php echo $obj[0]["print_date"] ?><br>
                                         <b>Login de usuário:</b><br>
-                                        <?php echo $obj[0]["buyerEmail"] ?>blcoccaro@gmail.com<br>
+                                        <?php echo $obj[0]["buyerEmail"] ?><br>
                                         <b>Total de pagamento:</b><br>
-                                        <?php echo $obj[0]["price_total_formatted"] ?>R$ 32,50<br>
+                                        <?php echo $obj[0]["price_total_formatted"] ?><br>
                                         <b>Meio de pagamento:</b><br>
-                                        <?php echo $obj[0]["paymentType"] ?>Pagar.me Crédito<br>
+                                        <?php echo $obj[0]["paymentType"] ?><br>
                                         <b>Nr. do Cartão da Compra</b><br>
-                                        <?php echo $obj[0]["buyer_bin_card"] ?>424242
+                                        <?php echo $obj[0]["buyer_bin_card"] ?>
                                     </p>
                                 </td>
                                 <td width="10"></td>
@@ -401,15 +401,10 @@ echo "</tr></tbody></table>";
                                         - A taxa de serviço e os vouchers que forem adquiridos e pagos através desse canal não poderão ser devolvidos,
                                         trocado ou cancelados depois que a compra for efetuada pelo cliente e o pagamento confirmado pela
                                         instituição financeira.<br>
-                                        - É obrigatório <b>apresentar um documento de identificação pessoal e o cartão de crédito utilizado na compra</b> na entrada do evento. De acordo com a política de segurança das operadoras de crédito, essa conferência se faz necessária visto que as transações via internet não são autenticadas com sua senha de usuário.<br>
+                                        - É obrigatório <b>apresentar um documento de identificação pessoal e o cartão de crédito utilizado na compra (no caso da compra feita por cartão de crédito)</b> na entrada do evento. De acordo com a política de segurança das operadoras de crédito, essa conferência se faz necessária visto que as transações via internet não são autenticadas com sua senha de usuário.<br>
                                         
                                         - No caso de <b>meia-entrada</b> ou <b>promoção</b> é obrigatório a apresentação de documento que comprove o
                                         benefício no momento da retirada dos vouchers e na entrada do local.<br>
-                                        - Caso você tenha alguma dúvida sobre o seu pedido, entre em contato conosco através do site:
-                                        <a href="http://www.tixs.me" style="color:#000000;text-decoration:none;font-weight:bold;">http://www.tixs.me</a><br><br>
-                                    </p>
-                                    <p style="font-family:Arial,Verdana;font-size:8px;font-weight:bold;color:#000000;line-height:14px;margin:0;padding:0;text-transform:uppercase;">
-                                        ESTE É UM E-MAIL AUTOMÁTICO. NÃO É NECESSÁRIO RESPONDÊ-LO.
                                     </p>
                                     <br>
                                     
