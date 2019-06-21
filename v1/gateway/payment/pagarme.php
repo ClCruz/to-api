@@ -83,33 +83,50 @@
         traceme($id_purchase, "Initiating gateway|pagarme|transactions", 'pagarme',0);
         traceme($id_purchase, "Initiating gateway|pagarme|config", json_encode($conf),0);
 
-        $transaction_data = array(
-            "api_key" => $conf["apikey"],    
-            // "metadata" => $metadata,    
-            "amount" => $charge["amount"],
-            "customer" => array(
-                "name" => $buyer["name"],
-                "document_number" => $buyer["document"],
-                "email" => $buyer["email"],
-                "sex" => $buyer["sex"],
-                "born_at" => $buyer["born"],
-                "address" => array(
-                    "street" => $buyer["address"]["street"],
-                    "neighborhood" => $buyer["address"]["neighborhood"],
-                    "zipcode" => $buyer["address"]["zipcode"],
-                    "street_number" => $buyer["address"]["number"],
-                    "complementary" => $buyer["address"]["complementary"],
-                    "city" => $buyer["address"]["city"],
-                    "state" => $buyer["address"]["state"]
+        $transaction_data = array();
+
+        if ($charge["iscreditcard"] == 1) {
+            $transaction_data = array(
+                "api_key" => $conf["apikey"],    
+                // "metadata" => $metadata,    
+                "amount" => $charge["amount"],
+                "customer" => array(
+                    "name" => $buyer["name"],
+                    "document_number" => $buyer["document"],
+                    "email" => $buyer["email"],
+                    // // "sex" => $buyer["sex"],
+                    // // "born_at" => $buyer["born"],
+                    "address" => array(
+                        "street" => $buyer["address"]["street"],
+                        "neighborhood" => $buyer["address"]["neighborhood"],
+                        "zipcode" => $buyer["address"]["zipcode"],
+                        "street_number" => $buyer["address"]["number"],
+                        "complementary" => $buyer["address"]["complementary"],
+                        "city" => $buyer["address"]["city"],
+                        "state" => $buyer["address"]["state"]
+                    ),
+                    "phone" => array(
+                        "ddd" => $buyer["phone"]["ddd"] == null ? '' : $buyer["phone"]["ddd"],
+                        "number" => $buyer["phone"]["number"] == null ? '' : $buyer["phone"]["number"]
+                    )
                 ),
-                "phone" => array(
-                    "ddd" => $buyer["phone"]["ddd"] == null ? '' : $buyer["phone"]["ddd"],
-                    "number" => $buyer["phone"]["number"] == null ? '' : $buyer["phone"]["number"]
-                )
-            ),
-            "postback_url" => $conf["postbackURI"]
-        );
-        
+                "postback_url" => $conf["postbackURI"]
+            );
+        }
+        elseif ($charge["ispaymentslip"] == 1) {
+            $transaction_data = array(
+                "api_key" => $conf["apikey"],    
+                // "metadata" => $metadata,    
+                "amount" => $charge["amount"],
+                "customer" => array(
+                    "name" => $buyer["name"],
+                    "document_number" => $buyer["document"],
+                    "email" => $buyer["email"],
+                ),
+                "postback_url" => $conf["postbackURI"]
+            );
+        }
+
         if ($charge["iscreditcard"] == 1) {
             $transaction_data = array_merge($transaction_data, array(
                 "card_holder_name" => $charge['card_holder_name'],
