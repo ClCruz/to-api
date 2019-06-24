@@ -73,6 +73,7 @@ function get($key, $date) {
         $query = "EXEC pr_api_events_list ?,?";
         $params = array($key,$date);
         $result = db_exec($query, $params);
+        // die(json_encode($result));
         $json = array();
 
         $presentations = presentation($key,$date);
@@ -89,20 +90,29 @@ function get($key, $date) {
 
         //die(json_encode(getwhitelabelobjforced($result[0]["baseName"])));
 
+        
         foreach ($result as &$row) {
             $presentation = array();
             $seathelper = array();
             $tickethelper = array();
-            // die(json_encode($seats));
-
+            // die(json_encode($row));
             foreach ($presentations as &$presentation_value) {
                 $seathelper = array();
                 $tickethelper = array();
-                if ($presentation_value["id_event"] == $row["id"]) {
+                // die(json_encode($presentation_value));
+                if ($row["id"] == $presentation_value["id_event"]) {
                     foreach ($seats as &$seat_value) {
-                        if ($seat_value["id_event"] == $row["id"] && $seat_value["id_presentantion"] == $presentation_value["id"]) {
+                        $tickethelper = array();
+                        // die(json_encode($seat_value));
+                        if ($row["id"] == $seat_value["id_event"] && $presentation_value["id"] == $seat_value["id_presentantion"]) {
                             foreach ($tickets as &$ticket_value) {
-                                if ($seat_value["id_event"] == $row["id"] && $ticket_value["id_presentantion"] == $seat_value["id_presentantion"] && $ticket_value["id_seat"] == $seat_value["id"]) {
+                                //die(json_encode($ticket_value));
+                                //if ($seat_value["id"] == 74)
+                                //    die(json_encode($ticket_value));
+
+                                if ($row["id"] == $ticket_value["id_event"] 
+                                        && $presentation_value["id"] == $ticket_value["id_presentantion"] 
+                                        && $seat_value["id"] == $ticket_value["id_seat"]) {
                                     $tickethelper[] = $ticket_value;
                                 }
                             }
