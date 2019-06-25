@@ -3,18 +3,18 @@
 
     function get($loggedId, $apikey, $id_evento, $id_apresentacao, $date, $hour, $periodtype, $customPeriodInit, $customPeriodEnd) {
         // die("oi");
-        $query = "EXEC pr_dashboard_purchase_values ?,?,?,?,?,?,?";
+        $query = "EXEC pr_dashboard_purchase_boleto ?,?,?,?,?,?,?";
         $params = array($id_evento, $id_apresentacao, $date, $hour, $periodtype, $customPeriodInit, $customPeriodEnd);
         $result = db_exec($query, $params);
 
         $json = array();
         foreach ($result as &$row) {
             $json = array(
-                "total_sold" => $row["total_sold"],
-                "total_soldamount" => $row["total_soldamount"],
-                "averageticket" => $row["averageticket"],
-                "total_soldamountformatted" => $row["total_soldamountformatted"],
-                "averageticket_formatted" => $row["averageticket_formatted"],
+                "awaiting_payment" => $row["awaiting_payment"],
+                "expired_payment" => $row["expired_payment"],
+                "ok_payment" => $row["ok_payment"],
+                "ok_conversion" => $row["ok_conversion"],
+                "ok_conversionformatted" => $row["ok_conversionformatted"],
             );
         }
 
