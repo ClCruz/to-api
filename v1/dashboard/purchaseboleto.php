@@ -3,6 +3,7 @@
 
     function get($loggedId, $apikey, $id_evento, $id_apresentacao, $date, $hour, $periodtype, $customPeriodInit, $customPeriodEnd) {
         // die("oi");
+        $date = modifyDateBRtoUS($date);
         $query = "EXEC pr_dashboard_purchase_boleto ?,?,?,?,?,?,?";
         $params = array($id_evento, $id_apresentacao, $date, $hour, $periodtype, $customPeriodInit, $customPeriodEnd);
         $result = db_exec($query, $params);

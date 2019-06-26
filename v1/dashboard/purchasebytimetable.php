@@ -3,18 +3,35 @@
 
     function get($loggedId, $apikey, $id_evento, $id_apresentacao, $date, $hour, $periodtype, $customPeriodInit, $customPeriodEnd) {
         // die("oi");
+        $date = modifyDateBRtoUS($date);
         $query = "EXEC pr_dashboard_purchase_timetable ?,?,?,?,?,?,?";
         $params = array($id_evento, $id_apresentacao, $date, $hour, $periodtype, $customPeriodInit, $customPeriodEnd);
         $result = db_exec($query, $params);
 
         $json = array();
+        $json_web = array();
+        $json_boxoffice = array();
+
+        array_push($json_web, 'web', 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+        array_push($json_boxoffice, 'ticketoffice', 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+
         foreach ($result as &$row) {
-            $json[] = array(
-                "web" => $row["web"],
-                "hour" => $row["hour"],
-                "sold" => $row["sold"],
-            );
+            $aux = $row["hour"]+1;
+            if ($row["web"] == 1) {
+                $json_web[$aux] = $row["sold"];
+            }
+            else {
+                $json_boxoffice[$aux] = $row["sold"];
+            }
+
+            // $json[] = array(
+            //     "web" => $row["web"],
+            //     "hour" => $row["hour"],
+            //     "sold" => $row["sold"],
+            // );
         }
+
+        $json = array("web"=>$json_web,"ticketoffice"=>$json_boxoffice);
 
         echo json_encode($json);
         logme();

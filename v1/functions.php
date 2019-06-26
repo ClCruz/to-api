@@ -288,6 +288,14 @@ function modifyDateUStoBR($value) {
     }
     return null;
 }
+function modifyDateBRtoUS($value) {
+    if ($value!=null && $value!='') {
+        $aux = explode("/", $value);
+        $ret = $aux[2].'-'.$aux[1].'-'.$aux[0];
+        return $ret;
+    }
+    return null;
+}
 function uniqueidentifier_default($value) {
     if ($value=='' || $value ==null) {
         $value = '00000000-0000-0000-0000-000000000000';
