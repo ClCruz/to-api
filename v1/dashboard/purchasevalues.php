@@ -14,7 +14,12 @@
             "averageticket"=>0,
             "total_soldamountformatted"=>"",
             "averageticket_formatted"=>"",
-            );
+            "typeofdiff" => "",
+            "typeofdiffAmount" => "",
+            "per_total_diff_formatted" => "",
+            "perAmount_total_formatted" => ""
+
+        );
             
         foreach ($result as &$row) {
             $json = array(
