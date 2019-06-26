@@ -4,7 +4,10 @@
     function get($loggedId, $apikey, $id_evento, $id_apresentacao, $date, $hour) {
         // die("oi");
         $date = modifyDateBRtoUS($date);
-        // die($date);
+        if ($customPeriodInit!='') {
+            $customPeriodInit = modifyDateBRtoUS($customPeriodInit);
+            $customPeriodEnd = modifyDateBRtoUS($customPeriodEnd);
+        }
         $query = "EXEC pr_dashboard_purchase_occupation ?,?,?,?";
         $params = array($id_evento, $id_apresentacao, $date, $hour);
         $result = db_exec($query, $params);
