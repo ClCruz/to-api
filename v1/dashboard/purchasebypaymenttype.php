@@ -8,14 +8,34 @@
         $params = array($id_evento, $id_apresentacao, $date, $hour, $periodtype, $customPeriodInit, $customPeriodEnd);
         $result = db_exec($query, $params);
 
-        $json = array();
+        $json = array("all"=>array(), "web"=>array(), "ticketoffice"=>array());
+
+        $json_all = array();
+        $json_web = array();
+        $json_ticketoffice = array();
+
         foreach ($result as &$row) {
-            $json[] = array(
-                "type" => $row["type"],
-                "name" => $row["name"],
-                "sold" => $row["sold"],
-            );
+            switch ($row["type"]) {
+                case "all":
+                    array_push($json_all, array($row["name"], $row["sold"]));
+                break;
+                case "web":
+                    array_push($json_web, array($row["name"], $row["sold"]));
+                break;
+                case "boxoffice":
+                    array_push($json_ticketoffice, array($row["name"], $row["sold"]));
+                break;
+            }
+            
+            // $json[] = array(
+            //     "type" => $row["type"],
+            //     "name" => $row["name"],
+            //     "sold" => $row["sold"],
+            // );
         }
+        $json["all"] = $json_all;
+        $json["web"] = $json_web;
+        $json["ticketoffice"] = $json_ticketoffice;
 
         echo json_encode($json);
         logme();
