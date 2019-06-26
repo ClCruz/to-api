@@ -13,6 +13,20 @@
         return $isok;
     }
 
+    function codes($id) {
+        $query = "EXEC pr_admin_authorization ?";
+        $params = array($id);
+        $result = db_exec($query, $params);
+
+        $json = array();
+        foreach ($result as &$row) {
+            $json[] = array(
+                "code" => $row["code"]
+            );
+        }
+        return $json;
+    }
+
     function login($login, $password,$apikey) {
         //sleep(5);
         $query = "EXEC pr_login_admin ?";
@@ -58,6 +72,7 @@
             if (checkPartner($id,$apikey)) {
                 $token = hash('ripemd160', $email.strtotime(date_default_timezone_get()));
 
+
                 $json = array("logged"=>true
                             ,"name"=>$name
                             ,"email"=>$email
@@ -66,6 +81,7 @@
                             ,"login"=>$login
                             ,"tokenValidUntil"=>$tokenValidUntil
                             ,"id"=>$id
+                            ,"codes"=>codes($id)
                             ,"operator"=>$operator
                             ,"lastLogin"=>$lastLogin);
     
