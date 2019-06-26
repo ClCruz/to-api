@@ -23,6 +23,10 @@
                 "averageticket" => $row["averageticket"],
                 "total_soldamountformatted" => $row["total_soldamountformatted"],
                 "averageticket_formatted" => $row["averageticket_formatted"],
+                "typeofdiff" => $row["typeofdiff"],
+                "typeofdiffAmount" => $row["typeofdiffAmount"],
+                "per_total_diff_formatted" => $row["per_total_diff_formatted"],
+                "perAmount_total_formatted" => $row["perAmount_total_formatted"]
             );
         }
 
