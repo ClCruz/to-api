@@ -1,6 +1,21 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
+    function seatsselect($id_event, $id_presentation, $seats) {
+        $query = "EXEC pr_api_seatselect ?,?,?";
+        $params = array($$id_event,$id_presentation, $seats);
+        $result = db_exec($query, $params);
+        $json = array();
+    
+        foreach ($result as &$row) {
+            $json = array(
+                "code"=>$row["code"]
+            );
+        }
+
+        return $json;
+    }
+
     function validatekey($key) {
         $query = "EXEC pr_api_keyvalidate ?";
         $params = array($key);
@@ -67,6 +82,8 @@
     }
 
     $code = code_generate($key);
+
+
 
     die(json_encode($code));
 
