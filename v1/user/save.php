@@ -36,20 +36,6 @@
                 return array("success"=>0,"msg"=>"Nome é obrigatório.","id"=>0);
             }
         }
-        if (validatefield($gender)==false) {
-            $continueerror = true;
-
-            if ($continueerror) {
-                return array("success"=>0,"msg"=>"Sexo é obrigatório.","id"=>0);
-            }
-        }
-        if (validatefield($birthdate)==false) {
-            $continueerror = true;
-
-            if ($continueerror) {
-                return array("success"=>0,"msg"=>"Data de nascimento é obrigatória.","id"=>0);
-            }
-        }
         if (validatefield($document)==false) {
             $continueerror = true;
 
@@ -64,17 +50,6 @@
         //         return false;
         //     }
         // }
-        if (validatefield($brazilian_rg)==false) {
-            $continueerror = true;
-
-            if ($isforeign == 1) {
-                $continueerror = false;
-            }
-
-            if ($continueerror) {
-                return array("success"=>0,"msg"=>"RG é obrigatório.","id"=>0);
-            }
-        }
         if (validatefield($phone_ddd)==false) {
             $continueerror = true;
 
@@ -237,16 +212,14 @@
             die();
         }
 
+        $birthdate = NULL;
+
 
         $token = hash('ripemd160', $email.strtotime(date_default_timezone_get()));
         $passwordHash = "";
         if ($pass != '') {
             $passwordHash = md5($pass);
         }
-
-        $birthdateSplit = explode("/", $birthdate);
-
-        $birthdate = $birthdateSplit[2]."-".$birthdateSplit[1]."-".$birthdateSplit[0];
 
         $query = "EXEC pr_user_save ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
         $params = array($firstname, $lastname, $gender
