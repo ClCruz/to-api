@@ -35,6 +35,24 @@
         return array("success"=>$hasError == false, "msg"=>$errorMsg, "msgtobuyer"=>$errorMsg);
     }
 
+    function getlocal($id_purchase, $id_client, $id_event) {
+        traceme($id_purchase, "get event local - start", json_encode($id_client),0);
+        $query = "EXEC pr_event_local_byid ?";
+        $params = array($id_event);
+        $result = db_exec($query, $params);
+        $ret = array();
+        foreach ($result as &$row) {
+            $ret = array("id_evento"=>$row["id_evento"]
+            ,"ds_evento"=>$row["ds_evento"]
+            ,"ds_googlemaps"=>$row["ds_googlemaps"]
+            ,"ds_local_evento"=>$row["ds_local_evento"]);
+        }
+
+        traceme($id_purchase, "get event local - end", json_encode($ret),0);
+
+        return $ret;
+    }
+
     function getmysession($id_purchase, $id_client) {
 
         traceme($id_purchase, "get my session - start", json_encode($id_client),0);
