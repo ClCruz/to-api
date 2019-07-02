@@ -53,6 +53,65 @@
     function pagarme_setMetadata($id_pedido, $id_evento, $host) {
         return array("id_pedido_venda"=>$id_pedido, "id_evento"=>$id_evento, "host"=>$host);
     }
+    function pagarme_build_items($shopping,$values,$local) {
+        $name = "";
+        $date = "";
+
+        if (count($shopping)>0) {
+            $name = $shopping[0]["NomPeca"];
+            $date = date_format($shopping[0]["DatApresentacao"],"d/m/Y")." - ".$shopping[0]["HorSessao"];
+        }
+
+        $list = array();
+        // die(json_encode(count($list)));
+        
+        foreach ($shopping as &$row) {
+            $add = false;
+
+            if (count($list)>0) {
+                $countaux = 0;
+                $found = false;
+                foreach ($list as &$saved) {
+                    if ($saved["id"] == $row["id_apresentacao"]."-".$row["CodTipBilhete"]) {
+                        $found = true;
+                        break;
+                    }
+                    $countaux=$countaux+1;
+                }    
+                if ($found == true) {
+                    $list[$countaux]["quantity"] = $list[$countaux]["quantity"]+1;
+                }
+                else {
+                    $add = true;
+                }
+            }
+            else {
+                $add = true;
+            }
+
+            if ($add == true) {
+                
+                $amount = 0;
+                foreach ($values as &$value) {
+                    if ($value["indice"] == $row["Indice"]) {
+                        $amount = $value["amountallWithService"];
+                    }
+                }
+
+                array_push($list, array("id"=>$row["id_apresentacao"]."-".$row["CodTipBilhete"]
+                                ,"title"=>$name." (".$date.")"." - ".$row["TipBilhete"]
+                                ,"unit_price"=>$amount
+                                ,"tangible"=>false
+                                ,"venue"=>$local["ds_local_evento"]
+                                ,"date"=>date_format($shopping[0]["DatApresentacao"],"Y-m-d")
+                                ,"category"=>"event"
+                                ,"quantity"=>1));
+            }
+        }
+        
+        return $list;
+    }
+
     /*
         $metadata: informações para ficarem gravadas no pagarme
         $charge: objeto da cobrança
@@ -76,7 +135,7 @@
                 ddd: numero ddd
                 number: numero
     */
-    function pagarme_payment($id_purchase, $id_client, $metadata, $charge,$buyer) {
+    function pagarme_payment($id_purchase,$id_client,$metadata,$charge,$buyer,$items) {
         $conf = getConfigPagarme();
         //$pagarme = new PagarMe\Client($conf["apikey"]);
 
@@ -85,71 +144,145 @@
 
         $transaction_data = array();
 
-        if ($charge["iscreditcard"] == 1) {
-            $transaction_data = array(
-                "api_key" => $conf["apikey"],    
-                // "metadata" => $metadata,    
-                "amount" => $charge["amount"],
-                "customer" => array(
-                    "name" => $buyer["name"],
-                    "document_number" => $buyer["document"],
-                    "email" => $buyer["email"],
-                    // // "sex" => $buyer["sex"],
-                    // // "born_at" => $buyer["born"],
-                    "address" => array(
-                        "street" => $buyer["address"]["street"],
-                        "neighborhood" => $buyer["address"]["neighborhood"],
-                        "zipcode" => $buyer["address"]["zipcode"],
-                        "street_number" => $buyer["address"]["number"],
-                        "complementary" => $buyer["address"]["complementary"],
-                        "city" => $buyer["address"]["city"],
-                        "state" => $buyer["address"]["state"]
-                    ),
-                    "phone" => array(
-                        "ddd" => $buyer["phone"]["ddd"] == null ? '' : $buyer["phone"]["ddd"],
-                        "number" => $buyer["phone"]["number"] == null ? '' : $buyer["phone"]["number"]
-                    )
-                ),
-                "postback_url" => $conf["postbackURI"]
-            );
-        }
-        elseif ($charge["ispaymentslip"] == 1) {
-            $transaction_data = array(
-                "api_key" => $conf["apikey"],    
-                // "metadata" => $metadata,    
-                "amount" => $charge["amount"],
-                "customer" => array(
-                    "name" => $buyer["name"],
-                    "document_number" => $buyer["document"],
-                    "email" => $buyer["email"],
-                ),
-                "postback_url" => $conf["postbackURI"]
-            );
-        }
+        $version = 3;
 
-        if ($charge["iscreditcard"] == 1) {
-            $transaction_data = array_merge($transaction_data, array(
-                "card_holder_name" => $charge['card_holder_name'],
-                "card_cvv" => $charge['card_cvv'],
-                "card_number" => $charge['card_number'],
-                "card_expiration_date" => $charge['card_expiration_date'],
-                "installments" => $charge['installments'],
-                "payment_method" => "credit_card",
-                "soft_descriptor" => NULL,
-                "capture" => false,
-                "async" => false
-            ));
-        }
-        elseif ($charge["ispaymentslip"] == 1) {
-            $transaction_data = array_merge($transaction_data, array(
-                "payment_method" => "boleto"
-            ));
-        }
-        
-        if (is_array($charge["split"])) {
-            $transaction_data = array_merge($transaction_data, array(
-                "split_rules" => $charge["split"]
-            ));
+        switch ($version) {
+            case 1:
+                if ($charge["iscreditcard"] == 1) {
+                    $transaction_data = array(
+                        "api_key" => $conf["apikey"],    
+                        // "metadata" => $metadata,    
+                        "amount" => $charge["amount"],
+                        "customer" => array(
+                            "name" => $buyer["name"],
+                            "document_number" => $buyer["document"],
+                            "email" => $buyer["email"],
+                            // // "sex" => $buyer["sex"],
+                            // // "born_at" => $buyer["born"],
+                            "address" => array(
+                                "street" => $buyer["address"]["street"],
+                                "neighborhood" => $buyer["address"]["neighborhood"],
+                                "zipcode" => $buyer["address"]["zipcode"],
+                                "street_number" => $buyer["address"]["number"],
+                                "complementary" => $buyer["address"]["complementary"],
+                                "city" => $buyer["address"]["city"],
+                                "state" => $buyer["address"]["state"]
+                            ),
+                            "phone" => array(
+                                "ddd" => $buyer["phone"]["ddd"] == null ? '' : $buyer["phone"]["ddd"],
+                                "number" => $buyer["phone"]["number"] == null ? '' : $buyer["phone"]["number"]
+                            )
+                        ),
+                        "postback_url" => $conf["postbackURI"],
+
+                        "card_holder_name" => $charge['card_holder_name'],
+                        "card_cvv" => $charge['card_cvv'],
+                        "card_number" => $charge['card_number'],
+                        "card_expiration_date" => $charge['card_expiration_date'],
+                        "installments" => $charge['installments'],
+                        "payment_method" => "credit_card",
+                        "soft_descriptor" => NULL,
+                        "capture" => false,
+                        "async" => false
+                    );
+                }
+                elseif ($charge["ispaymentslip"] == 1) {
+                    $transaction_data = array(
+                        "api_key" => $conf["apikey"],    
+                        // "metadata" => $metadata,    
+                        "amount" => $charge["amount"],
+                        "customer" => array(
+                            "name" => $buyer["name"],
+                            "document_number" => $buyer["document"],
+                            "email" => $buyer["email"],
+                        ),
+                        "postback_url" => $conf["postbackURI"],
+
+                        "payment_method" => "boleto"
+                    );
+                }
+                
+                if (is_array($charge["split"])) {
+                    $transaction_data = array_merge($transaction_data, array(
+                        "split_rules" => $charge["split"]
+                    ));
+                }
+            break;
+            case 3:
+                if ($charge["iscreditcard"] == 1) {
+                    $phonenumber = "";
+                    if ($buyer["phone"]["ddd"] != null) {
+                        $phonenumber = "+55".$buyer["phone"]["ddd"].$buyer["phone"]["number"];
+                    }
+
+                    $transaction_data = array(
+                        "api_key" => $conf["apikey"],    
+                        // "metadata" => $metadata,    
+                        "amount" => $charge["amount"],
+                        "customer" => array(
+                            "external_id" => $id_client,
+                            "type" => "individual",
+                            "name" => $buyer["name"],
+                            "email" => $buyer["email"],
+                            "country" => "br",
+                            "documents" => array(
+                                array("type"=>"cpf","number"=>$buyer["document"])
+                            ),
+                            "phone_numbers" => array($phonenumber),
+                        ),
+                        "postback_url" => $conf["postbackURI"],
+                        "billing" => array(
+                            "name"=>$charge['card_holder_name'],
+                            "address" => array(
+                                "country"=>"br",
+                                "street" => $buyer["address"]["street"],
+                                "neighborhood" => $buyer["address"]["neighborhood"],
+                                "zipcode" => $buyer["address"]["zipcode"],
+                                "street_number" => $buyer["address"]["number"],
+                                "complementary" => $buyer["address"]["complementary"],
+                                "city" => $buyer["address"]["city"],
+                                "state" => $buyer["address"]["state"]
+                            ),
+                        ),
+                        "items"=> $items,
+                        "card_holder_name" => $charge['card_holder_name'],
+                        "card_cvv" => $charge['card_cvv'],
+                        "card_number" => $charge['card_number'],
+                        "card_expiration_date" => $charge['card_expiration_date'],
+                        "installments" => $charge['installments'],
+                        "payment_method" => "credit_card",
+                        "soft_descriptor" => NULL,
+                        "capture" => false,
+                        "async" => false
+                    );
+                }
+                elseif ($charge["ispaymentslip"] == 1) {
+                    $transaction_data = array(
+                        "api_key" => $conf["apikey"],    
+                        // "metadata" => $metadata,    
+                        "amount" => $charge["amount"],
+                        "customer" => array(
+                            "name" => $buyer["name"],
+                            "type" => "individual",
+                            "email" => $buyer["email"],
+                            "country" => "br",
+                            "documents" => array(
+                                array("type"=>"cpf","number"=>$buyer["document"])
+                            ),
+                        ),
+                        "postback_url" => $conf["postbackURI"],
+                        "items"=> $items,
+
+                        "payment_method" => "boleto"
+                    );
+                }
+                
+                if (is_array($charge["split"])) {
+                    $transaction_data = array_merge($transaction_data, array(
+                        "split_rules" => $charge["split"]
+                    ));
+                }
+            break;
         }
         
         traceme($id_purchase, "Request gateway|pagarme|transactions", json_encode($transaction_data),1);
@@ -170,16 +303,26 @@
         curl_setopt($curl, CURLOPT_TIMEOUT, 3600);
         // curl_setopt($curl, CURLOPT_VERBOSE, true);
         // curl_setopt($curl, CURLOPT_STDERR, $out);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(                                                                          
-            'Content-Type: application/json',                                                                                
-            'Content-Length: ' . strlen($post_data))                                                                       
-        );             
+        if ($version == 1) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                "Content-Type: application/json",                                                                                
+                "Content-Length: " . strlen($post_data))                                                                       
+            );                 
+        }
+        else {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                "X-Pagarme-Version: 2017-08-28",
+                "Content-Type: application/json",                                                                                
+                "Content-Length: " . strlen($post_data))                                                                       
+            );                 
+        }
 
         $response = curl_exec($curl);
         // fclose($out);
         $errno = curl_errno($curl);
 
         traceme($id_purchase, "Response - gateway|pagarme|transactions", json_encode($response)."| errno: ".$errno,1);
+        // traceme($id_purchase, "Response - gateway|pagarme|transactions", json_encode($response),1);
 
         // $data = ob_get_clean();
         // $data .= PHP_EOL . $response . PHP_EOL;
@@ -199,8 +342,9 @@
             else {
                 $responseJSON = array("success"=>true, "object"=>"payment","msg"=>"Sucesso.", "gatewayinfo"=>$json_response);
             }
-            
         }
+        traceme($id_purchase, "Response - gateway|pagarme|transactions|lastJSON", json_encode($responseJSON),1);
+
         curl_close($curl);
         $ret = array();
         if ($responseJSON["success"]) {
@@ -208,6 +352,7 @@
                 case "paid":
                 case "authorized":
                 case "waiting_payment":
+                case "processing":
                     $ret = array("success"=>true
                         ,"object"=>"payment"
                         ,"msg"=>"purchase approved."
@@ -215,13 +360,13 @@
                         ,'boleto_url'=>$responseJSON["gatewayinfo"]->boleto_url
                         ,'boleto_barcode'=>$responseJSON["gatewayinfo"]->boleto_barcode
                         ,'boleto_expiration_date'=>$responseJSON["gatewayinfo"]->boleto_expiration_date
-                        ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
-                        ,"authorization_code"=>$responseJSON["gatewayinfo"]->authorization_code
-                        ,"authorization_desc"=>translateacquirerresponsecode($responseJSON["gatewayinfo"]->acquirer_response_code)
+                        ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->status == "processing" ? "0000" : $responseJSON["gatewayinfo"]->acquirer_response_code
+                        ,"authorization_code"=>$responseJSON["gatewayinfo"]->status == "processing" ? $responseJSON["gatewayinfo"]->id : $responseJSON["gatewayinfo"]->authorization_code
+                        ,"authorization_desc"=>translateacquirerresponsecode($responseJSON["gatewayinfo"]->status == "processing" ? "0000" : $responseJSON["gatewayinfo"]->acquirer_response_code)
                         ,"authorized_amount"=>$responseJSON["gatewayinfo"]->authorized_amount
                         ,"status"=>$responseJSON["gatewayinfo"]->status
                         ,"cost"=>$responseJSON["gatewayinfo"]->cost
-                        ,"id"=>$responseJSON["gatewayinfo"]->tid
+                        ,"id"=>$responseJSON["gatewayinfo"]->status == "processing" ? $responseJSON["gatewayinfo"]->id : $responseJSON["gatewayinfo"]->tid
                         ,"card_last_digits"=>$responseJSON["gatewayinfo"]->card_last_digits
                         ,"card_first_digits"=>$responseJSON["gatewayinfo"]->card_first_digits
                         ,"card_brand"=>$responseJSON["gatewayinfo"]->card_brand

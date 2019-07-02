@@ -218,8 +218,11 @@
 
         traceme($id_purchase, "buyer gateway", json_encode($buyer),0);
 
+        $local = getlocal($id_purchase, $id_client, $shopping[0]["id_evento"]);
 
-        $purchase_gateway = pagarme_payment($id_purchase, $id_client, $metadata, $charge, $buyer);
+        $items_gateway = pagarme_build_items($shopping,$values,$local);
+
+        $purchase_gateway = pagarme_payment($id_purchase, $id_client, $metadata, $charge, $buyer,$items_gateway);
 
         $retofsevice = array("success"=>false, "seconds"=>0, "id_pedido_venda"=> 0, "codVenda"=> '', "msg"=> '');
 
@@ -251,8 +254,8 @@
                     traceme($id_purchase, "workaround pagseguro", 'success',0);
                 }
                 
-                $metadata = pagarme_setMetadata($sell["id_pedido_venda"], $shopping[0]["id_evento"], getuniquefromdomain());
                 if ($isCreditCard == true) {
+                    $metadata = pagarme_setMetadata($sell["id_pedido_venda"], $shopping[0]["id_evento"], getuniquefromdomain());
                     $capture_gateway = pagarme_capture($id_purchase,$purchase_gateway["id"], $id_client, $metadata, $charge, $buyer);
                     traceme($id_purchase, "capture_gateway", json_encode($capture_gateway),0);
                 }
