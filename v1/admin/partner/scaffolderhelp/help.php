@@ -30,6 +30,7 @@
                 ,"scss_colors_primary"=> $row["scss_colors_primary"]
                 ,"scss_colors_secondary"=> $row["scss_colors_secondary"]
                 ,"apikey"=>$row["apikey"]
+                ,"fb_appid"=>$row["fb_appid"]
                 ,"videos"=>array("list"=>array())
             );
         }
@@ -80,6 +81,7 @@
         $adminURI = "https://admin.".$domainwithoutwww;
         $pinpadURI = "http://localhost:7001/api";
         $logomedia = "https://media.tixs.me/logos/logo-".$db["uniquename"].".".$logoext;
+        $logomedia_fb = "https://media.tixs.me/facebook/logo-".$db["uniquename"].".jpeg";
         $logo = "/assets/logo-".$db["uniquename"].".".$logoext;
         $db_user = "api.".$db["uniquename"];
         $db_pass = "!".$db["uniquename"]."@api#$";
@@ -112,6 +114,8 @@
         $ret[] = array("from"=>"__wl-color-primary__", "to"=> $db["scss_colors_primary"]);
         $ret[] = array("from"=>"__wl-color-secondary__", "to"=> $db["scss_colors_secondary"]);
         $ret[] = array("from"=>"__wl-site-logo-media__", "to"=>$logomedia);
+        $ret[] = array("from"=>"__wl-site-logo-media-facebook__", "to"=>$logomedia_fb);
+        $ret[] = array("from"=>"__wl-fb_appid__", "to"=>$db["fb_appid"]);
         $ret[] = array("from"=>"__wl-site-logo__", "to"=>$logo);
         $ret[] = array("from"=>"__wl-db-user__", "to"=>$db_user);
         $ret[] = array("from"=>"__wl-db-pass__", "to"=>$db_pass);
