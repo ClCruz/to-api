@@ -393,7 +393,7 @@
                 case "waiting_payment":
                 case "processing":
 
-                    if ($charge["ispaymentslip"] == 1 && $responseJSON["gatewayinfo"]->status == "processing") {
+                    if ($responseJSON["gatewayinfo"]->status == "processing") {
                         $responseJSON["gatewayinfo"] = pagarme_get_transaction($id_purchase, $responseJSON["gatewayinfo"]->id);
                     }
 
