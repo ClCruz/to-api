@@ -239,7 +239,7 @@
                                 "neighborhood" => $buyer["address"]["neighborhood"],
                                 "zipcode" => $buyer["address"]["zipcode"],
                                 "street_number" => $buyer["address"]["number"],
-                                "complementary" => $buyer["address"]["complementary"],
+                                // "complementary" => isset($buyer["address"]["complementary"]) && $buyer["address"]["complementary"] != '' ? $buyer["address"]["complementary"] : '.',
                                 "city" => $buyer["address"]["city"],
                                 "state" => $buyer["address"]["state"]
                             ),
