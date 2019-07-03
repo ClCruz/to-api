@@ -85,7 +85,7 @@
 
 
 
-    die(json_encode($code));
+    // die(json_encode($code));
 
 
 //    stopIfApiNotExist();
