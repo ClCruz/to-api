@@ -44,6 +44,7 @@
     $keyword = getwhitelabelobjforced($uniquename)["meta"]["keywords"];
     $width = "493";
     $height = "498";
+    $logo=$logo."?".strtotime(date("Y-m-d H:i:s"));
     logme();
 ?>
 <!DOCTYPE html>
