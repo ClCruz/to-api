@@ -360,6 +360,12 @@
         $params = array($id_pedido_venda);
         $result = db_exec($query, $params);
     }
+    function save_fail($id_cliente,$id_evento,$id_apresentacao,$json_shopping,$json_values
+                        ,$json_gateway_response,$status,$refuse_reason,$status_reason,$uniquename_site) {
+        $query = "EXEC pr_shopping_fail ?,?,?,?,?,?,?,?,?,?";
+        $params = array($id_cliente,$id_evento,$id_apresentacao,$json_shopping,$json_values,$json_gateway_response,$status,$refuse_reason,$status_reason,$uniquename_site);
+        $result = db_exec($query, $params);
+    }
     function change_situacao_boleto($id) {
         $query = "EXEC pr_sell_web_boleto ?";
         $params = array($id);

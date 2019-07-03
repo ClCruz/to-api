@@ -297,6 +297,12 @@
                                     , 'printisafter'=> $printisafter
                                     , 'msg' => json_encode($sell)
                                     , "msgtobuyer"=>"Ocorreu um problema na cobrança.".$purchase_gateway["authorization_desc"]);
+                                    
+                if (count($shopping)>0) {
+                    save_fail($id_client, $shopping[0]["id_evento"], $shopping[0]["id_apresentacao"], json_encode($shopping),json_encode($values)
+                    ,json_encode($purchase_gateway), $purchase_gateway["status"],$purchase_gateway["refuse_reason"],
+                    $purchase_gateway["status_reason"],gethost());
+                }
             }
         }
         else {
@@ -308,8 +314,13 @@
                                 , 'printisafter'=> $printisafter
                                 , 'msg' => json_encode($purchase_gateway)
                                 , "msgtobuyer"=>"Ocorreu um problema na cobrança. ".$purchase_gateway["authorization_desc"]);
-        }
 
+            if (count($shopping)>0) {
+                save_fail($id_client, $shopping[0]["id_evento"], $shopping[0]["id_apresentacao"], json_encode($shopping),json_encode($values)
+                ,json_encode($purchase_gateway), $purchase_gateway["status"],$purchase_gateway["refuse_reason"],
+                $purchase_gateway["status_reason"],gethost());
+            }
+        }
 
         $end = time();
         $duration = $end-$start;
