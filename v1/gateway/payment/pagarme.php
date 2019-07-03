@@ -405,12 +405,15 @@
                     ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
                     ,"authorized_amount"=>$responseJSON["gatewayinfo"]->authorized_amount
                     ,"status"=>$responseJSON["gatewayinfo"]->status
+                    ,"refuse_reason"=>$responseJSON["gatewayinfo"]->refuse_reason
+                    ,"status_reason"=>$responseJSON["gatewayinfo"]->status_reason
                     ,"cost"=>$responseJSON["gatewayinfo"]->cost
                     ,"id"=>$responseJSON["gatewayinfo"]->tid
                     ,"card_last_digits"=>$responseJSON["gatewayinfo"]->card_last_digits
                     ,"card_first_digits"=>$responseJSON["gatewayinfo"]->card_first_digits
                     ,"card_brand"=>$responseJSON["gatewayinfo"]->card_brand
-                    ,"ip"=>$responseJSON["gatewayinfo"]->ip);
+                    ,"ip"=>$responseJSON["gatewayinfo"]->ip
+                    ,"fullresponsegateway"=>$response);
                 break;
             }
         }
@@ -433,7 +436,8 @@
             ,"card_last_digits"=>""
             ,"card_first_digits"=>""
             ,"card_brand"=>""
-            ,"ip"=>"");
+            ,"ip"=>""
+            ,"fullresponsegateway"=>$response);
         }
         traceme($id_purchase, "My response - gateway|pagarme|transactions", json_encode($ret),0);
         return $ret;
