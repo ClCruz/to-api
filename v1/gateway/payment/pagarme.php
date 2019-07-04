@@ -50,6 +50,41 @@
         return $result;
     }
 
+    function pagarme_get_transaction($id) {
+
+        $conf = getConfigPagarme();
+        
+        $url = $conf["apiURI"]."transactions/".$id;
+        
+        $fields = array(
+            'api_key' => urlencode($conf["apikey"]),
+        );
+        
+        $fields_string = "";
+        
+        foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+        
+        $fields_string = rtrim($fields_string, '&');
+        
+        $url = $url."?".$fields_string;
+        
+        $curl = curl_init();
+        
+        set_time_limit(0);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0); 
+        curl_setopt($curl, CURLOPT_TIMEOUT, 3600);
+        curl_setopt($curl,CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        
+        
+        $curl_exec = curl_exec($curl);
+        curl_close($curl);
+
+        $result = json_decode($curl_exec);
+
+        return $result;
+    }
+
     function pagarme_setMetadata($id_pedido, $id_evento, $host) {
         return array("id_pedido_venda"=>$id_pedido, "id_evento"=>$id_evento, "host"=>$host);
     }

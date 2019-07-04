@@ -283,11 +283,11 @@
                     make_purchase_email_b2b($pedidovenda["id_pedido_venda"]);
                     traceme($id_purchase, "sending email card", 'ok',1);
                 }
-                else {
-                    traceme($id_purchase, "sending email - boleto", json_encode(array("id_pedido_venda"=>$pedidovenda["id_pedido_venda"])),1);
-                    make_purchase_boleto_email($pedidovenda["id_pedido_venda"], $purchase_gateway["boleto_url"]);//, $purchase_gateway["boleto_barcode"], $purchase_gateway["boleto_expiration_date"]);
-                    traceme($id_purchase, "sending email - boleto", 'ok',1);
-                }
+                // else {
+                //     traceme($id_purchase, "sending email - boleto", json_encode(array("id_pedido_venda"=>$pedidovenda["id_pedido_venda"])),1);
+                //     make_purchase_boleto_email($pedidovenda["id_pedido_venda"], $purchase_gateway["boleto_url"]);//, $purchase_gateway["boleto_barcode"], $purchase_gateway["boleto_expiration_date"]);
+                //     traceme($id_purchase, "sending email - boleto", 'ok',1);
+                // }
             }
             else {
                 $retofsevice = array("success"=>false

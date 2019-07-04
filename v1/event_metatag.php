@@ -84,6 +84,8 @@
     $appName = getwhitelabelobjforced($uniquename)["host"];
     $name = getwhitelabelobjforced($uniquename)["host"];
     $host = getwhitelabelobjforced($uniquename)["uri"]."/evento/";
+    $image = $obj["img"];
+    $image=$image."?".strtotime(date("Y-m-d H:i:s"));
 ?>
 <!DOCTYPE html>
 <html>
@@ -104,7 +106,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?php echo $obj["NomPeca"]?>">
     <meta name="twitter:description" content="<?php echo $obj["meta_description"]?>">
-    <meta name="twitter:image" content="<?php echo $obj["img"]?>">
+    <meta name="twitter:image" content="<?php echo $image?>">
     <meta name="twitter:image:alt" content="<?php echo $obj["NomPeca"]?>">
 
     <!-- Open Graph data -->
@@ -114,11 +116,8 @@
     <meta property="og:description" content="<?php echo $obj["meta_description"]?>" />
     <meta property="og:site_name" content="<?php echo $name?>" />
 
-    <meta property="og:image" content="<?php echo $obj["img"]?>" />
-    <meta property="og:image:secure_url" content="<?php echo $obj["img"]?>" /> 
-    <meta property="og:image:type" content="image/jpeg" /> 
-    <meta property="og:image:alt" content="<?php echo $obj["NomPeca"]?>" />
-    <!--meta property="og:image:secure_url" content=" echo $obj["img"]" /-->
+    <meta property="og:image" content="<?php echo $image?>" />
+    <!--meta property="og:image:secure_url" content=" echo $image" /-->
 
 </head>
 <body>

@@ -25,10 +25,14 @@
     $uniquename = getuniquefromdomainforced($_REQUEST["host"]);
     $replacement = getonlyReplacement($uniquename);
     $logo = "";
+    $fb_appid = "";
 
     foreach($replacement as $tocheck){
-        if (strpos("__wl-site-logo-media__", $tocheck["from"])  !== false) {
+        if (strpos("__wl-site-logo-media-facebook__", $tocheck["from"])  !== false) {
             $logo = $tocheck["to"];
+        }
+        if (strpos("__wl-fb_appid__", $tocheck["from"])  !== false) {
+            $fb_appid = $tocheck["to"];
         }
     }
 
@@ -40,6 +44,7 @@
     $keyword = getwhitelabelobjforced($uniquename)["meta"]["keywords"];
     $width = "493";
     $height = "498";
+    $logo=$logo."?".strtotime(date("Y-m-d H:i:s"));
     logme();
 ?>
 <!DOCTYPE html>
@@ -51,6 +56,10 @@
     <meta name="application-name" content="<?php echo $appName?>" />
     <meta name="description" content="<?php echo $description?>" />
     <meta name="keywords" content="<?php echo $keyword?>" />
+<?php if ($fb_appid!='') {
+    echo '<meta property="fb:app_id" content="'.$fb_appid.'" />';
+} ?>
+    
 
     <!-- Schema.org markup for Google+ -->
     <meta itemprop="name" content="<?php echo $name?>">
@@ -72,10 +81,6 @@
     <meta property="og:site_name" content="<?php echo $name?>" />
 
     <meta property="og:image" content="<?php echo $logo?>" />
-    <meta property="og:image:url" content="<?php echo $logo?>" />
-    <meta property="og:image:secure_url" content="<?php echo $logo?>" />
-    <meta property="og:image:type" content="image/png" /> 
-    <meta property="og:image:alt" content="<?php echo $name?>" />
     <!--meta property="og:image:secure_url" content=" echo $obj["img"]" /-->
 
 </head>
