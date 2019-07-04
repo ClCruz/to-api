@@ -50,7 +50,7 @@
         return $result;
     }
 
-    function pagarme_get_transaction($id_purchase, $id) {
+    function pagarme_get_transaction($id) {
 
         $conf = getConfigPagarme();
         
@@ -59,8 +59,6 @@
         $fields = array(
             'api_key' => urlencode($conf["apikey"]),
         );
-        traceme($id_purchase, "Request gateway|pagarme|get_transaction", json_encode($id),1);
-        traceme($id_purchase, "Initiating gateway|pagarme|config", json_encode($conf),0);
         
         $fields_string = "";
         
@@ -83,8 +81,6 @@
         curl_close($curl);
 
         $result = json_decode($curl_exec);
-
-        traceme($id_purchase, "Response - gateway|pagarme|get_transaction", json_encode($result),1);
 
         return $result;
     }
