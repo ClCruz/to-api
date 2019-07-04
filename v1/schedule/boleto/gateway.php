@@ -25,6 +25,8 @@ function get($id_pedido_venda) {
         if ($obj["isboletogenerated"] == null) {
             $response = pagarme_get_transaction($obj["cd_numero_transacao"]);
 
+            // die(json_encode($response));
+
             if ($response->status == "waiting_payment") {
                 $boleto_url = $response->boleto_url;
                 $boleto_barcode = $response->boleto_barcode;
@@ -42,6 +44,11 @@ function get($id_pedido_venda) {
                     $json = array("success"=>false,"msg"=>"the expiration date isn't ok.");
                 }
             }
+        }
+        else {
+            $query = "EXEC pr_boleto_save_wrong ?";
+            $params = array($id_pedido_venda);
+            $result = db_exec($query, $params);
         }
 
         echo json_encode($json);
