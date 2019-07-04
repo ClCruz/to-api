@@ -388,11 +388,6 @@
                 case "authorized":
                 case "waiting_payment":
                 case "processing":
-
-                    if ($responseJSON["gatewayinfo"]->status == "processing") {
-                        $responseJSON["gatewayinfo"] = pagarme_get_transaction($id_purchase, $responseJSON["gatewayinfo"]->id);
-                    }
-
                     $ret = array("success"=>true
                         ,"object"=>"payment"
                         ,"msg"=>"purchase approved."
