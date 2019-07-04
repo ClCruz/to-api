@@ -44,6 +44,11 @@ function get($id_pedido_venda) {
                     $json = array("success"=>false,"msg"=>"the expiration date isn't ok.");
                 }
             }
+            else {
+                $query = "EXEC pr_boleto_save_wrong ?";
+                $params = array($id_pedido_venda);
+                $result = db_exec($query, $params);    
+            }
         }
         else {
             $query = "EXEC pr_boleto_save_wrong ?";
