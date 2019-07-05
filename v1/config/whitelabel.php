@@ -31,7 +31,14 @@
         }
 
         $aux = json_decode(file_get_contents($jsonFile), true);
-        $ret = $name;
+
+        if (array_key_exists($name, $aux)) {
+            $ret = $aux[$name];
+        }
+        else {
+            $ret = $name;
+        }
+
 
         if ($ret == "") {
             $ret = $aux["default"];

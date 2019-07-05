@@ -50,6 +50,41 @@
         return $result;
     }
 
+    function pagarme_get_transaction($id) {
+
+        $conf = getConfigPagarme();
+        
+        $url = $conf["apiURI"]."transactions/".$id;
+        
+        $fields = array(
+            'api_key' => urlencode($conf["apikey"]),
+        );
+        
+        $fields_string = "";
+        
+        foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+        
+        $fields_string = rtrim($fields_string, '&');
+        
+        $url = $url."?".$fields_string;
+        
+        $curl = curl_init();
+        
+        set_time_limit(0);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0); 
+        curl_setopt($curl, CURLOPT_TIMEOUT, 3600);
+        curl_setopt($curl,CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        
+        
+        $curl_exec = curl_exec($curl);
+        curl_close($curl);
+
+        $result = json_decode($curl_exec);
+
+        return $result;
+    }
+
     function pagarme_setMetadata($id_pedido, $id_evento, $host) {
         return array("id_pedido_venda"=>$id_pedido, "id_evento"=>$id_evento, "host"=>$host);
     }
@@ -239,7 +274,7 @@
                                 "neighborhood" => $buyer["address"]["neighborhood"],
                                 "zipcode" => $buyer["address"]["zipcode"],
                                 "street_number" => $buyer["address"]["number"],
-                                "complementary" => $buyer["address"]["complementary"],
+                                // "complementary" => isset($buyer["address"]["complementary"]) && $buyer["address"]["complementary"] != '' ? $buyer["address"]["complementary"] : '.',
                                 "city" => $buyer["address"]["city"],
                                 "state" => $buyer["address"]["state"]
                             ),
@@ -405,12 +440,15 @@
                     ,"acquirer_response_code"=>$responseJSON["gatewayinfo"]->acquirer_response_code
                     ,"authorized_amount"=>$responseJSON["gatewayinfo"]->authorized_amount
                     ,"status"=>$responseJSON["gatewayinfo"]->status
+                    ,"refuse_reason"=>$responseJSON["gatewayinfo"]->refuse_reason
+                    ,"status_reason"=>$responseJSON["gatewayinfo"]->status_reason
                     ,"cost"=>$responseJSON["gatewayinfo"]->cost
                     ,"id"=>$responseJSON["gatewayinfo"]->tid
                     ,"card_last_digits"=>$responseJSON["gatewayinfo"]->card_last_digits
                     ,"card_first_digits"=>$responseJSON["gatewayinfo"]->card_first_digits
                     ,"card_brand"=>$responseJSON["gatewayinfo"]->card_brand
-                    ,"ip"=>$responseJSON["gatewayinfo"]->ip);
+                    ,"ip"=>$responseJSON["gatewayinfo"]->ip
+                    ,"fullresponsegateway"=>$response);
                 break;
             }
         }
@@ -433,7 +471,8 @@
             ,"card_last_digits"=>""
             ,"card_first_digits"=>""
             ,"card_brand"=>""
-            ,"ip"=>"");
+            ,"ip"=>""
+            ,"fullresponsegateway"=>$response);
         }
         traceme($id_purchase, "My response - gateway|pagarme|transactions", json_encode($ret),0);
         return $ret;

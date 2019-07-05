@@ -283,11 +283,11 @@
                     make_purchase_email_b2b($pedidovenda["id_pedido_venda"]);
                     traceme($id_purchase, "sending email card", 'ok',1);
                 }
-                else {
-                    traceme($id_purchase, "sending email - boleto", json_encode(array("id_pedido_venda"=>$pedidovenda["id_pedido_venda"])),1);
-                    make_purchase_boleto_email($pedidovenda["id_pedido_venda"], $purchase_gateway["boleto_url"]);//, $purchase_gateway["boleto_barcode"], $purchase_gateway["boleto_expiration_date"]);
-                    traceme($id_purchase, "sending email - boleto", 'ok',1);
-                }
+                // else {
+                //     traceme($id_purchase, "sending email - boleto", json_encode(array("id_pedido_venda"=>$pedidovenda["id_pedido_venda"])),1);
+                //     make_purchase_boleto_email($pedidovenda["id_pedido_venda"], $purchase_gateway["boleto_url"]);//, $purchase_gateway["boleto_barcode"], $purchase_gateway["boleto_expiration_date"]);
+                //     traceme($id_purchase, "sending email - boleto", 'ok',1);
+                // }
             }
             else {
                 $retofsevice = array("success"=>false
@@ -297,6 +297,12 @@
                                     , 'printisafter'=> $printisafter
                                     , 'msg' => json_encode($sell)
                                     , "msgtobuyer"=>"Ocorreu um problema na cobrança.".$purchase_gateway["authorization_desc"]);
+                                    
+                if (count($shopping)>0) {
+                    save_fail($id_client, $shopping[0]["id_evento"], $shopping[0]["id_apresentacao"], json_encode($shopping),json_encode($values)
+                    ,json_encode($purchase_gateway), $purchase_gateway["status"],$purchase_gateway["refuse_reason"],
+                    $purchase_gateway["status_reason"],gethost());
+                }
             }
         }
         else {
@@ -308,8 +314,13 @@
                                 , 'printisafter'=> $printisafter
                                 , 'msg' => json_encode($purchase_gateway)
                                 , "msgtobuyer"=>"Ocorreu um problema na cobrança. ".$purchase_gateway["authorization_desc"]);
-        }
 
+            if (count($shopping)>0) {
+                save_fail($id_client, $shopping[0]["id_evento"], $shopping[0]["id_apresentacao"], json_encode($shopping),json_encode($values)
+                ,json_encode($purchase_gateway), $purchase_gateway["status"],$purchase_gateway["refuse_reason"],
+                $purchase_gateway["status_reason"],gethost());
+            }
+        }
 
         $end = time();
         $duration = $end-$start;
