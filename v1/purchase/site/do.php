@@ -160,7 +160,7 @@
         
         renew($id_session, $id_client);
         
-        $values = getvaluesofmyshoppig($id_client);
+        $values = getvaluesofmyshoppig($id_client, NULL);
 
         traceme($id_purchase, "values", json_encode($values),0);
         

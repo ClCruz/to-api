@@ -122,7 +122,9 @@ function get($key, $date) {
                     }
                     $presentation_value["seats"] = $seathelper;
                     $presentation_value["seat_total"] = count($seathelper);
-                    $presentation[] = $presentation_value;
+                    if ($presentation_value["seat_total"]!=0) {
+                        $presentation[] = $presentation_value;
+                    }
                 }
             }
             $imageBigURI = getDefaultMediaHost().str_replace("{default_big}",getBigCardImageName(),str_replace("{id}",$row["id"],$row["image_big"]))."?".randomintbydate();

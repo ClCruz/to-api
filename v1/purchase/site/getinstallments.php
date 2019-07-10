@@ -9,7 +9,7 @@
     function get($codCliente, $idSession) {
       setsession($codCliente, $idSession);
 
-      $values = getvaluesofmyshoppig($codCliente);
+      $values = getvaluesofmyshoppig($codCliente,NULL);
       $amount = $values[0]["totalwithservice"];
       $id_purchase = get_id_purchase($idSession, $codCliente);
 

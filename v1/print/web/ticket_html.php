@@ -329,7 +329,7 @@ echo "</tr></tbody></table>";
                                                             <?php echo $row["local"] ?><br>
                                                             <?php echo $row["ticket"] ?> - R$ <?php echo $row["price_formatted"] ?><br>
                                                             <?php echo $row["sectorName"] ?> - <?php echo $row["seatNameFull"] ?><br>
-                                                            <span style="font-size:15px;line-height:16px;"><?php echo $row["day"]."/".$row["month"]."/".$row["year"] ?><?php echo $row["hour"] ?></span>
+                                                            <span style="font-size:15px;line-height:16px;"><?php echo $row["day"]."/".$row["month"]."/".$row["year"] ?> <?php echo $row["hour"] ?></span>
                                                         </p>
                                                     </td>
                                                     <td width="100" align="center" valign="middle">
