@@ -311,10 +311,11 @@
             $print = generate_email_print_code(0, $purchase_response["codVenda"], $id_base);
             $link = getwhitelabelobj()["api"]."/v1/print/web/ticket?code=".$print["code"];
 
-            $ret = array("success"=>true, "purchase"=>array("code"=>$purchase_response["codVenda"], "voucher"=>$link), "transaction"=>array("code"=>$code, "seconds"=>$purchase_response["seconds"]));
+            $ret = array("success"=>true, "msg"=> "Venda efetivada.", "purchase"=>array("code"=>$purchase_response["codVenda"], "voucher"=>$link), "transaction"=>array("code"=>$code, "seconds"=>$purchase_response["seconds"]));
         }
         else {
-            $ret = array("success"=>false, "error"=>$purchase_response);
+            // , "error"=>$purchase_response
+            $ret = array("success"=>false, "msg"=>"Falha na venda.");
         }
     }
 
