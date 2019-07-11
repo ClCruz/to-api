@@ -441,11 +441,12 @@
     function getvaluesofmyshoppig($id_client,$id_session) {
         if ($id_session == null) {
             $query = "EXEC pr_purchase_get_values ?, NULL";
+            $params = array($id_client);
         }
         else {
             $query = "EXEC pr_purchase_get_values NULL, ?";
+            $params = array($id_session);
         }
-        $params = array($id_session);
         $result = db_exec($query, $params);
 
         $json = array();
