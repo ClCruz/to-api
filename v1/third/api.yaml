@@ -16,6 +16,29 @@ tags:
 - name: execute
   description: Metodos para execução
 paths:  
+  /third/provide/purchase/refund:
+    post:
+      tags:
+        - execute
+      summary: Executa o reembolso do ingresso
+      description: Executa o reembolso do ingresso
+      operationId: executeRefund
+      parameters:
+        - name: key
+          description: Chave do parceiro
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/refund'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/refundResponse'
   /third/provide/purchase/do:
     post:
       tags:
@@ -73,9 +96,30 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/purchase_request'
-      description: Pet object that needs to be added to the store
+      required: true
+    refund:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/refund_request'
       required: true
   schemas:
+    refund_request:
+      type: object
+      properties:
+        id_event:
+          type: integer
+          description: Código do evento único
+        id_presentation:
+          type: integer
+          description: Código da apresentação único
+        purchase_code:
+          type: string
+          description: Código da venda
+        id_seat:
+          type: integer
+          description: Código do assento
+          nullable: true
     purchaseTransaction:
         type: object
         properties:
@@ -97,6 +141,15 @@ components:
           description: URL do PDF do voucher
         transaction:
           $ref: '#/components/schemas/purchaseTransaction'
+    refundResponse:
+      type: object
+      properties:
+          success:
+            type: boolean
+            description: Resposta se o reembolso foi executado
+          msg:
+            type: string
+            description: Mensagem da resposta da venda
     purchaseResponse:
       type: object
       properties:
@@ -165,7 +218,6 @@ components:
           $ref: '#/components/schemas/paymentMethod_request'
         buyer:      
           $ref: '#/components/schemas/buyer_request'
-
     ticket:
       type: object
       properties:

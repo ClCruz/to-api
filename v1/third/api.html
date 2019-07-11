@@ -1,0 +1,957 @@
+<!doctype html>
+<html>
+  <head>
+    <title>TicketOffice API</title>
+    <style type="text/css">
+      body {
+      	font-family: Trebuchet MS, sans-serif;
+      	font-size: 15px;
+      	color: #444;
+      	margin-right: 24px;
+      }
+      
+      h1	{
+      	font-size: 25px;
+      }
+      h2	{
+      	font-size: 20px;
+      }
+      h3	{
+      	font-size: 16px;
+      	font-weight: bold;
+      }
+      hr	{
+      	height: 1px;
+      	border: 0;
+      	color: #ddd;
+      	background-color: #ddd;
+      }
+      
+      .app-desc {
+        clear: both;
+        margin-left: 20px;
+      }
+      .param-name {
+        width: 100%;
+      }
+      .license-info {
+        margin-left: 20px;
+      }
+      
+      .license-url {
+        margin-left: 20px;
+      }
+      
+      .model {
+        margin: 0 0 0px 20px;
+      }
+      
+      .method {
+        margin-left: 20px;
+      }
+      
+      .method-notes	{
+      	margin: 10px 0 20px 0;
+      	font-size: 90%;
+      	color: #555;
+      }
+      
+      pre {
+        padding: 10px;
+        margin-bottom: 2px;
+      }
+      
+      .http-method {
+       text-transform: uppercase;
+      }
+      
+      pre.get {
+        background-color: #0f6ab4;
+      }
+      
+      pre.post {
+        background-color: #10a54a;
+      }
+      
+      pre.put {
+        background-color: #c5862b;
+      }
+      
+      pre.delete {
+        background-color: #a41e22;
+      }
+      
+      .huge	{
+      	color: #fff;
+      }
+      
+      pre.example {
+        background-color: #f3f3f3;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+      
+      code {
+        white-space: pre;
+      }
+      
+      .nickname {
+        font-weight: bold;
+      }
+      
+      .method-path {
+        font-size: 1.5em;
+        background-color: #0f6ab4;
+      }
+      
+      .up {
+        float:right;
+      }
+      
+      .parameter {
+        width: 500px;
+      }
+      
+      .param {
+        width: 500px;
+        padding: 10px 0 0 20px;
+        font-weight: bold;
+      }
+      
+      .param-desc {
+        width: 700px;
+        padding: 0 0 0 20px;
+        color: #777;
+      }
+      
+      .param-type {
+        font-style: italic;
+      }
+      
+      .param-enum-header {
+      width: 700px;
+      padding: 0 0 0 60px;
+      color: #777;
+      font-weight: bold;
+      }
+      
+      .param-enum {
+      width: 700px;
+      padding: 0 0 0 80px;
+      color: #777;
+      font-style: italic;
+      }
+      
+      .field-label {
+        padding: 0;
+        margin: 0;
+        clear: both;
+      }
+      
+      .field-items	{
+      	padding: 0 0 15px 0;
+      	margin-bottom: 15px;
+      }
+      
+      .return-type {
+        clear: both;
+        padding-bottom: 10px;
+      }
+      
+      .param-header {
+        font-weight: bold;
+      }
+      
+      .method-tags {
+        text-align: right;
+      }
+      
+      .method-tag {
+        background: none repeat scroll 0% 0% #24A600;
+        border-radius: 3px;
+        padding: 2px 10px;
+        margin: 2px;
+        color: #FFF;
+        display: inline-block;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+  <h1>TicketOffice API</h1>
+    <div class="app-desc">API de consulta e venda de eventos.</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="leonel@ticketoffice.com.br">leonel@ticketoffice.com.br</a></div>
+    <div class="app-desc">Version: 1.0.0</div>
+    
+    <div class="license-info">Apache 2.0</div>
+    <div class="license-url">http://www.apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+    <ol>
+      <li>APIKey KeyParamName:key KeyInQuery:false KeyInHeader:true</li>
+    </ol>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Execute">Execute</a></h4>
+  <ul>
+  <li><a href="#executePurchase"><code><span class="http-method">post</span> /third/provide/purchase/do</code></a></li>
+  <li><a href="#executeRefund"><code><span class="http-method">post</span> /third/provide/purchase/refund</code></a></li>
+  </ul>
+  <h4><a href="#Retrieve">Retrieve</a></h4>
+  <ul>
+  <li><a href="#findEvents"><code><span class="http-method">get</span> /third/provide/events</code></a></li>
+  </ul>
+
+  <h1><a name="Execute">Execute</a></h1>
+  <div class="method"><a name="executePurchase"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /third/provide/purchase/do</code></pre></div>
+    <div class="method-summary">Executa a venda do ingresso (<span class="nickname">executePurchase</span>)</div>
+    <div class="method-notes">Executa a venda do ingresso</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#purchase_request">purchase_request</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#purchaseResponse">purchaseResponse</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "msg" : "msg",
+  "success" : true,
+  "purchase" : {
+    "code" : "code",
+    "voucher" : "http://example.com/aeiou",
+    "transaction" : {
+      "seconds" : 0,
+      "code" : "code"
+    }
+  }
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful operation
+        <a href="#purchaseResponse">purchaseResponse</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="executeRefund"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /third/provide/purchase/refund</code></pre></div>
+    <div class="method-summary">Executa o reembolso do ingresso (<span class="nickname">executeRefund</span>)</div>
+    <div class="method-notes">Executa o reembolso do ingresso</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">body <a href="#refund_request">refund_request</a> (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+                </div>  <!-- field-items -->
+
+    <h3 class="field-label">Request headers</h3>
+    <div class="field-items">
+    </div>  <!-- field-items -->
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#refundResponse">refundResponse</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "msg" : "msg",
+  "success" : true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful operation
+        <a href="#refundResponse">refundResponse</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Retrieve">Retrieve</a></h1>
+  <div class="method"><a name="findEvents"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /third/provide/events</code></pre></div>
+    <div class="method-summary">Lista eventos (<span class="nickname">findEvents</span>)</div>
+    <div class="method-notes">Recupera os eventos com suas apresentações e assentos disponíveis para a venda.</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">key (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Chave do parceiro </div>    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#events">events</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "minAmount" : "minAmount",
+  "code" : 1,
+  "city" : "city",
+  "created" : "2000-01-23T04:56:07.000+00:00",
+  "dates" : "dates",
+  "image_card" : "http://example.com/aeiou",
+  "uri" : "http://example.com/aeiou",
+  "presentations" : [ {
+    "date" : "2000-01-23",
+    "hour" : "hour",
+    "id_event" : 5,
+    "id" : 2,
+    "seats" : [ {
+      "tickets" : [ {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      }, {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      } ],
+      "id_presentantion" : 9,
+      "numered" : 2,
+      "name" : "name",
+      "id_event" : 7,
+      "sectorName" : "sectorName",
+      "id" : 3
+    }, {
+      "tickets" : [ {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      }, {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      } ],
+      "id_presentantion" : 9,
+      "numered" : 2,
+      "name" : "name",
+      "id_event" : 7,
+      "sectorName" : "sectorName",
+      "id" : 3
+    } ]
+  }, {
+    "date" : "2000-01-23",
+    "hour" : "hour",
+    "id_event" : 5,
+    "id" : 2,
+    "seats" : [ {
+      "tickets" : [ {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      }, {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      } ],
+      "id_presentantion" : 9,
+      "numered" : 2,
+      "name" : "name",
+      "id_event" : 7,
+      "sectorName" : "sectorName",
+      "id" : 3
+    }, {
+      "tickets" : [ {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      }, {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      } ],
+      "id_presentantion" : 9,
+      "numered" : 2,
+      "name" : "name",
+      "id_event" : 7,
+      "sectorName" : "sectorName",
+      "id" : 3
+    } ]
+  } ],
+  "image_big" : "http://example.com/aeiou",
+  "amounts" : "amounts",
+  "state_acronym" : "state_acronym",
+  "name" : "name",
+  "genre" : [ {
+    "name" : "name",
+    "id" : 5
+  }, {
+    "name" : "name",
+    "id" : 5
+  } ],
+  "id" : 0,
+  "place" : "place",
+  "state" : "state",
+  "maxAmount" : "maxAmount",
+  "base" : 6,
+  "changed" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "minAmount" : "minAmount",
+  "code" : 1,
+  "city" : "city",
+  "created" : "2000-01-23T04:56:07.000+00:00",
+  "dates" : "dates",
+  "image_card" : "http://example.com/aeiou",
+  "uri" : "http://example.com/aeiou",
+  "presentations" : [ {
+    "date" : "2000-01-23",
+    "hour" : "hour",
+    "id_event" : 5,
+    "id" : 2,
+    "seats" : [ {
+      "tickets" : [ {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      }, {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      } ],
+      "id_presentantion" : 9,
+      "numered" : 2,
+      "name" : "name",
+      "id_event" : 7,
+      "sectorName" : "sectorName",
+      "id" : 3
+    }, {
+      "tickets" : [ {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      }, {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      } ],
+      "id_presentantion" : 9,
+      "numered" : 2,
+      "name" : "name",
+      "id_event" : 7,
+      "sectorName" : "sectorName",
+      "id" : 3
+    } ]
+  }, {
+    "date" : "2000-01-23",
+    "hour" : "hour",
+    "id_event" : 5,
+    "id" : 2,
+    "seats" : [ {
+      "tickets" : [ {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      }, {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      } ],
+      "id_presentantion" : 9,
+      "numered" : 2,
+      "name" : "name",
+      "id_event" : 7,
+      "sectorName" : "sectorName",
+      "id" : 3
+    }, {
+      "tickets" : [ {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      }, {
+        "id_presentantion" : 7,
+        "allowticketoffice" : 0,
+        "id_seat" : 1,
+        "type" : "type",
+        "sell_wed" : 0,
+        "sell_tue" : 0,
+        "sell_thu" : 0,
+        "price" : 1,
+        "sell_fri" : 0,
+        "allowweb" : 0,
+        "sell_sun" : 0,
+        "sell_mon" : 0,
+        "id_event" : 4,
+        "id" : 7,
+        "sell_sat" : 0
+      } ],
+      "id_presentantion" : 9,
+      "numered" : 2,
+      "name" : "name",
+      "id_event" : 7,
+      "sectorName" : "sectorName",
+      "id" : 3
+    } ]
+  } ],
+  "image_big" : "http://example.com/aeiou",
+  "amounts" : "amounts",
+  "state_acronym" : "state_acronym",
+  "name" : "name",
+  "genre" : [ {
+    "name" : "name",
+    "id" : 5
+  }, {
+    "name" : "name",
+    "id" : 5
+  } ],
+  "id" : 0,
+  "place" : "place",
+  "state" : "state",
+  "maxAmount" : "maxAmount",
+  "base" : 6,
+  "changed" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful operation
+        
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#buyer_request"><code>buyer_request</code></a></li>
+    <li><a href="#events"><code>events</code></a></li>
+    <li><a href="#genre"><code>genre</code></a></li>
+    <li><a href="#paymentEnum"><code>paymentEnum</code></a></li>
+    <li><a href="#paymentMethod_request"><code>paymentMethod_request</code></a></li>
+    <li><a href="#presentation"><code>presentation</code></a></li>
+    <li><a href="#purchaseResponse"><code>purchaseResponse</code></a></li>
+    <li><a href="#purchaseTransaction"><code>purchaseTransaction</code></a></li>
+    <li><a href="#purchase_request"><code>purchase_request</code></a></li>
+    <li><a href="#purchaseok"><code>purchaseok</code></a></li>
+    <li><a href="#refundResponse"><code>refundResponse</code></a></li>
+    <li><a href="#refund_request"><code>refund_request</code></a></li>
+    <li><a href="#seat"><code>seat</code></a></li>
+    <li><a href="#seat_request"><code>seat_request</code></a></li>
+    <li><a href="#ticket"><code>ticket</code></a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="buyer_request"><code>buyer_request</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">document (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Documento do comprador (CPF) </div>
+<div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nome do comprador </div>
+<div class="param">email (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> E-mail do comprador format: email</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="events"><code>events</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento único </div>
+<div class="param">base (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código da base do evento </div>
+<div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nome do evento </div>
+<div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento na base do evento (não único) </div>
+<div class="param">place (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Lugar do evento </div>
+<div class="param">city (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Cidade do evento </div>
+<div class="param">state (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Estado da cidade do evento </div>
+<div class="param">state_acronym (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Estado da cidade do evento (sigla) </div>
+<div class="param">image_card (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> URI da imagem do evento format: uri</div>
+<div class="param">image_big (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> URI da imagem do evento (Tamanho grande) format: uri</div>
+<div class="param">uri (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> URI do evento para o site do parceiro format: uri</div>
+<div class="param">dates (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Texto contendo a data de inicio e fim do evento em formato d/M </div>
+<div class="param">genre (optional)</div><div class="param-desc"><span class="param-type"><a href="#genre">array[genre]</a></span> Array contendo os generos do evento </div>
+<div class="param">created (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> Data de criação do evento format: date-time</div>
+<div class="param">amounts (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Texto contendo o menor e maior valor do evento </div>
+<div class="param">minAmount (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Valor minimo do evento </div>
+<div class="param">maxAmount (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Valor minimo do evento </div>
+<div class="param">changed (optional)</div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span> Data de alteração do evento format: date-time</div>
+<div class="param">presentations (optional)</div><div class="param-desc"><span class="param-type"><a href="#presentation">array[presentation]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="genre"><code>genre</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  format: integer</div>
+<div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  format: string</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="paymentEnum"><code>paymentEnum</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="paymentMethod_request"><code>paymentMethod_request</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">type (optional)</div><div class="param-desc"><span class="param-type"><a href="#paymentEnum">paymentEnum</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="presentation"><code>presentation</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento único </div>
+<div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único da apresentação </div>
+<div class="param">date (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> Data da apresentação format: date</div>
+<div class="param">hour (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  format: string</div>
+<div class="param">seats (optional)</div><div class="param-desc"><span class="param-type"><a href="#seat">array[seat]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="purchaseResponse"><code>purchaseResponse</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">success (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Resposta se a venda foi efetivada ou não </div>
+<div class="param">msg (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Mensagem da resposta da venda </div>
+<div class="param">purchase (optional)</div><div class="param-desc"><span class="param-type"><a href="#purchaseok">purchaseok</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="purchaseTransaction"><code>purchaseTransaction</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Código da transação </div>
+<div class="param">seconds (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Segundos que levou para realizar a transação </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="purchase_request"><code>purchase_request</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento único </div>
+<div class="param">id_presentation (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código da apresentação único </div>
+<div class="param">seat (optional)</div><div class="param-desc"><span class="param-type"><a href="#seat_request">array[seat_request]</a></span>  </div>
+<div class="param">amount_total (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Valor total da venda </div>
+<div class="param">payment_method (optional)</div><div class="param-desc"><span class="param-type"><a href="#paymentMethod_request">paymentMethod_request</a></span>  </div>
+<div class="param">buyer (optional)</div><div class="param-desc"><span class="param-type"><a href="#buyer_request">buyer_request</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="purchaseok"><code>purchaseok</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Código da venda </div>
+<div class="param">voucher (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> URL do PDF do voucher format: uri</div>
+<div class="param">transaction (optional)</div><div class="param-desc"><span class="param-type"><a href="#purchaseTransaction">purchaseTransaction</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="refundResponse"><code>refundResponse</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">success (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Resposta se o reembolso foi executado </div>
+<div class="param">msg (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Mensagem da resposta da venda </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="refund_request"><code>refund_request</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento único </div>
+<div class="param">id_presentation (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código da apresentação único </div>
+<div class="param">purchase_code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Código da venda </div>
+<div class="param">id_seat (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do assento </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="seat"><code>seat</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento único </div>
+<div class="param">id_presentantion (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único da apresentação </div>
+<div class="param">sectorName (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nome do setor format: string</div>
+<div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nome do assento format: string</div>
+<div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único do assento </div>
+<div class="param">numered (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Se o assento é númerado ou não </div>
+<div class="param">tickets (optional)</div><div class="param-desc"><span class="param-type"><a href="#ticket">array[ticket]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="seat_request"><code>seat_request</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id_seat (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único do assento </div>
+<div class="param">id_ticket (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único do tipo de ingresso </div>
+<div class="param">amount (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Valor da venda do assento </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ticket"><code>ticket</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento único </div>
+<div class="param">id_presentantion (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único da apresentação </div>
+<div class="param">id_seat (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único do assento </div>
+<div class="param">price (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Valor do ingresso </div>
+<div class="param">allowticketoffice (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda em modelo físico </div>
+<div class="param">allowweb (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda em modelo web </div>
+<div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único do tipo de ingresso </div>
+<div class="param">type (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nome do tipo de ingresso </div>
+<div class="param">sell_sun (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda no domingo </div>
+<div class="param">sell_mon (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda na segunda-feira </div>
+<div class="param">sell_tue (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda na terça-feira </div>
+<div class="param">sell_wed (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda na quarta-feira </div>
+<div class="param">sell_thu (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda na quinta-feira </div>
+<div class="param">sell_fri (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda na sexta-feira </div>
+<div class="param">sell_sat (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda no sabdo </div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>
