@@ -13,67 +13,67 @@
     }
   },
   "formto": {
-    "email":"atendimento@teatroantoniofagundes.com.br",
+    "email":"atendimento@theatromunicipal.ticketoffice.me",
     "from": "formto",
     "pass":""
   },
   "noreply": {
-    "email":"noreply@teatroantoniofagundes.com.br",
+    "email":"noreply@theatromunicipal.ticketoffice.me",
     "from": "noreply",
     "pass":""
   },
   "register": {
-    "email":"cadastro@teatroantoniofagundes.com.br",
+    "email":"cadastro@theatromunicipal.ticketoffice.me",
     "from": "cadastro",
     "pass":""
   },
   "shopping": {
-    "email":"pedido@teatroantoniofagundes.com.br",
+    "email":"pedido@theatromunicipal.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "lembrete": {
-    "email":"pedido@teatroantoniofagundes.com.br",
+    "email":"pedido@theatromunicipal.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "marketing": {
-    "email":"pedido@teatroantoniofagundes.com.br",
+    "email":"pedido@theatromunicipal.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "info": {
-    "email":"pedido@teatroantoniofagundes.com.br",
+    "email":"pedido@theatromunicipal.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "sac": {
-    "email":"pedido@teatroantoniofagundes.com.br",
+    "email":"pedido@theatromunicipal.ticketoffice.me",
     "from": "noreply",
     "pass":""
   },
   "pedido": {
-    "email":"pedido@teatroantoniofagundes.com.br",
+    "email":"pedido@theatromunicipal.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "assinantea@siscompre": {
-    "email":"pedido@teatroantoniofagundes.com.br",
+    "email":"pedido@theatromunicipal.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "compreingressospedidos@hotmail": {
-    "email":"pedido@teatroantoniofagundes.com.br",
+    "email":"pedido@theatromunicipal.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "compreingressos@siscompre": {
-    "email":"pedido@teatroantoniofagundes.com.br",
+    "email":"pedido@theatromunicipal.ticketoffice.me",
     "from": "pedido",
     "pass":""
   },
   "compreingressos@gmail": {
-    "email":"pedido@teatroantoniofagundes.com.br",
+    "email":"pedido@theatromunicipal.ticketoffice.me",
     "from": "pedido",
     "pass":""
   }
