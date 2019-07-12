@@ -6,31 +6,6 @@
     use Metzli\Encoder\Encoder;
     use Metzli\Renderer\PngRenderer;
 
-
-    // function generate_email_print_code($id_pedido_venda, $codVenda, $id_base) {
-    //     if ($id_pedido_venda == null)
-    //         $id_pedido_venda = 0;
-    //     if ($codVenda == null)
-    //         $codVenda = '';
-    //     if ($id_base == null)
-    //         $id_base = 0;
-        
-
-    //     $query = "EXEC pr_generate_email_ticket_print ?, ?, ?";
-    //     $params = array($codVenda, $id_base, $id_pedido_venda);
-    //     $result = db_exec($query, $params);
-        
-    //     $json = array();
-    //     foreach ($result as &$row) {
-    //         $json = array(
-    //             "code" => $row["code"],
-    //         );
-    //     }
-
-    //     return $json;
-    // }
-    // die(json_encode(generate_email_print_code(1932, 'F6IGAOAICB', 213)));
-    // die("");
     function getbycode($code) {
         $query = "EXEC pr_ticketoffice_email_ticket_print_setseen ?";
         $params = array($code);
@@ -78,10 +53,7 @@
         
         $query = "EXEC pr_print_ticket2 ?,?,?,?";
         $params = array($codVenda, $indice, gethost(),getwhitelabelobj()["apikey"]);
-        // die("oi: ".json_encode($params));
         $result = db_exec($query, $params, $id_base);
-
-        // die($id_base);
 
         $json = array();
         foreach ($result as &$row) {
@@ -159,7 +131,6 @@
     }
 
     $primary_info = getbycode($code);
-    //die(json_encode($primary_info));
     if ($primary_info["found"] == 0) {
         die("Falha na execução. ERR.02");
     }
@@ -167,11 +138,6 @@
     $obj = getobj($primary_info["id_base"], $primary_info["codVenda"], '');
     $uniquename = gethost();
     $logo = getDefaultMediaHost()."/logos/logo-".$uniquename.".png";
-
-    // die(json_encode($obj));
-    // foreach ($obj as &$row) {
-    //     urn($row["name"], $row["local"], $row["ticket"], $row["price_formatted"], $row["day"]."/".$row["month"]."/".$row["year"], $row["hour"], $row["sectorName"], $row["seatNameFull"]);
-    // }
 ?>
 <html>
 <head>
@@ -421,20 +387,3 @@ echo "</tr></tbody></table>";
             </tbody></table>
     <?php } ?>
 </body>  
-<?php 
-
-
-// $content = ob_get_clean();
-// //ob_end_clean();
-// die($content);
-
-// //$mpdf = new \Mpdf\Mpdf();
-// $mpdf = new \Mpdf\Mpdf([
-//     'debug' => true,
-//     'allow_output_buffering' => true
-// ]);
-// $mpdf->WriteHTML($content);
-// $mpdf->Output();
-// die();
-
-?>
