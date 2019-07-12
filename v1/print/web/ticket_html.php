@@ -268,7 +268,9 @@ foreach ($obj as &$row) {
         }
         echo "<table><tbody align='left' style='margin-bottom: 1px; width:140px;'><tr>";
     }
-    urn($row["name"], $row["local"], $row["ticket"], $row["price_formatted"], $row["day"]."/".$row["month"]."/".$row["year"], $row["hour"], $row["sectorName"], $row["seatNameFull"]);
+    urn($count, $row["name"], $row["local"]
+        , $row["ticket"], $row["price_formatted"], $row["day"]."/".$row["month"]."/".$row["year"]
+        , $row["hour"], $row["sectorName"], $row["seatNameFull"]);
     $first = false;
 } 
 echo "</tr></tbody></table>";
