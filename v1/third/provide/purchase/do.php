@@ -204,6 +204,7 @@
     }
 
     $data = file_get_contents('php://input');
+    die(json_encode($_SERVER['HTTPS']));
     // die($_SERVER["HTTP_HOST"]);
     //echo json_encode($data);
     //die(".");
