@@ -204,14 +204,14 @@
     }
 
     $data = file_get_contents('php://input');
-    die($_SERVER["HTTP_HOST"]);
+    // die($_SERVER["HTTP_HOST"]);
     //echo json_encode($data);
     //die(".");
 
 
-    // if (isset($_SERVER['HTTPS']) == false && $_SERVER["HTTP_HOST"] == "localhost:2002") {
-        
-    // }
+    if (isset($_SERVER['HTTPS']) == false && $_SERVER["HTTP_HOST"] != "localhost:2002") {
+        die(json_encode(array("success"=>false, "msg"=> "HTTPS is required.", "result"=>"")));
+    }
 
     if (array_key_exists("key", getallheaders()) == false) {
         die(json_encode(array("success"=>false, "msg"=> "Key not found. ERR.1.", "result"=>"")));
