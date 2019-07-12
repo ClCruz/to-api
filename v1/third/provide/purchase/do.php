@@ -204,6 +204,8 @@
     }
 
     $data = file_get_contents('php://input');
+    echo json_encode($data);
+    die(".");
 
     if (array_key_exists("key", getallheaders()) == false) {
         die(json_encode(array("success"=>false, "msg"=> "Key not found. ERR.1.", "result"=>"")));
