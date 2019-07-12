@@ -6,7 +6,7 @@
     use Metzli\Encoder\Encoder;
     use Metzli\Renderer\PngRenderer;
 //die('http://localhost/v1/print/web/ticket.intern?imthebossofme='.gethost()."&code=".$_REQUEST["code"]);
-    $html = file_get_contents('http://localhost/v1/print/web/ticket_html?imthebossofme='.gethost()."&code=".$_REQUEST["code"]);
+    $html = file_get_contents('http://127.0.0.1/v1/print/web/ticket_html?imthebossofme='.gethost()."&code=".$_REQUEST["code"]);
     // die($html);
 
 
