@@ -204,14 +204,9 @@
     }
 
     $data = file_get_contents('php://input');
-    die(json_encode($_SERVER));
-    // die($_SERVER["HTTP_HOST"]);
-    //echo json_encode($data);
-    //die(".");
 
-
-    if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) != "https" && $_SERVER["HTTP_HOST"] != "localhost:2002") {
-        die(json_encode(array("success"=>false, "msg"=> "HTTPS is required.", "result"=>"")));
+    if ($data == "") {
+        die(json_encode(array("success"=>false, "msg"=> "Check body content or HTTPS.", "result"=>"")));
     }
 
     if (array_key_exists("key", getallheaders()) == false) {
