@@ -79,6 +79,14 @@ paths:
           explode: true
           schema:
             type: string
+        - name: date
+          in: query
+          description: Data de alteração
+          required: false
+          explode: false
+          schema:
+            type: string
+            format: date
       responses:
         '200':
           description: successful operation
@@ -218,6 +226,9 @@ components:
         properties:
           type:
             $ref: '#/components/schemas/paymentEnum'
+          bin:
+            type: string
+            description: 'Codigo bin do cartao utilizado'
     seat_request:
       type: object
       properties:

@@ -71,7 +71,7 @@
         return $ret;
     }
 
-    function purchase_save($id_client, $id_session, $obj, $id_payment, $qpcode, $seats, $id_base) {  
+    function purchase_save($id_client, $id_session, $obj, $id_payment, $qpcode, $seats, $id_base, $bin) {  
         // die(json_encode($id_client));      
         $start = $_SERVER["REQUEST_TIME"];
         $ip = "";
@@ -99,7 +99,7 @@
 
         traceme($id_purchase, "values", json_encode($values),0);
 
-        $retofservice = makethesell($id_session, $seats, $id_payment, $id_client, $qpcode, $id_base);        
+        $retofservice = makethesell($id_session, $seats, $id_payment, $id_client, $qpcode, $id_base, $bin);        
 
         $end = time();
         $duration = $end-$start;
@@ -128,9 +128,9 @@
         return $ret;
     }
 
-    function makethesell($id_session, $seats, $id_payment, $id_client, $qpcode, $id_base) {
-        $query = "EXEC pr_api_sell ?,?,?,?,?";
-        $params = array($id_session, $seats, $id_payment, $id_client, $qpcode);
+    function makethesell($id_session, $seats, $id_payment, $id_client, $qpcode, $id_base, $bin) {
+        $query = "EXEC pr_api_sell ?,?,?,?,?,?";
+        $params = array($id_session, $seats, $id_payment, $id_client, $qpcode, $bin);
         $result = db_exec($query, $params, $id_base);
         $json = array();
     
@@ -335,8 +335,6 @@
         logme();
         die(json_encode(array("success"=>false, "msg"=> "id_seat not valid.", "result"=>"")));
     }
-// die("ddd");
-    // die(json_encode());
 
     $id_base = get_id_base_from_id_evento($json->id_event);
     $id_payment = paymenttype_string_to_code($json->payment_method->type);
@@ -344,6 +342,13 @@
     if (checkpayment($id_payment, $id_base) == false) {
         logme();
         die(json_encode(array("success"=>false, "msg"=> "Payment method no configured.", "result"=>"")));
+    }
+
+    if ($json->payment_method->type != "boleto") {
+        if ($json->payment_method->bin == "") {
+            logme();
+            die(json_encode(array("success"=>false, "msg"=> "bin is not valid.", "result"=>"")));    
+        }
     }
 
     $code = code_generate($key);
@@ -356,7 +361,7 @@
     $ret = array();
 
     if ($seat_response["success"] == 1) {
-        $purchase_response = purchase_save($id_client, $code, $json, $id_payment, $key, $seats, $id_base);
+        $purchase_response = purchase_save($id_client, $code, $json, $id_payment, $key, $seats, $id_base, $json->payment_method->bin);
         if ($purchase_response["hasError"] == 0) {
             $print = generate_email_print_code(0, $purchase_response["codVenda"], $id_base);
             // die(json_encode($print));
