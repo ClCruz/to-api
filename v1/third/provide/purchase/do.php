@@ -2,6 +2,55 @@
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/purchase/site/helper.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/email/purchasehelp.php");
+    require_once($_SERVER['DOCUMENT_ROOT'].'/lib/Metzli/autoload.php');
+    require_once($_SERVER['DOCUMENT_ROOT']."/vendor/autoload.php");
+
+    use Metzli\Encoder\Encoder;
+    use Metzli\Renderer\PngRenderer;
+
+    function getticket($id_base, $codVenda) {
+        
+        if ($id_base == null || $id_base == '') {
+            $id_base = get_id_base_by_codvenda($codVenda);
+        }
+        
+        $query = "EXEC pr_print_ticket_info ?, NULL,?,?";
+        $params = array($codVenda, gethost(),getwhitelabelobj()["apikey"]);
+        $result = db_exec($query, $params, $id_base);
+
+        $json = array();
+        foreach ($result as &$row) {
+            $code = $row['barcode'];
+
+            $code = Encoder::encode($code);
+            $renderer = new PngRenderer();
+            $render = $renderer->render($code);
+
+            $png = imagecreatefromstring($renderer->render($code));
+            ob_start();
+            imagepng($png);
+            $imagedata = ob_get_contents();
+            ob_end_clean();
+            imagedestroy($png);
+        
+
+            $json[] = array(
+                "qrcode"=>base64_encode($imagedata)
+                ,"roomName"=>$row["roomName"]
+                ,"seatNameFull"=>$row["seatNameFull"]
+                ,"seatIndice"=>$row["seatIndice"]
+                ,"ticket"=>$row["ticket"]
+                ,"insurance_policy"=>$row["insurance_policy"]
+                ,"opening_time"=>$row["opening_time"]
+                ,"countTicket"=>$row["countTicket"]
+                ,"price"=>$row["price"]
+                ,"countTotal"=>$row["count_total"]
+            );
+        }
+
+        return $json;
+
+    }
 
     function paymenttype_string_to_code($text) {
         $ret = "";
@@ -312,10 +361,12 @@
             $print = generate_email_print_code(0, $purchase_response["codVenda"], $id_base);
             // die(json_encode($print));
             // die(getwhitelabelobj()["api"]."/v1/print/web/ticket?code=".$print["code"]);
-            $print = generate_email_print_code(0, $purchase_response["codVenda"], $id_base);
-            $link = getwhitelabelobj()["api"]."/v1/print/web/ticket?code=".$print["code"];
+            // $print = generate_email_print_code(0, $purchase_response["codVenda"], $id_base);
+            // $link = getwhitelabelobj()["api"]."/v1/print/web/ticket?code=".$print["code"];
 
-            $ret = array("success"=>true, "msg"=> "Venda efetivada.", "purchase"=>array("code"=>$purchase_response["codVenda"], "voucher"=>$link), "transaction"=>array("code"=>$code, "seconds"=>$purchase_response["seconds"]));
+            $tickets = getticket($id_base, $purchase_response["codVenda"]);
+
+            $ret = array("success"=>true, "msg"=> "Venda efetivada.", "purchase"=>array("code"=>$purchase_response["codVenda"], "voucher"=>$link, "tickets"=>$tickets), "transaction"=>array("code"=>$code, "seconds"=>$purchase_response["seconds"]));
         }
         else {
             // , "error"=>$purchase_response

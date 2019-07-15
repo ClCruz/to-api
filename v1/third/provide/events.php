@@ -90,7 +90,6 @@ function get($key, $date) {
 
         //die(json_encode(getwhitelabelobjforced($result[0]["baseName"])));
 
-        
         foreach ($result as &$row) {
             $presentation = array();
             $seathelper = array();
@@ -129,28 +128,29 @@ function get($key, $date) {
             }
             $imageBigURI = getDefaultMediaHost().str_replace("{default_big}",getBigCardImageName(),str_replace("{id}",$row["id"],$row["image_big"]))."?".randomintbydate();
             $imageURI = getDefaultMediaHost().str_replace("{default_card}",getDefaultCardImageName(),str_replace("{id}",$row["id"],$row["image_card"]))."?".randomintbydate();
-
-            $json[] = array(
-                "id"=>$row["id"]
-                ,"base"=>$row["base"]
-                ,"name"=>$row["name"]
-                ,"code"=>$row["code"]
-                ,"place"=>$row["place"]
-                ,"city"=>$row["city"]
-                ,"state"=>$row["state"]
-                ,"state_acronym"=>$row["state_acronym"]
-                ,"image_card"=>$imageURI
-                ,"image_big"=>$imageBigURI
-                ,"uri"=>$uri_home.$row["uri"]
-                ,"dates"=>$row["dates"]
-                ,"genre"=>array(array("id"=>$row["id_genre"],"name"=>$row["genreName"]))
-                ,"created"=>$row["created"]
-                ,"amounts"=>$row["amounts"]
-                ,"minAmount"=>$row["minAmount"]
-                ,"maxAmount"=>$row["maxAmount"]
-                ,"changed"=>$row["changed"]
-                ,"presentations"=>$presentation
-            );
+            if (count($presentation) != 0) {
+                $json[] = array(
+                    "id"=>$row["id"]
+                    ,"base"=>$row["base"]
+                    ,"name"=>$row["name"]
+                    ,"code"=>$row["code"]
+                    ,"place"=>$row["place"]
+                    ,"city"=>$row["city"]
+                    ,"state"=>$row["state"]
+                    ,"state_acronym"=>$row["state_acronym"]
+                    ,"image_card"=>$imageURI
+                    ,"image_big"=>$imageBigURI
+                    ,"uri"=>$uri_home.$row["uri"]
+                    ,"dates"=>$row["dates"]
+                    ,"genre"=>array(array("id"=>$row["id_genre"],"name"=>$row["genreName"]))
+                    ,"created"=>$row["created"]
+                    ,"amounts"=>$row["amounts"]
+                    ,"minAmount"=>$row["minAmount"]
+                    ,"maxAmount"=>$row["maxAmount"]
+                    ,"changed"=>$row["changed"]
+                    ,"presentations"=>$presentation
+                );    
+            }
         }
 
         echo json_encode($json);

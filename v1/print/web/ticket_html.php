@@ -51,7 +51,7 @@
             $id_base = get_id_base_by_codvenda($codVenda);
         }
         
-        $query = "EXEC pr_print_ticket2 ?,?,?,?";
+        $query = "EXEC pr_print_ticket ?,?,?,?";
         $params = array($codVenda, $indice, gethost(),getwhitelabelobj()["apikey"]);
         $result = db_exec($query, $params, $id_base);
 

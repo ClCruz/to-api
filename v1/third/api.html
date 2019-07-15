@@ -179,9 +179,11 @@
   </head>
   <body>
   <h1>TicketOffice API</h1>
-    <div class="app-desc">API de consulta e venda de eventos.</div>
+    <div class="app-desc">API de consulta e venda de eventos.
+Para acessar a api, utilizar o dominio do parceiro.
+api.dominio/url_desejada</div>
     <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
-    <div class="app-desc">Contact Info: <a href="leonel@ticketoffice.com.br">leonel@ticketoffice.com.br</a></div>
+    <div class="app-desc">Contact Info: <a href="leonel.costa@ticketoffice.com.br">leonel.costa@ticketoffice.com.br</a></div>
     <div class="app-desc">Version: 1.0.0</div>
     
     <div class="license-info">Apache 2.0</div>
@@ -198,19 +200,19 @@
   <div class="method-summary"></div>
   <h4><a href="#Execute">Execute</a></h4>
   <ul>
-  <li><a href="#executePurchase"><code><span class="http-method">post</span> /third/provide/purchase/do</code></a></li>
-  <li><a href="#executeRefund"><code><span class="http-method">post</span> /third/provide/purchase/refund</code></a></li>
+  <li><a href="#executePurchase"><code><span class="http-method">post</span> /v1/third/provide/purchase/do</code></a></li>
+  <li><a href="#executeRefund"><code><span class="http-method">post</span> /v1/third/provide/purchase/refund</code></a></li>
   </ul>
   <h4><a href="#Retrieve">Retrieve</a></h4>
   <ul>
-  <li><a href="#findEvents"><code><span class="http-method">get</span> /third/provide/events</code></a></li>
+  <li><a href="#findEvents"><code><span class="http-method">get</span> /v1/third/provide/events</code></a></li>
   </ul>
 
   <h1><a name="Execute">Execute</a></h1>
   <div class="method"><a name="executePurchase"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /third/provide/purchase/do</code></pre></div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /v1/third/provide/purchase/do</code></pre></div>
     <div class="method-summary">Executa a venda do ingresso (<span class="nickname">executePurchase</span>)</div>
     <div class="method-notes">Executa a venda do ingresso</div>
 
@@ -249,7 +251,18 @@
   "success" : true,
   "purchase" : {
     "code" : "code",
-    "voucher" : "http://example.com/aeiou",
+    "tickets" : {
+      "seatIndice" : "seatIndice",
+      "ticket" : "ticket",
+      "qrcode" : "qrcode",
+      "price" : "price",
+      "opening_time" : "opening_time",
+      "seatNameFull" : "seatNameFull",
+      "countTicket" : "countTicket",
+      "countTotal" : "countTotal",
+      "insurance_policy" : "insurance_policy",
+      "roomName" : "roomName"
+    },
     "transaction" : {
       "seconds" : 0,
       "code" : "code"
@@ -273,7 +286,7 @@
   <div class="method"><a name="executeRefund"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /third/provide/purchase/refund</code></pre></div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /v1/third/provide/purchase/refund</code></pre></div>
     <div class="method-summary">Executa o reembolso do ingresso (<span class="nickname">executeRefund</span>)</div>
     <div class="method-notes">Executa o reembolso do ingresso</div>
 
@@ -329,7 +342,7 @@
   <div class="method"><a name="findEvents"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /third/provide/events</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /v1/third/provide/events</code></pre></div>
     <div class="method-summary">Lista eventos (<span class="nickname">findEvents</span>)</div>
     <div class="method-notes">Recupera os eventos com suas apresentações e assentos disponíveis para a venda.</div>
 
@@ -778,6 +791,7 @@
     <li><a href="#paymentMethod_request"><code>paymentMethod_request</code></a></li>
     <li><a href="#presentation"><code>presentation</code></a></li>
     <li><a href="#purchaseResponse"><code>purchaseResponse</code></a></li>
+    <li><a href="#purchaseTickets"><code>purchaseTickets</code></a></li>
     <li><a href="#purchaseTransaction"><code>purchaseTransaction</code></a></li>
     <li><a href="#purchase_request"><code>purchase_request</code></a></li>
     <li><a href="#purchaseok"><code>purchaseok</code></a></li>
@@ -801,10 +815,10 @@
     <h3><a name="events"><code>events</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento único </div>
-<div class="param">base (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código da base do evento </div>
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo do evento unico </div>
+<div class="param">base (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo da base do evento </div>
 <div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nome do evento </div>
-<div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento na base do evento (não único) </div>
+<div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo do evento na base do evento </div>
 <div class="param">place (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Lugar do evento </div>
 <div class="param">city (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Cidade do evento </div>
 <div class="param">state (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Estado da cidade do evento </div>
@@ -847,9 +861,9 @@
     <h3><a name="presentation"><code>presentation</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento único </div>
-<div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único da apresentação </div>
-<div class="param">date (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> Data da apresentação format: date</div>
+      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo do evento unico </div>
+<div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo unico da apresentacao </div>
+<div class="param">date (optional)</div><div class="param-desc"><span class="param-type"><a href="#date">date</a></span> Data da apresentacao format: date</div>
 <div class="param">hour (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  format: string</div>
 <div class="param">seats (optional)</div><div class="param-desc"><span class="param-type"><a href="#seat">array[seat]</a></span>  </div>
     </div>  <!-- field-items -->
@@ -864,10 +878,26 @@
     </div>  <!-- field-items -->
   </div>
   <div class="model">
+    <h3><a name="purchaseTickets"><code>purchaseTickets</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">qrcode (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Base64 do QRCode (para imagem) </div>
+<div class="param">roomName (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nome da sala </div>
+<div class="param">seatNameFull (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nome do assento </div>
+<div class="param">seatIndice (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Codigo do assento </div>
+<div class="param">ticket (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Tipo de ticket </div>
+<div class="param">insurance_policy (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Politica de seguro </div>
+<div class="param">opening_time (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Informações de abertura </div>
+<div class="param">countTicket (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Contador de tickets para a compra </div>
+<div class="param">price (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Preço da compra em inteiro </div>
+<div class="param">countTotal (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Total de tickets da compra </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
     <h3><a name="purchaseTransaction"><code>purchaseTransaction</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Código da transação </div>
+      <div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Codigo da transação </div>
 <div class="param">seconds (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Segundos que levou para realizar a transação </div>
     </div>  <!-- field-items -->
   </div>
@@ -875,8 +905,8 @@
     <h3><a name="purchase_request"><code>purchase_request</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento único </div>
-<div class="param">id_presentation (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código da apresentação único </div>
+      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo do evento unico </div>
+<div class="param">id_presentation (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo da apresentacao unico </div>
 <div class="param">seat (optional)</div><div class="param-desc"><span class="param-type"><a href="#seat_request">array[seat_request]</a></span>  </div>
 <div class="param">amount_total (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Valor total da venda </div>
 <div class="param">payment_method (optional)</div><div class="param-desc"><span class="param-type"><a href="#paymentMethod_request">paymentMethod_request</a></span>  </div>
@@ -887,8 +917,8 @@
     <h3><a name="purchaseok"><code>purchaseok</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Código da venda </div>
-<div class="param">voucher (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> URL do PDF do voucher format: uri</div>
+      <div class="param">code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Codigo da venda </div>
+<div class="param">tickets (optional)</div><div class="param-desc"><span class="param-type"><a href="#purchaseTickets">purchaseTickets</a></span>  </div>
 <div class="param">transaction (optional)</div><div class="param-desc"><span class="param-type"><a href="#purchaseTransaction">purchaseTransaction</a></span>  </div>
     </div>  <!-- field-items -->
   </div>
@@ -904,22 +934,23 @@
     <h3><a name="refund_request"><code>refund_request</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento único </div>
-<div class="param">id_presentation (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código da apresentação único </div>
-<div class="param">purchase_code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Código da venda </div>
-<div class="param">id_seat (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do assento </div>
+      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo do evento unico </div>
+<div class="param">id_presentation (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo da apresentacao unico </div>
+<div class="param">purchase_code (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Codigo da venda </div>
+<div class="param">id_seat (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo do assento </div>
+<div class="param">release_seat (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> Liberar lugar ou reservar novamente? </div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">
     <h3><a name="seat"><code>seat</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento único </div>
-<div class="param">id_presentantion (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único da apresentação </div>
+      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo do evento unico </div>
+<div class="param">id_presentantion (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo unico da apresentacao </div>
 <div class="param">sectorName (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nome do setor format: string</div>
 <div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nome do assento format: string</div>
-<div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único do assento </div>
-<div class="param">numered (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Se o assento é númerado ou não </div>
+<div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo unico do assento </div>
+<div class="param">numered (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Assento numerado </div>
 <div class="param">tickets (optional)</div><div class="param-desc"><span class="param-type"><a href="#ticket">array[ticket]</a></span>  </div>
     </div>  <!-- field-items -->
   </div>
@@ -927,8 +958,8 @@
     <h3><a name="seat_request"><code>seat_request</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">id_seat (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único do assento </div>
-<div class="param">id_ticket (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único do tipo de ingresso </div>
+      <div class="param">id_seat (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo unico do assento </div>
+<div class="param">id_ticket (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo unico do tipo de ingresso </div>
 <div class="param">amount (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Valor da venda do assento </div>
     </div>  <!-- field-items -->
   </div>
@@ -936,21 +967,21 @@
     <h3><a name="ticket"><code>ticket</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código do evento único </div>
-<div class="param">id_presentantion (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único da apresentação </div>
-<div class="param">id_seat (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único do assento </div>
+      <div class="param">id_event (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo do evento unico </div>
+<div class="param">id_presentantion (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo unico da apresentacao </div>
+<div class="param">id_seat (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo unico do assento </div>
 <div class="param">price (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Valor do ingresso </div>
-<div class="param">allowticketoffice (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda em modelo físico </div>
+<div class="param">allowticketoffice (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda em modelo fisico </div>
 <div class="param">allowweb (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda em modelo web </div>
-<div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Código único do tipo de ingresso </div>
+<div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Codigo unico do tipo de ingresso </div>
 <div class="param">type (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Nome do tipo de ingresso </div>
 <div class="param">sell_sun (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda no domingo </div>
 <div class="param">sell_mon (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda na segunda-feira </div>
-<div class="param">sell_tue (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda na terça-feira </div>
+<div class="param">sell_tue (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda na terca-feira </div>
 <div class="param">sell_wed (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda na quarta-feira </div>
 <div class="param">sell_thu (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda na quinta-feira </div>
 <div class="param">sell_fri (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda na sexta-feira </div>
-<div class="param">sell_sat (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda no sabdo </div>
+<div class="param">sell_sat (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> Permite venda no sabado </div>
     </div>  <!-- field-items -->
   </div>
   </body>

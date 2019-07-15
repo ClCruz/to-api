@@ -3,10 +3,12 @@ servers: []
 info:
   description: |
     API de consulta e venda de eventos.
+    Para acessar a api, utilizar o dominio do parceiro.
+    api.dominio/url_desejada
   version: "1.0.0"
   title: TicketOffice API
   contact:
-    email: leonel@ticketoffice.com.br
+    email: leonel.costa@ticketoffice.com.br
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
@@ -16,7 +18,7 @@ tags:
 - name: execute
   description: Metodos para execução
 paths:  
-  /third/provide/purchase/refund:
+  /v1/third/provide/purchase/refund:
     post:
       tags:
         - execute
@@ -39,7 +41,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/refundResponse'
-  /third/provide/purchase/do:
+  /v1/third/provide/purchase/do:
     post:
       tags:
         - execute
@@ -62,7 +64,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/purchaseResponse'
-  /third/provide/events:
+  /v1/third/provide/events:
     get:
       tags:
         - retrieve
@@ -109,36 +111,70 @@ components:
       properties:
         id_event:
           type: integer
-          description: Código do evento único
+          description: Codigo do evento unico
         id_presentation:
           type: integer
-          description: Código da apresentação único
+          description: Codigo da apresentacao unico
         purchase_code:
           type: string
-          description: Código da venda
+          description: Codigo da venda
         id_seat:
           type: integer
-          description: Código do assento
+          description: Codigo do assento
           nullable: true
+        release_seat:
+          type: boolean
+          description: Liberar lugar ou reservar novamente?
     purchaseTransaction:
         type: object
         properties:
           code:
             type: string
-            description: Código da transação
+            description: Codigo da transação
           seconds:
             type: integer
             description: Segundos que levou para realizar a transação
+    purchaseTickets:
+        type: object
+        properties:
+          qrcode:
+            type: string
+            description: Base64 do QRCode (para imagem)
+          roomName:
+            type: string
+            description: Nome da sala
+          seatNameFull:
+            type: string
+            description: Nome do assento
+          seatIndice:
+            type: string
+            description: Codigo do assento
+          ticket:
+            type: string
+            description: Tipo de ticket
+          insurance_policy:
+            type: string
+            description: Politica de seguro
+          opening_time:
+            type: string
+            description: Informações de abertura
+          countTicket:
+            type: string
+            description: Contador de tickets para a compra
+          price:
+            type: string
+            description: Preço da compra em inteiro
+          countTotal:
+            type: string
+            description: Total de tickets da compra
     purchaseok:
       type: object
       properties:
         code:
           type: string
-          description: Código da venda
-        voucher:
-          type: string
-          format: uri
-          description: URL do PDF do voucher
+          description: Codigo da venda
+        tickets:
+          $ref: '#/components/schemas/purchaseTickets'
         transaction:
           $ref: '#/components/schemas/purchaseTransaction'
     refundResponse:
@@ -191,10 +227,10 @@ components:
       properties:
         id_seat:
           type: integer
-          description: Código único do assento
+          description: Codigo unico do assento
         id_ticket:
           type: integer
-          description: Código único do tipo de ingresso
+          description: Codigo unico do tipo de ingresso
         amount:
           type: integer
           description: Valor da venda do assento
@@ -203,10 +239,10 @@ components:
       properties:
         id_event:
           type: integer
-          description: Código do evento único
+          description: Codigo do evento unico
         id_presentation:
           type: integer
-          description: Código da apresentação único
+          description: Codigo da apresentacao unico
         seat:
           type: array
           items:
@@ -223,19 +259,19 @@ components:
       properties:
         id_event:
           type: integer
-          description: Código do evento único
+          description: Codigo do evento unico
         id_presentantion:
           type: integer
-          description: Código único da apresentação
+          description: Codigo unico da apresentacao
         id_seat:
           type: integer
-          description: Código único do assento
+          description: Codigo unico do assento
         price:
           type: integer
           description: Valor do ingresso
         allowticketoffice:
           type: integer
-          description: Permite venda em modelo físico
+          description: Permite venda em modelo fisico
           minimum: 0
           maximum: 1
         allowweb:
@@ -245,7 +281,7 @@ components:
           maximum: 1
         id:
           type: integer
-          description: Código único do tipo de ingresso
+          description: Codigo unico do tipo de ingresso
         type:
           type: string
           description: Nome do tipo de ingresso
@@ -261,7 +297,7 @@ components:
           maximum: 1
         sell_tue:
           type: integer
-          description: Permite venda na terça-feira
+          description: Permite venda na terca-feira
           minimum: 0
           maximum: 1
         sell_wed:
@@ -281,7 +317,7 @@ components:
           maximum: 1
         sell_sat:
           type: integer
-          description: Permite venda no sabdo
+          description: Permite venda no sabado
           minimum: 0
           maximum: 1
     seat:
@@ -289,10 +325,10 @@ components:
       properties:
         id_event:
           type: integer
-          description: Código do evento único
+          description: Codigo do evento unico
         id_presentantion:
           type: integer
-          description: Código único da apresentação
+          description: Codigo unico da apresentacao
         sectorName:
           type: string
           format: string
@@ -303,10 +339,10 @@ components:
           description: Nome do assento
         id:
           type: integer
-          description: Código único do assento
+          description: Codigo unico do assento
         numered:
           type: integer
-          description: Se o assento é númerado ou não
+          description: Assento numerado
         tickets:
           type: array
           items:
@@ -316,14 +352,14 @@ components:
       properties:
         id_event:
           type: integer
-          description: Código do evento único
+          description: Codigo do evento unico
         id: 
           type: integer
-          description: Código único da apresentação
+          description: Codigo unico da apresentacao
         date:
           type: string
           format: date
-          description: Data da apresentação
+          description: Data da apresentacao
         hour:
           type: string
           format: string
@@ -346,16 +382,16 @@ components:
       properties:
         id:
           type: integer
-          description: Código do evento único
+          description: Codigo do evento unico
         base:
           type: integer
-          description: Código da base do evento
+          description: Codigo da base do evento
         name:
           type: string
           description: Nome do evento
         code:
           type: integer
-          description: Código do evento na base do evento (não único)
+          description: Codigo do evento na base do evento
         place:
           type: string
           description: Lugar do evento
