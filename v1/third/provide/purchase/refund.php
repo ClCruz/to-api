@@ -1,51 +1,24 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    use Metzli\Encoder\Encoder;
-    use Metzli\Renderer\PngRenderer;
+    function purchase_refund($code, $id_seat, $id_base) {  
+        $query = "EXEC pr_api_refund ?,?,?";
+        $id_seat = $id_seat == null ? 0 : $id_seat;
 
-    function purchase_refund($id_client, $id_session, $obj, $id_payment, $qpcode, $seats, $id_base) {  
-        // die(json_encode($id_client));      
-        $start = $_SERVER["REQUEST_TIME"];
-        $ip = "";
-        if (array_key_exists("HTTP_X_FORWARDED_FOR", $_SERVER)) {
-            $ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
-        }
-        
-        $ip = ($ip == '' ? '' : '|').$_SERVER['REMOTE_ADDR'];
-        
-        $id_purchase = get_id_purchase($id_session, $id_client)."-API";
-        
-        traceme($id_purchase, "Initiating purchase - API", json_encode(array("id_client"=>$id_client, "obj"=>json_encode($obj))),0);
-        
-        $shopping = getcurrentpurchase($id_session);
-        traceme($id_purchase, "shopping cart", json_encode($shopping),0);
+        $all = $id_seat == 0 ? 1 : 0;
 
-        if (count($shopping) == 0) {
-            echo json_encode(array("success"=>false, "msgtobuyer"=>"Não há nenhum item selecionado."));
-            logme();
-            traceme($id_purchase, "Finished purchase", '',0);
-            die();
+        $params = array($code, $all, $id_seat);
+        $result = db_exec($query, $params, $id_base);
+        $json = array();
+    
+        foreach ($result as &$row) {
+            $json = array(
+                "success"=>$row["success"]
+                ,"msg"=>$row["success"] == 1 ? "executed." : 'not executed.'
+            );
         }
 
-        $values = getvaluesofmyshoppig(NULL, $id_session);
-
-        traceme($id_purchase, "values", json_encode($values),0);
-
-        $retofservice = makethesell($id_session, $seats, $id_payment, $id_client, $qpcode, $id_base);        
-
-        $end = time();
-        $duration = $end-$start;
-        $hours = (int)($duration/60/60);
-        $minutes = (int)($duration/60)-$hours*60;
-        $seconds = (int)$duration-$hours*60*60-$minutes*60;
-
-        $retofservice["seconds"] = $seconds;
-
-        traceme($id_purchase, "do purchase final", json_encode($retofservice),0);
-
-        logme();
-        return $retofservice;
+        return $json;
     }
 
     function validate_data($id_event, $id_presentation, $id_seat, $codVenda, $key) {
@@ -60,6 +33,7 @@
                 ,"eventOK"=>$row["eventOK"]
                 ,"presentationOK"=>$row["presentationOK"]
                 ,"codVendaOK"=>$row["codVendaOK"]
+                ,"presentationPast"=>$row["presentationPast"]
             );
         }
 
@@ -85,6 +59,8 @@
 
     $data = file_get_contents('php://input');
 
+    // die(json_encode($data));
+
     if ($data == "") {
         die(json_encode(array("success"=>false, "msg"=> "Check body content or HTTPS.", "result"=>"")));
     }
@@ -105,6 +81,8 @@
 
     $json = json_decode($data);
 
+    // die(json_last_error_msg());
+
     if (json_last_error() != JSON_ERROR_NONE) {
         logme();
         die(json_encode(array("success"=>false, "msg"=> "Body not found. ERR.2.", "result"=>"")));
@@ -122,31 +100,35 @@
         die(json_encode(array("success"=>false, "msg"=> "Key not found. ERR.4.", "result"=>"")));
     }
 
-    $validate = validate_data($json->id_event, $json->id_presentation, $json->id_seat, $key);
+    $validate = validate_data($json->id_event, $json->id_presentation, $json->id_seat, $json->purchase_code, $key);
 
-    if ($validate["eventOK"] == false) {
+    if ($validate["eventOK"] == 0) {
         logme();
         die(json_encode(array("success"=>false, "msg"=> "id_event not valid.", "result"=>"")));
     }
-    if ($validate["presentationOK"] == false) {
+    if ($validate["presentationOK"] == 0) {
         logme();
         die(json_encode(array("success"=>false, "msg"=> "id_presentation not valid.", "result"=>"")));
     }
-    if ($validate["codVendaOK"] == false) {
+    if ($validate["presentationPast"] == 0) {
+        logme();
+        die(json_encode(array("success"=>false, "msg"=> "presentation already occurred.", "result"=>"")));
+    }
+
+    if ($validate["codVendaOK"] == 0) {
         logme();
         die(json_encode(array("success"=>false, "msg"=> "purchase code not valid.", "result"=>"")));
     }
-    if ($validate["seatOK"] == false) {
+    if ($validate["seatOK"] == 0) {
         logme();
         die(json_encode(array("success"=>false, "msg"=> "id_seat not valid.", "result"=>"")));
     }
-// die("ddd");
-    // die(json_encode());
 
     $id_base = get_id_base_from_id_evento($json->id_event);
 
+    $ret = purchase_refund($json->purchase_code, $json->id_seat, $id_base);
 
-    // echo json_encode($ret);
-    // logme();
+    echo json_encode($ret);
+    logme();
     die();
 ?>

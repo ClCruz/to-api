@@ -319,19 +319,19 @@
     $seats = seats_object_to_string($json->seat);
     $validate = validate_data($json->id_event, $json->id_presentation, $seats, $key);
 
-    if ($validate["eventOK"] == false) {
+    if ($validate["eventOK"] == 0) {
         logme();
         die(json_encode(array("success"=>false, "msg"=> "id_event not valid.", "result"=>"")));
     }
-    if ($validate["presentationOK"] == false) {
+    if ($validate["presentationOK"] == 0) {
         logme();
         die(json_encode(array("success"=>false, "msg"=> "id_presentation not valid.", "result"=>"")));
     }
-    if ($validate["tickettypeOK"] == false) {
+    if ($validate["tickettypeOK"] == 0) {
         logme();
         die(json_encode(array("success"=>false, "msg"=> "ticket type not valid.", "result"=>"")));
     }
-    if ($validate["seatOK"] == false) {
+    if ($validate["seatOK"] == 0) {
         logme();
         die(json_encode(array("success"=>false, "msg"=> "id_seat not valid.", "result"=>"")));
     }

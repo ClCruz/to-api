@@ -120,11 +120,7 @@ components:
           description: Codigo da venda
         id_seat:
           type: integer
-          description: Codigo do assento
-          nullable: true
-        release_seat:
-          type: boolean
-          description: Liberar lugar ou reservar novamente?
+          description: Codigo do assento (caso queira cancelar todos assentos da compra, colocar 0)
     purchaseTransaction:
         type: object
         properties:
