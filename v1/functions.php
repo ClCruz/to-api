@@ -166,6 +166,12 @@ function get_uniquename_by_apikey($forced) {
         $ret = $row["uniquename"];
     }
 
+    switch ($ret)  {
+        case "ci_localhost":
+            $ret = "localhost";
+        break;
+    }
+
     return $ret;
 }
 function get_id_base_from_id_evento($id_evento) {
