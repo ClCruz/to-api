@@ -3,7 +3,7 @@
 
     function get($loggedId, $comission, $id_pedido_venda) {
         $uniquename = gethost();
-        $uniquename = "sazarte";
+        // $uniquename = "sazarte";
         $query = "EXEC pr_report_partnersale_detail ?,?";
         // die("dd".json_encode($codVenda));
         $params = array($comission,$id_pedido_venda);
