@@ -250,6 +250,10 @@ components:
         id_presentation:
           type: integer
           description: Codigo da apresentacao unico
+        date:
+          type: string
+          format: date-time
+          description: Data que ocorreu a venda (Formato yyyy-MM-dd hh:MM:ss)
         seat:
           type: array
           items:

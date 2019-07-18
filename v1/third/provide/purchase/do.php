@@ -71,7 +71,7 @@
         return $ret;
     }
 
-    function purchase_save($id_client, $id_session, $obj, $id_payment, $qpcode, $seats, $id_base, $bin) {  
+    function purchase_save($id_client, $id_session, $obj, $id_payment, $qpcode, $seats, $id_base, $bin, $date) {  
         // die(json_encode($id_client));      
         $start = $_SERVER["REQUEST_TIME"];
         $ip = "";
@@ -99,7 +99,7 @@
 
         traceme($id_purchase, "values", json_encode($values),0);
 
-        $retofservice = makethesell($id_session, $seats, $id_payment, $id_client, $qpcode, $id_base, $bin);        
+        $retofservice = makethesell($id_session, $seats, $id_payment, $id_client, $qpcode, $id_base, $bin, $date);        
 
         $end = time();
         $duration = $end-$start;
@@ -128,9 +128,42 @@
         return $ret;
     }
 
-    function makethesell($id_session, $seats, $id_payment, $id_client, $qpcode, $id_base, $bin) {
-        $query = "EXEC pr_api_sell ?,?,?,?,?,?";
-        $params = array($id_session, $seats, $id_payment, $id_client, $qpcode, $bin);
+    function validate_date($date) {
+        if ($date == "")
+            return false;
+
+        $format = "Y-m-d H:i:s";
+
+        $d = DateTime::createFromFormat($format, $date);
+        $valid = $d && $d->format($format) === $date;
+        if (!$valid)
+            return false;
+
+        $dayinit = new DateTime('now');
+        $dayinit->setTime(0,0,0);
+
+        $dayend = new DateTime('now');
+        $dayend->setTime(23,59,59);
+
+        $now = new DateTime('now');
+
+        $valid = $d >= $dayinit && $d <= $dayend;
+
+        if (!$valid)
+            return false;
+
+        $valid = $d<$now;
+
+        if (!$valid)
+            return false;
+
+        
+        return true;
+    }
+
+    function makethesell($id_session, $seats, $id_payment, $id_client, $qpcode, $id_base, $bin, $date) {
+        $query = "EXEC pr_api_sell ?,?,?,?,?,?,?";
+        $params = array($id_session, $seats, $id_payment, $id_client, $qpcode, $bin,$date);
         $result = db_exec($query, $params, $id_base);
         $json = array();
     
@@ -319,6 +352,11 @@
     $seats = seats_object_to_string($json->seat);
     $validate = validate_data($json->id_event, $json->id_presentation, $seats, $key);
 
+    if (!validate_date($json->date)) {
+        logme();
+        die(json_encode(array("success"=>false, "msg"=> "date not valid.", "result"=>"")));
+    }
+
     if ($validate["eventOK"] == 0) {
         logme();
         die(json_encode(array("success"=>false, "msg"=> "id_event not valid.", "result"=>"")));
@@ -361,7 +399,7 @@
     $ret = array();
 
     if ($seat_response["success"] == 1) {
-        $purchase_response = purchase_save($id_client, $code, $json, $id_payment, $key, $seats, $id_base, $json->payment_method->bin);
+        $purchase_response = purchase_save($id_client, $code, $json, $id_payment, $key, $seats, $id_base, $json->payment_method->bin,$json->date);
         if ($purchase_response["hasError"] == 0) {
             $print = generate_email_print_code(0, $purchase_response["codVenda"], $id_base);
             // die(json_encode($print));
@@ -371,7 +409,7 @@
 
             $tickets = getticket($id_base, $purchase_response["codVenda"]);
 
-            $ret = array("success"=>true, "msg"=> "Venda efetivada.", "purchase"=>array("code"=>$purchase_response["codVenda"], "voucher"=>$link, "tickets"=>$tickets), "transaction"=>array("code"=>$code, "seconds"=>$purchase_response["seconds"]));
+            $ret = array("success"=>true, "msg"=> "Venda efetivada.", "purchase"=>array("code"=>$purchase_response["codVenda"], "tickets"=>$tickets), "transaction"=>array("code"=>$code, "seconds"=>$purchase_response["seconds"]));
         }
         else {
             // , "error"=>$purchase_response
