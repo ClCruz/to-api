@@ -27,7 +27,6 @@
 
         echo json_encode($json);
         logme();
-
         die();    
     }
     function splitBadge($value) {
