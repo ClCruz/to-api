@@ -29,6 +29,8 @@
                 ,"json_info_companyname"=> $row["json_info_companyname"]
                 ,"scss_colors_primary"=> $row["scss_colors_primary"]
                 ,"scss_colors_secondary"=> $row["scss_colors_secondary"]
+                ,"scss_colors_text"=> $row["scss_colors_text"]
+                ,"scss_image_background"=> $row["scss_image_background"]
                 ,"apikey"=>$row["apikey"]
                 ,"videos"=>array("list"=>array())
             );

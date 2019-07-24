@@ -29,6 +29,8 @@
                 ,"json_info_companyname"=> $row["json_info_companyname"]
                 ,"scss_colors_primary"=> $row["scss_colors_primary"]
                 ,"scss_colors_secondary"=> $row["scss_colors_secondary"]
+                ,"scss_colors_text"=> $row["scss_colors_text"]
+                ,"scss_image_background"=> $row["scss_image_background"]
                 ,"apikey"=>$row["apikey"]
                 ,"fb_appid"=>$row["fb_appid"]
                 ,"videos"=>array("list"=>array())
@@ -113,6 +115,8 @@
         $ret[] = array("from"=>"__wl-siteadmin__", "to"=>$adminURI);
         $ret[] = array("from"=>"__wl-color-primary__", "to"=> $db["scss_colors_primary"]);
         $ret[] = array("from"=>"__wl-color-secondary__", "to"=> $db["scss_colors_secondary"]);
+        $ret[] = array("from"=>"__wl-color-text__", "to"=> $db["scss_colors_text"]);
+        $ret[] = array("from"=>"__wl-scss-bg__", "to"=> $db["scss_image_background"]);
         $ret[] = array("from"=>"__wl-site-logo-media__", "to"=>$logomedia);
         $ret[] = array("from"=>"__wl-site-logo-media-facebook__", "to"=>$logomedia_fb);
         $ret[] = array("from"=>"__wl-fb_appid__", "to"=>$db["fb_appid"]);
