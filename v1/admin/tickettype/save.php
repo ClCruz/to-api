@@ -9,6 +9,7 @@
         ,$id_base
         ,$nameWeb
         ,$nameTicketOffice
+        ,$nameAPI
         ,$description
         ,$in_dom
         ,$in_seg
@@ -19,6 +20,7 @@
         ,$in_sab
         ,$allowweb
         ,$allowticketoffice
+        ,$allowapi
         ,$isPrincipal
         ,$isDiscount
         ,$isHalf
@@ -46,11 +48,12 @@
         
         //die(json_encode($_POST));
 
-        $query = "EXEC pr_tickettype_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        $query = "EXEC pr_tickettype_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
         $params = array($id
         ,$id_base
         ,$nameWeb
         ,$nameTicketOffice
+        ,$nameAPI
         ,$description
         ,$in_dom
         ,$in_seg
@@ -61,6 +64,7 @@
         ,$in_sab
         ,$allowweb
         ,$allowticketoffice
+        ,$allowapi
         ,$isPrincipal
         ,$isDiscount
         ,$isHalf
@@ -163,6 +167,7 @@ get(
     ,$_POST["id_base"]
     ,$_POST["nameWeb"]
     ,$_POST["nameTicketOffice"]
+    ,$_POST["nameAPI"]
     ,$_POST["description"]
     ,$_POST["in_dom"]
     ,$_POST["in_seg"]
@@ -173,6 +178,7 @@ get(
     ,$_POST["in_sab"]
     ,$_POST["allowweb"]
     ,$_POST["allowticketoffice"]
+    ,$_POST["allowapi"]
     ,$_POST["isPrincipal"]
     ,$_POST["isDiscount"]
     ,$_POST["isHalf"]

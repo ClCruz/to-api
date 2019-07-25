@@ -21,6 +21,7 @@
                 ,"StaTipBilhete" => $row["StaTipBilhete"]
                 ,"allowweb" => $row["allowweb"]
                 ,"allowticketoffice" => $row["allowticketoffice"]
+                ,"allowapi" => $row["allowapi"]
                 ,"id_base" => $id_base
                 ,"totalCount" => $row["totalCount"]
                 ,"currentPage" => $row["currentPage"]
