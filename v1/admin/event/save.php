@@ -96,10 +96,12 @@
 
         //die("ddd".$id_evento);
         $json = array("success"=>true
+        ,"id_evento"=>$id_evento
         ,"msg"=>"Salvo com sucesso");
 
         if ($id_evento == 0) {
             $json = array("success"=>false
+            ,"id_evento"=>0
             ,"msg"=>$msg);
         }
 
