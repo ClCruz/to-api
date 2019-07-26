@@ -18,6 +18,7 @@
                 ,"TipBilhete" => $row["TipBilhete"]
                 ,"nameTicketOffice" => $row["nameTicketOffice"]
                 ,"nameWeb" => $row["nameWeb"]
+                ,"nameAPI" => $row["nameAPI"]
                 ,"isAllotment" => $row["isAllotment"]
                 ,"isDiscount" => $row["isDiscount"]
                 ,"isFixed" => $row["isFixed"]
@@ -26,6 +27,7 @@
                 ,"isPrincipal" => $row["isPrincipal"]
                 ,"allowweb" => $row["allowweb"]
                 ,"allowticketoffice" => $row["allowticketoffice"]
+                ,"allowapi" => $row["allowapi"]
                 ,"PerDesconto" => $row["PerDesconto"]
                 ,"vl_preco_fixo" => $row["vl_preco_fixo"]
             );
