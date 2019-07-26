@@ -36,6 +36,7 @@
     ,$minAmount
     ,$maxAmount
     ,$in_entrega_ingresso
+    ,$external_uri
     ) {
         $minAmount = intval(round(($minAmount*100), 0, PHP_ROUND_HALF_UP)) ;
         $maxAmount = intval(round(($maxAmount*100), 0, PHP_ROUND_HALF_UP)) ;
@@ -46,7 +47,7 @@
         // echo('oi');
         //die("aqui: $imagechanged / $imagebase64");
         //sleep(5);
-        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
         $params = array($apikey
         ,$id_produtor
         ,$id_to_admin_user
@@ -75,6 +76,7 @@
         ,$minAmount
         ,$maxAmount
         ,$in_entrega_ingresso
+        ,$external_uri
     );
 
     // sleep(15);
@@ -200,5 +202,6 @@ execute($_REQUEST["apikey"]
 ,$_POST["showonline"]
 ,$_POST["minAmount"]
 ,$_POST["maxAmount"]
-,$_POST["in_entrega_ingresso"]);
+,$_POST["in_entrega_ingresso"]
+,$_POST["external_uri"]);
 ?>

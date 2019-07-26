@@ -57,6 +57,7 @@
                 ,"max_installments" => $row["max_installments"]
                 ,"interest_rate" => $row["interest_rate"]
                 ,"ticketoffice_ticketmodel" => $row["ticketoffice_ticketmodel"]
+                ,"external_uri" => $row["external_uri"]
             );
         }
 
