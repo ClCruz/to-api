@@ -29,6 +29,8 @@
                     ,"amountSubTotalSector"=>$row["amountSubTotalSector"]
                     ,"amountSubTotalTicket"=>$row["amountSubTotalTicket"]
                     ,"isFixedAmount"=>$row["isFixedAmount"]
+                    ,"in_obriga_cpf"=>$row["in_obriga_cpf"]
+                    ,"in_obriga_cartao"=>$row["in_obriga_cartao"]
                     ,"valid"=>$row["valid"]);
 
             array_push($json,$aux);
