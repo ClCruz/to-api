@@ -26,19 +26,25 @@
             $dates = $row["dates"];
             $ontixsme = $row["ontixsme"];
             $uniquename = $row["uniquename"];
+            $external_uri = $row["external_uri"];
         }
 
         // $ontixsme=0;
 
         if (gethost() == "compreingressos" || gethost() == "localhost") {
             $uri = "";
-            if ($ontixsme == 1) {
-                $uri = getwhitelabelobjforced("tixsme")["uri"];
+            if (isset($external_uri) && $external_uri != '') {
+                $uri = $external_uri;
             }
             else {
-                $uri = getwhitelabelobjforced($uniquename)["uri"];
+                if ($ontixsme == 1) {
+                    $uri = getwhitelabelobjforced("tixsme")["uri"];
+                }
+                else {
+                    $uri = getwhitelabelobjforced($uniquename)["uri"];
+                }
+                $uri.="/evento/".$key;
             }
-            $uri.="/evento/".$key;
         }
 
         if ($id_base == 0 && $codPeca == 0) {
