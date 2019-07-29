@@ -16,6 +16,8 @@
             ,"acrdscvlr"=>$row["acrdscvlr"]
             ,"vl_preco_fixo"=>$row["vl_preco_fixo"]
             ,"StaTipBilhMeiaEstudante"=>$row["StaTipBilhMeiaEstudante"]
+            ,"in_obriga_cpf"=>$row["in_obriga_cpf"]
+            ,"in_obriga_cartao"=>$row["in_obriga_cartao"]
             ,"text"=>$row["TipBilhete"]
             ,"value"=>$row["CodTipBilhete"]);
             array_push($json,$aux);

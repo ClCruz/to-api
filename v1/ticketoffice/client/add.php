@@ -48,6 +48,7 @@
 
         foreach ($result as &$row) {
             $json = array("codigo"=>$row["codigo"]
+                            ,"hasCPF"=>$row["hasCPF"]
                             ,"codReserva"=>$row["codReserva"]);
         }
 
