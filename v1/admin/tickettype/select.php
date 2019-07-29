@@ -1,12 +1,12 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function get($showto, $principal, $fixed, $half, $plus, $allotment) {
+    function get($id_base, $showto, $principal, $fixed, $half, $plus, $allotment) {
         //sleep(5);
         $query = "EXEC pr_tickettype_select ?,?,?,?,?,?";
         //die("aaa.".print_r(db_param($startAt),true));
         $params = array($showto, $principal, $fixed, $half, $plus, $allotment);
-        $result = db_exec($query, $params);
+        $result = db_exec($query, $params, $id_base);
 
         $json = array();
         foreach ($result as &$row) {
@@ -33,5 +33,5 @@
         logme();
         die();    
     }
-get($_REQUEST["showto"], $_REQUEST["principal"], $_REQUEST["fixed"], $_REQUEST["half"], $_REQUEST["plus"], $_REQUEST["allotment"]);
+get($_REQUEST["id_base"], $_REQUEST["showto"], $_REQUEST["principal"], $_REQUEST["fixed"], $_REQUEST["half"], $_REQUEST["plus"], $_REQUEST["allotment"]);
 ?>
