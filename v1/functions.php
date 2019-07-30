@@ -79,6 +79,13 @@ function randomintbydate() {
     $aux = strtotime($result);
     return $aux;
 }
+function getDefaultCityImageName() {
+    return "city.jpg";
+}
+function getDefaultCityExtraImageName() {
+    return "card_extra.jpg";
+}
+
 function getDefaultCardImageName() {
     return "card.jpg";
 }
