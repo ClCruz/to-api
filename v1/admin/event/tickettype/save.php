@@ -1,23 +1,10 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-
-    function printtoxml($item, $key, $xml)
-    {
-        $child = $xml->addChild('item');
-        array_walk($item, 'printtoxml2', $child);
-    }
-    function printtoxml2($item, $key, $xml)
-    {
-        $xml->addAttribute($key, $item);
-        //$xml->addChild($key,$item);
-    }
-
-    function execute($data, $loggedId, $id_base) {
-        $xml = new SimpleXMLElement('<root/>');
-        array_walk($data, 'printtoxml', $xml);
-        $query = "EXEC pr_admin_presentation_add ?";
-        $params = array($xml->asXML());
+    function execute($id_base, $id_evento, $CodTipBilhete, $start, $end) {
+        // die(json_encode(array($id_base, $id_evento, $CodTipBilhete,$start, $end)));
+        $query = "EXEC pr_tickettype_event_save ?,?,?,?";
+        $params = array($id_evento, $CodTipBilhete, $start, $end);
         $result = db_exec($query, $params, $id_base);
 
         foreach ($result as &$row) {
@@ -30,5 +17,5 @@
         die();      
     }
 
-execute($_POST["data"], $_POST["loggedId"], $_POST["id_base"]);
+execute($_POST["id_base"], $_POST["id_evento"], $_POST["CodTipBilhete"], $_POST["start"], $_POST["end"]);
 ?>
