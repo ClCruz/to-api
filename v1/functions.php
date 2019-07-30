@@ -83,7 +83,7 @@ function getDefaultCityImageName() {
     return "city.jpg";
 }
 function getDefaultCityExtraImageName() {
-    return "card_extra.jpg";
+    return "city_extra.jpg";
 }
 
 function getDefaultCardImageName() {
