@@ -4,26 +4,44 @@
 
     function get(
         $id_base
+        ,$CodForPagto
+        ,$CodBanco
         ,$CodTipForPagto
-        ,$ClassifPagtoSAP
-        ,$StaTipForPagto
-        ,$TipForPagto
+        ,$ForPagto
+        ,$PcTxAdm
+        ,$PrzRepasseDias
+        ,$showorder
+        ,$StaDebBordLiq
+        ,$StaForPagto
+        ,$StaPagarMe
+        ,$StaTaxaCartoes
+        ,$TipCaixa
         ) {
             
-        $StaTipForPagto = $StaTipForPagto == 1 ? 'A' : 'I';
+            $StaDebBordLiq = $StaDebBordLiq == 1 ? 'S' : 'N';
+            $StaForPagto = $StaForPagto == 1 ? 'A' : 'I';
+            $StaPagarMe = $StaPagarMe == 1 ? 'S' : 'N';
+            $StaTaxaCartoes = $StaTaxaCartoes == 1 ? 'S' : 'N';
+            $TipCaixa = $TipCaixa == 1 ? 'A' : 'C';
         
 
-        $query = "EXEC pr_typepaymenttype_save ?,?,?,?";
+        $query = "EXEC pr_paymenttype_save ?,?,?,?,?,?,?,?,?,?,?,?";
         $params = array(
-            $CodTipForPagto
-            ,$ClassifPagtoSAP
-            ,$StaTipForPagto
-            ,$TipForPagto
+            $CodForPagto
+            ,$CodBanco
+            ,$CodTipForPagto
+            ,$ForPagto
+            ,$PcTxAdm
+            ,$PrzRepasseDias
+            ,$showorder
+            ,$StaDebBordLiq
+            ,$StaForPagto
+            ,$StaPagarMe
+            ,$StaTaxaCartoes
+            ,$TipCaixa
         );
 
         $result = db_exec($query, $params, $id_base);
-
-        $directoryname = "";
 
         foreach ($result as &$row) {
             $json = array("success"=>$row["success"] == "1" || $row["success"] == 1
@@ -37,9 +55,17 @@
 
 get(
     $_POST["id_base"]
+    ,$_POST["CodForPagto"]
+    ,$_POST["CodBanco"]
     ,$_POST["CodTipForPagto"]
-    ,$_POST["ClassifPagtoSAP"]
-    ,$_POST["StaTipForPagto"]
-    ,$_POST["TipForPagto"]
+    ,$_POST["ForPagto"]
+    ,$_POST["PcTxAdm"]
+    ,$_POST["PrzRepasseDias"]
+    ,$_POST["showorder"]
+    ,$_POST["StaDebBordLiq"]
+    ,$_POST["StaForPagto"]
+    ,$_POST["StaPagarMe"]
+    ,$_POST["StaTaxaCartoes"]
+    ,$_POST["TipCaixa"]
 );
 ?>

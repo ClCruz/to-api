@@ -9,7 +9,7 @@
 
 
         $json = array("success"=>true
-        ,"msg"=>$row["msg"]);
+        ,"msg"=>"");
 
         echo json_encode($json);
         logme();

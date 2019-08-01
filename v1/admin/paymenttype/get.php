@@ -10,18 +10,18 @@
         $json = array();
         foreach ($result as &$row) {
             $json = array(
-                "CodTipForPagto" => $row["CodTipForPagto"]
-                ,"uniquename" => $row["uniquename"]
-                ,"uniquename" => $row["uniquename"]
-                ,"uniquename" => $row["uniquename"]
+                "CodBanco" => $row["CodBanco"]
+                ,"CodForPagto" => $row["CodForPagto"]
                 ,"CodTipForPagto" => $row["CodTipForPagto"]
-                ,"uniquename" => $row["uniquename"]
-                ,"uniquename" => $row["uniquename"]
-                ,"uniquename" => $row["uniquename"]
-                ,"CodTipForPagto" => $row["CodTipForPagto"]
-                ,"uniquename" => $row["uniquename"]
-                ,"uniquename" => $row["uniquename"]
-                ,"uniquename" => $row["uniquename"]
+                ,"ForPagto" => $row["ForPagto"]
+                ,"PcTxAdm" => $row["PcTxAdm"]
+                ,"PrzRepasseDias" => $row["PrzRepasseDias"]
+                ,"showorder" => $row["showorder"]
+                ,"StaDebBordLiq" => $row["StaDebBordLiq"]
+                ,"StaForPagto" => $row["StaForPagto"]
+                ,"StaPagarMe" => $row["StaPagarMe"]
+                ,"StaTaxaCartoes" => $row["StaTaxaCartoes"]
+                ,"TipCaixa" => $row["TipCaixa"]
             );
         }
 
