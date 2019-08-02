@@ -130,13 +130,14 @@
    $obj = get($_REQUEST["id_base"], $_REQUEST["id"]);
    $objDeb = getdebs($_REQUEST["id_base"], $_REQUEST["id"]);
    $objPayment = getpayments($_REQUEST["id_base"], $_REQUEST["id"]);
+   $dontprint = $_REQUEST["print"] != "true";
    //die(json_encode($obj));
    //die(json_encode($objDeb));
    // die(json_encode($objPayment));
 
    $dontbreakline = $_REQUEST["dontbreakline"] != null && $_REQUEST["dontbreakline"] != '';
    $dontclose = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
-   $dontprint = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
+   // $dontprint = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
    $logo = getDefaultMediaHost()."/logos/logo-".get_uniquename_by_apikey('').".png";
 
    if ($_REQUEST["exportto"]=="sheet") {

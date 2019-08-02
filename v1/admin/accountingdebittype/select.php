@@ -1,6 +1,24 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
+
+    function getTipValor($code,$value) {
+        $ret = "";
+        switch ($code) {
+            case "F":
+                $ret = "Valor fixo de R$ ".$value;
+            break;
+            case "V":
+                $ret = "Valor de R$ ".$value;
+            break;
+            case "P":
+                $ret = "Valor por porcentagem de ".$value."%";
+            break;
+        }
+
+        return $ret;
+    }
+
     function get($id_base) {
         //sleep(5);
         $query = "EXEC pr_accountingdebittype_select";
@@ -17,6 +35,7 @@
                 ,"DebBordero" => $row["DebBordero"]
                 ,"in_DescontaCartao" => $row["in_DescontaCartao"]
                 ,"PerDesconto" => $row["PerDesconto"]
+                ,"PerDesconto_formatted" => $row["PerDesconto_formatted"]
                 ,"QtdLimiteIngrParaVenda" => $row["QtdLimiteIngrParaVenda"]
                 ,"StaDebBordero" => $row["StaDebBordero"]
                 ,"StaDebBorderoLiq" => $row["StaDebBorderoLiq"]
@@ -24,7 +43,7 @@
                 ,"ValIngressoExcedente" => $row["ValIngressoExcedente"]
                 ,"VlMinimo" => $row["VlMinimo"]
                 ,"value"=>$row["CodTipDebBordero"]
-                ,"text"=>$row["DebBordero"]
+                ,"text"=>$row["DebBordero"]." - ".getTipValor($row["TipValor"], $row["PerDesconto_formatted"])
             );
         }
 
