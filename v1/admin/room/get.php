@@ -1,24 +1,23 @@
 <?php
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
-    function get($text, $id_local_evento, $id_base, $currentPage, $perPage) {
+    function get($id,$id_base) {
         //sleep(5);
-        $query = "EXEC pr_room_list ?,?,?";
-        $params = array($id_local_evento, $text, $currentPage, $perPage);
+        $query = "EXEC pr_room_get ?";
+        $params = array($id);
         $result = db_exec($query, $params, $id_base);
 
         $json = array();
         foreach ($result as &$row) {
-            $json[] = array(
+            $json = array(
                 "CodSala" => $row["CodSala"]
-                ,"NomSala" => $row["NomSala"]
-                ,"NomRedSala" => $row["NomRedSala"]
+                ,"DescTitulo" => $row["DescTitulo"]
                 ,"id_local_evento" => $row["id_local_evento"]
                 ,"IngressoNumerado" => $row["IngressoNumerado"]
-                ,"in_venda_mesa" => $row["in_venda_mesa"]
                 ,"isLegacy" => $row["isLegacy"]
                 ,"nameonsite" => $row["nameonsite"]
-                ,"id_base" => $id_base
+                ,"NomRedSala" => $row["NomRedSala"]
+                ,"NomSala" => $row["NomSala"]
                 ,"StaSala" => $row["StaSala"]
                 ,"seattypes_count" => $row["seattypes_count"]
                 ,"seattypes" => $row["seattypes"]
@@ -30,5 +29,5 @@
         die();    
     }
 
-    get($_POST["text"], $_POST["id_local_evento"], $_POST["id_base"], $_REQUEST["__currentPage"], $_REQUEST["__perPage"]);
+    get($_POST["id"], $_POST["id_base"]);
 ?>
