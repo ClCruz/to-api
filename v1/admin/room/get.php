@@ -13,6 +13,8 @@
                 "CodSala" => $row["CodSala"]
                 ,"DescTitulo" => $row["DescTitulo"]
                 ,"id_local_evento" => $row["id_local_evento"]
+                ,"id_municipio" => $row["id_municipio"]
+                ,"id_estado" => $row["id_estado"]
                 ,"IngressoNumerado" => $row["IngressoNumerado"]
                 ,"isLegacy" => $row["isLegacy"]
                 ,"nameonsite" => $row["nameonsite"]

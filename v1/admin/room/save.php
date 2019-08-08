@@ -8,18 +8,21 @@
         ,$NomSala
         ,$NomRedSala
         ,$nameonsite
+        ,$IngressoNumerado
         ,$id_local_evento
         ,$StaSala
         ) {
             
-        $StaSala = $StaSala == 1 ? 'A' : 'I';        
+        $StaSala = $StaSala == 1 ? 'A' : 'I';
+        $IngressoNumerado = $IngressoNumerado == true || $IngressoNumerado == 1 ? 1 : 0;
 
-        $query = "EXEC pr_room_save ?,?,?,?,?,?";
+        $query = "EXEC pr_room_save ?,?,?,?,?,?,?";
         $params = array(
             $CodSala
             ,$NomSala
             ,$NomRedSala
             ,$nameonsite
+            ,$IngressoNumerado
             ,$id_local_evento
             ,$StaSala
         );
@@ -28,7 +31,8 @@
 
         foreach ($result as &$row) {
             $json = array("success"=>$row["success"] == "1" || $row["success"] == 1
-                        ,"msg"=>$row["msg"]);
+                        ,"msg"=>$row["msg"]
+                        ,"id"=>$row["id"]);
         }
 
         echo json_encode($json);
@@ -42,6 +46,7 @@ get(
     ,$_POST["NomSala"]
     ,$_POST["NomRedSala"]
     ,$_POST["nameonsite"]
+    ,$_POST["IngressoNumerado"]
     ,$_POST["id_local_evento"]
     ,$_POST["StaSala"]
 );
