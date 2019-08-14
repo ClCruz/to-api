@@ -31,8 +31,8 @@
                 ,"sg_estado" => $row["sg_estado"]
                 ,"created" => $row["created"]
 
-                ,"totalCount" => $row["totalCount"]
-                ,"currentPage" => $row["currentPage"]
+                // ,"totalCount" => $row["totalCount"]
+                // ,"currentPage" => $row["currentPage"]
 
                 ,"value"=>$row["id_evento"]
                 ,"text"=>$row["ds_evento"]
