@@ -10,6 +10,7 @@ function cnn($id = null) {
 	$pass = getwhitelabeldb()["pass"];
 
 	$more = array("UID" => $user, "PWD" => $pass, "Database" => $database,'CharacterSet' => 'UTF-8');
+	// die(json_encode(array("more"=>$more, "host"=> $host.','.$port)));
 	$cnn = sqlsrv_connect($host.','.$port, $more);
     cnnCheckConnectionError($cnn);
     return $cnn;
