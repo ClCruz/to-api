@@ -110,7 +110,7 @@
                 "voucher_printcodehas" => $row["printcodehas"],
                 "voucher_event_installment" => 1,
                 "voucher_linkold" => getwhitelabelURI_legacy("/comprar/reimprimirEmail.php?pedido=".$row["voucher_id"]),
-                "voucher_link" => getwhitelabelURI_api("/v1/email/ticket?code=".$row["printcode"]),
+                "voucher_link" => getwhitelabelURI_api("/v1/print/web/ticket?code=".$row["printcode"]),
             );
         }
         //die(json_encode($json[1]["voucher_event_amount"]));

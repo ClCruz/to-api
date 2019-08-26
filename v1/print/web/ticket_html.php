@@ -10,6 +10,7 @@
         $query = "EXEC pr_ticketoffice_email_ticket_print_setseen ?";
         $params = array($code);
         $result = db_exec($query, $params);
+        // die($code);
 
         $json = array("found"=>0);
         foreach ($result as &$row) {
@@ -51,7 +52,7 @@
             $id_base = get_id_base_by_codvenda($codVenda);
         }
         
-        $query = "EXEC pr_print_ticket ?,?,?,?";
+        $query = "EXEC pr_print_ticket_client ?,?,?,?";
         $params = array($codVenda, $indice, gethost(),getwhitelabelobj()["apikey"]);
         $result = db_exec($query, $params, $id_base);
 
