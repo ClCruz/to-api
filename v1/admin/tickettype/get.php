@@ -31,6 +31,15 @@
                 $in_sex = 1;
                 $in_ter = 1;
             }
+            else {
+                $in_dom = $in_dom == 1 ? 0 : 1;
+                $in_seg = $in_seg == 1 ? 0 : 1;
+                $in_ter = $in_ter == 1 ? 0 : 1;
+                $in_qua = $in_qua == 1 ? 0 : 1;
+                $in_qui = $in_qui == 1 ? 0 : 1;
+                $in_sex = $in_sex == 1 ? 0 : 1;
+                $in_sab = $in_sab == 1 ? 0 : 1;    
+            }
 
             $json = array(
                 "CodTipBilhete" => $row["CodTipBilhete"]
@@ -80,6 +89,7 @@
                 ,"TipBilhete" => $row["TipBilhete"]
                 ,"TipCaixa" => $row["TipCaixa"]
                 ,"vl_preco_fixo" => $row["vl_preco_fixo"]
+                ,"allpartner" => $row["allpartner"]
             );
         }
 

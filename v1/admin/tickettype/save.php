@@ -35,6 +35,7 @@
         ,$StaCalculoMeiaEstudante
         ,$QtdVendaPorLote
         ,$StaTipBilhete
+        ,$allpartner
         ,$saveimage
         ,$imagebase64
         ) {
@@ -45,10 +46,18 @@
         $StaTipBilhMeia = $isHalf == 1 ? 'S' : 'N';
         $hasImage = 0;
         $in_venda_site = 1;
+
+        $in_dom = $in_dom == 1 ? 0 : 1;
+        $in_seg = $in_seg == 1 ? 0 : 1;
+        $in_ter = $in_ter == 1 ? 0 : 1;
+        $in_qua = $in_qua == 1 ? 0 : 1;
+        $in_qui = $in_qui == 1 ? 0 : 1;
+        $in_sex = $in_sex == 1 ? 0 : 1;
+        $in_sab = $in_sab == 1 ? 0 : 1;
         
         //die(json_encode($_POST));
 
-        $query = "EXEC pr_tickettype_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        $query = "EXEC pr_tickettype_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
         $params = array($id
         ,$id_base
         ,$nameWeb
@@ -84,6 +93,7 @@
         ,$StaTipBilhMeiaEstudante
         ,$StaTipBilhMeia
         ,$in_venda_site
+        ,$allpartner
         );
         $result = db_exec($query, $params, $id_base);
 
@@ -193,6 +203,7 @@ get(
     ,$_POST["StaCalculoMeiaEstudante"]
     ,$_POST["QtdVendaPorLote"]
     ,$_POST["StaTipBilhete"]
+    ,$_POST["allpartner"]
     ,$_POST["saveimage"]
     ,$_POST["imagebase64"]
 );
