@@ -19,6 +19,7 @@ volumes:
 
 trigger:
   branch:
-  - qa
+  - master
   event:
-  - tag
+  - push
+  - promote
