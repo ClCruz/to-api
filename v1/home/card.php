@@ -5,15 +5,10 @@
 
 
 function getCardUP($city = null, $state = null, $api = null, $date = null, $filter = null) {
-        //die("teste: ".getwhitelabeldb()["host"]);
-        //createTimer("getCardUP","Creating query...");
         $query = "EXEC pr_geteventsforcards ?, ?, ?, ?, ?";
         $params = array(db_param($city), db_param($state), $api, $date, $filter);
-        //createTimer("getCardUP","Calling database...");
         $result = db_exec($query, $params);
-        //createTimer("getCardUP","Database executed...");
         $json = array();
-        //createTimer("getCardUP","Starting Loop...");
 
         foreach ($result as &$row) {
             $json[] = array(
@@ -21,6 +16,7 @@ function getCardUP($city = null, $state = null, $api = null, $date = null, $filt
                 ,"id_evento" => $row["id_evento"],
                 "ds_evento" => $row["ds_evento"],
                 "valores" => $row["valores"],
+                "mmAmountIsPer" => $row["mmAmountIsPer"],
                 "minAmount" => $row["minAmount"],
                 "maxAmount" => $row["maxAmount"],
                 "ds_nome_teatro" => $row["ds_nome_teatro"],
@@ -39,11 +35,9 @@ function getCardUP($city = null, $state = null, $api = null, $date = null, $filt
                 "promo"=> splitPromotion($row["promotion"])
             );
         }
-        //createTimer("getCardUP","Loop ended...");
 
         echo json_encode($json);
         logme();
-        //performance();
         die();    
     }
     function splitBadge($value) {
@@ -78,7 +72,7 @@ function getCardUP($city = null, $state = null, $api = null, $date = null, $filt
 
         return $ret;
     }
- //splitBadge('CompreIngressos|/badge/ci.png,ItauCard|/badge/teatro.png');
+
 getCardUP($_POST["city"],$_POST["state"], $_REQUEST["apikey"], $_POST["date"], $_POST["filter"]);
 
 ?>

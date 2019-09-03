@@ -37,17 +37,16 @@
     ,$maxAmount
     ,$in_entrega_ingresso
     ,$external_uri
+    ,$mmAmountIsPer
     ) {
-        $minAmount = intval(round(($minAmount*100), 0, PHP_ROUND_HALF_UP)) ;
-        $maxAmount = intval(round(($maxAmount*100), 0, PHP_ROUND_HALF_UP)) ;
+        $minAmount = intval(round(($minAmount*100), 0, PHP_ROUND_HALF_UP));
+        $maxAmount = intval(round(($maxAmount*100), 0, PHP_ROUND_HALF_UP));
 
+        if ($mmAmountIsPer == 1) {
+            $maxAmount = 0;
+        }
 
-        // die(json_encode($minAmount));
-
-        // echo('oi');
-        //die("aqui: $imagechanged / $imagebase64");
-        //sleep(5);
-        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
         $params = array($apikey
         ,$id_produtor
         ,$id_to_admin_user
@@ -77,15 +76,8 @@
         ,$maxAmount
         ,$in_entrega_ingresso
         ,$external_uri
+        ,$mmAmountIsPer
     );
-
-    // sleep(15);
-    // $json = array("success"=>true
-    // ,"msg"=>"Salvo com sucesso");
-    // echo json_encode($json);
-    // die();    
-
-        //die("aqui".json_encode($params));
         $result = db_exec($query, $params, $id_base);
 
         $id_evento = 0;
@@ -96,7 +88,6 @@
             $msg = $row["msg"];
         }
 
-        //die("ddd".$id_evento);
         $json = array("success"=>true
         ,"id_evento"=>$id_evento
         ,"msg"=>"Salvo com sucesso");
@@ -203,5 +194,6 @@ execute($_REQUEST["apikey"]
 ,$_POST["minAmount"]
 ,$_POST["maxAmount"]
 ,$_POST["in_entrega_ingresso"]
-,$_POST["external_uri"]);
+,$_POST["external_uri"]
+,$_POST["mmAmountIsPer"]);
 ?>
