@@ -4,7 +4,7 @@
     function get($loggedId, $id_evento, $date, $hour) {
         $dateex = explode("/", $date);
         $date2 = $dateex[2]."-".$dateex[1]."-".$dateex[0];
-        $query = "EXEC pr_accounting_key_add ?, ?, ?, ?";
+        $query = "EXEC pr_accounting_key_add ?, ?, ?, ?, NULL";
         $params = array($loggedId, $id_evento, $date2, $hour);
         $result = db_exec($query, $params);
 
