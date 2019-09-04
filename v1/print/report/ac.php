@@ -35,7 +35,7 @@ $id_base = get_id_base_from_id_evento($obj["id_evento"]);
 <head>
    <meta charset="utf-8" />
    <title></title>
-   <link href="<?php echo getwhitelabelURI_home('/assets/css/dashboard.css') ?>" rel="stylesheet" />
+   <link href="<?php echo getwhitelabelURI_admin('/assets/css/dashboard.css') ?>" rel="stylesheet" />
 </head>
 
 <body>

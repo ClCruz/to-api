@@ -216,6 +216,33 @@
             break;
         }
     }
+    function getwhitelabelURI_admin($next) {
+        $uri = getwhitelabel("api");
+
+        if (startsWith($uri, "http") == false) {
+            $uri = "https://".$uri;
+        }
+        if (endsWith($uri, "/") == false && startsWith($next, "/") == false) {
+            $uri .= "/";
+        }
+        $uri = str_replace("https://api.","https://admin.", $uri);
+        $uri.=$next;
+        return $uri;
+    }
+    function getwhitelabelURI_admin_forced($host, $next) {
+        $forced = getwhitelabelobjforced($host);
+        $uri = $forced["api"];
+
+        if (startsWith($uri, "http") == false) {
+            $uri = "https://".$uri;
+        }
+        if (endsWith($uri, "/") == false && startsWith($next, "/") == false) {
+            $uri .= "/";
+        }
+        $uri = str_replace("https://api.","https://admin.", $uri);
+        $uri.=$next;
+        return $uri;
+    }
     function getwhitelabelURI_api($next) {
         $uri = getwhitelabel("api");
 
