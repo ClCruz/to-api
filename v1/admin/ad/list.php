@@ -24,6 +24,8 @@
                 ,"name" => $row["name"]
                 ,"priority" => $row["priority"]
                 ,"index" => $row["index"]
+                ,"totalCount" => $row["totalCount"]
+                ,"currentPage" => $row["currentPage"]
             );
         }
 
