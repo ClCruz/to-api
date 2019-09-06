@@ -22,7 +22,9 @@
                "created_at"=> $row["created_at"],
                "sellfrom"=> $row["sellfrom"],
                "sellamount"=> $row["sellamount"],
-               "selltotal"=> $row["selltotal"]
+               "selltotal"=> $row["selltotal"],
+               "sellcount"=> $row["sellcount"],
+               "sellavg"=> $row["sellavg"]
             );
       }
 

@@ -23,7 +23,9 @@
                "sellfrom"=> $row["sellfrom"],
                "sellamount"=> $row["sellamount"],
                "sponsor"=> $row["sponsor"],
-               "selltotal"=> $row["selltotal"]
+               "selltotal"=> $row["selltotal"],
+               "sellcount"=> $row["sellcount"],
+               "sellavg"=> $row["sellavg"]
             );
       }
 
@@ -148,9 +150,17 @@
    </table>
    <table class="principal">
       <tr style="line-height: 10px;">
-         <td style="text-align:center">
-            <span class="label-info">Ingressos não vendidos :: </span>
+      <td style="text-align:center">
+            <span class="label-info">Total de venda :: </span>
             <span class="value-info"><?php echo $obj[0]["selltotal"] ?></span>
+         </td>
+         <td style="text-align:center">
+            <span class="label-info">Transações (Quantidade) :: </span>
+            <span class="value-info"><?php echo $obj[0]["sellcount"] ?></span>
+         </td>
+         <td style="text-align:center">
+            <span class="label-info">TKT médio :: </span>
+            <span class="value-info"><?php echo $obj[0]["sellavg"] ?></span>
          </td>
       </tr>
    </table>

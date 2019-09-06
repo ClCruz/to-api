@@ -22,7 +22,9 @@
                 "sellfrom"=> $row["sellfrom"],
                 "sellamount"=> $row["sellamount"],
                 "sponsor"=> $row["sponsor"],
-                "selltotal"=> $row["selltotal"]
+                "selltotal"=> $row["selltotal"],
+                "sellcount"=> $row["sellcount"],
+                "sellavg"=> $row["sellavg"]
             );
         }
 
