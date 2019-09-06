@@ -14,7 +14,8 @@
                 "id"=> $row["id"],
                 "name"=> $row["name"],
                 "document"=> documentformatBR($row["document"]),
-                "email"=> $row["email"]
+                "email"=> $row["email"],
+                "phone"=> $row["phone"]
             );
         }
 

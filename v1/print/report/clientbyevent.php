@@ -18,6 +18,7 @@
             "name"=> $row["name"],
             "document"=> documentformatBR($row["document"]),
             "email"=> $row["email"],
+            "phone"=> $row["phone"],
             "indice"=> $row["indice"],
             "seat"=> $row["seat"],
             "room"=> $row["room"],
@@ -158,6 +159,7 @@
             <td style="text-align:left;width:100px;">CPF</td>
             <td style="text-align:left">Nome</td>
             <td style="text-align:left">E-mail</td>
+            <td style="text-align:left">Telefone</td>
             <td style="text-align:left">Sala</td>
             <td style="text-align:left">Assento</td>
          </tr>
@@ -166,6 +168,7 @@
                <td class="printonly_lines_values" style="text-align:left"><?php echo $row["document"] ?></td>
                <td class="printonly_lines_values" style="text-align:left"><?php echo $row["name"] ?></td>
                <td class="printonly_lines_values" style="text-align:left"><?php echo $row["email"] ?></td>
+               <td class="printonly_lines_values" style="text-align:left"><?php echo $row["phone"] ?></td>
                <td class="printonly_lines_values" style="text-align:left"><?php echo $row["room"] ?></td>
                <td class="printonly_lines_values" style="text-align:left"><?php echo $row["seat"] ?></td>
             </tr>

@@ -19,6 +19,7 @@
                 "name"=> $row["name"],
                 "document"=> documentformatBR($row["document"]),
                 "email"=> $row["email"],
+                "phone"=> $row["phone"],
                 "indice"=> $row["indice"],
                 "seat"=> $row["seat"],
                 "room"=> $row["room"],
