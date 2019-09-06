@@ -126,14 +126,40 @@
   
       return $json;
    }
+   function getchannel($id_base, $key) {
+      $query = "EXEC pr_accounting_channel ?";
+      // die("dd".json_encode($codVenda));
+      $params = array($key);
+      $result = db_exec($query, $params, $id_base);
+  
+      $json = array();
+      foreach ($result as &$row) {    
+          $json[] = array(
+              "channel"=>$row["channel"]
+               ,"count"=>$row["count"]
+               ,"amount"=>$row["amount"]
+               ,"amount_formatted"=>$row["amount_formatted"]
+               ,"percentage"=>$row["percentage"]
+               ,"percentage_formatted"=>$row["percentage_formatted"]
+               ,"count__total"=>$row["count__total"]
+               ,"amount_formatted__total"=>$row["amount_formatted__total"]
+          );
+      }
+  
+      logme();
+  
+      return $json;
+   }
    
    $obj = get($_REQUEST["id_base"], $_REQUEST["id"]);
    $objDeb = getdebs($_REQUEST["id_base"], $_REQUEST["id"]);
    $objPayment = getpayments($_REQUEST["id_base"], $_REQUEST["id"]);
+   $objChannel = getchannel($_REQUEST["id_base"], $_REQUEST["id"]);
    $dontprint = $_REQUEST["print"] != "true";
    //die(json_encode($obj));
    //die(json_encode($objDeb));
-   // die(json_encode($objPayment));
+   //die(json_encode($objPayment));
+   // die(json_encode($objChannel));
 
    $dontbreakline = $_REQUEST["dontbreakline"] != null && $_REQUEST["dontbreakline"] != '';
    $dontclose = $_REQUEST["dontclose"] != null && $_REQUEST["dontclose"] != '';
@@ -542,6 +568,39 @@
             </td>
             <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
                R$ <?php echo $objPayment[0]["total_total_formatted"] ?>
+            </td>
+         </tr>
+   </table>
+   <table class="principal grid3">
+   <tr>
+         <td colspan="8" style="text-align:center;font-weight: bold;font-size: 14px;">4 - DETALHAMENTO POR CANAL</td>
+      </tr>
+      <tr style="font-weight: bold;font-size: 8px">
+         <td style="text-align:left">Canais</td>
+         <td style="text-align:right">Qtde de Transações</td>
+         <td style="text-align:right">Total</td>
+         <td style="text-align:right">% do total de transações</td>
+      </tr>         
+      <?php foreach ($objChannel as &$row) {?>
+         <tr style="font-size: 9px;">
+            <td class="printonly_lines_values" style="text-align:left"><?php echo $row["channel"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["count"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right">R$ <?php echo $row["amount_formatted"] ?></td>
+            <td class="printonly_lines_values" style="text-align:right"><?php echo $row["percentage_formatted"] ?></td>
+         </tr>
+         <?php } ?>
+         <tr style="font-size: 9px;">
+            <td class="printonly_lines_values" style="text-align:left; font-weight: bold;">
+               Total:
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               <?php echo $objChannel[0]["count__total"] ?>
+            </td>
+            <td class="printonly_lines_values" style="text-align:right; font-weight: bold;">
+               R$ <?php echo $objChannel[0]["amount_formatted__total"] ?>
+            </td>
+            <td>
+
             </td>
          </tr>
    </table>

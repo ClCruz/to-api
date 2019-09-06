@@ -22,6 +22,7 @@
                 ,"TipValor" => $row["TipValor"]
                 ,"ValIngressoExcedente" => $row["ValIngressoExcedente"]
                 ,"VlMinimo" => $row["VlMinimo"]
+                ,"sell_channel" => $row["sell_channel"]
             );
         }
 

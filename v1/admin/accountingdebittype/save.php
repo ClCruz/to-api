@@ -15,6 +15,7 @@
         ,$ValIngressoExcedente
         ,$CodTipBilhete
         ,$in_DescontaCartao
+        ,$sell_channel
         ) {
             $StaDebBordero = $StaDebBordero == 1 ? 'A' : 'I';
             $Ativo = $StaDebBordero;
@@ -22,7 +23,7 @@
             $StaDebBorderoLiq = $StaDebBorderoLiq == 1 ? 'S' : 'N';
             $ValIngressoExcedente = $ValIngressoExcedente == '' ? '0' : $ValIngressoExcedente;
 
-            $query = "EXEC pr_accountingdebittype_save ?,?,?,?,?,?,?,?,?,?,?,?";
+            $query = "EXEC pr_accountingdebittype_save ?,?,?,?,?,?,?,?,?,?,?,?,?";
             $params = array(
                 $CodTipDebBordero
                 ,$DebBordero
@@ -36,6 +37,7 @@
                 ,$ValIngressoExcedente
                 ,$CodTipBilhete
                 ,$in_DescontaCartao
+                ,$sell_channel
             );
 
             $result = db_exec($query, $params, $id_base);
@@ -64,5 +66,6 @@ get(
     ,$_POST["ValIngressoExcedente"]
     ,$_POST["CodTipBilhete"]
     ,$_POST["in_DescontaCartao"]
+    ,$_POST["sell_channel"]
 );
 ?>
