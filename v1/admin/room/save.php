@@ -14,7 +14,6 @@
         ) {
             
         $StaSala = $StaSala == 1 ? 'A' : 'I';
-        $IngressoNumerado = $IngressoNumerado == true || $IngressoNumerado == 1 ? 1 : 0;
 
         $query = "EXEC pr_room_save ?,?,?,?,?,?,?";
         $params = array(
