@@ -60,6 +60,7 @@
                 ,"dt_pedido_venda" => $row["dt_pedido_venda"]
                 ,"created_at" => $row["created_at"]
                 ,"id_cliente" => $row["id_cliente"]
+                ,"id_base" => $row["id_base"]
                 ,"id_evento" => $row["id_evento"]
                 ,"id_apresentacao" => $row["id_apresentacao"]
                 ,"in_situacao" => $row["in_situacao"]

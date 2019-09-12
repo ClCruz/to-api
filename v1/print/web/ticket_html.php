@@ -127,16 +127,26 @@
 
     }
     $code = $_REQUEST["code"];
-    if ($code == '') {
+    $letmeenter = $_REQUEST["lme"];
+
+
+    if ($code == '' && !isset($letmeenter)) {
         die("Falha na execução. ERR.01");
     }
 
-    $primary_info = getbycode($code);
-    if ($primary_info["found"] == 0) {
-        die("Falha na execução. ERR.02");
+    if ($code == "") {
+        $obj = getobj($_REQUEST["id_base"], $_REQUEST["codVenda"], '');
+    }
+    else {
+        $primary_info = getbycode($code);
+        if ($primary_info["found"] == 0) {
+            die("Falha na execução. ERR.02");
+        }
+    
+        $obj = getobj($primary_info["id_base"], $primary_info["codVenda"], '');
     }
 
-    $obj = getobj($primary_info["id_base"], $primary_info["codVenda"], '');
+    
     $uniquename = gethost();
     $logo = getDefaultMediaHost()."/logos/logo-".$uniquename.".png";
 ?>
