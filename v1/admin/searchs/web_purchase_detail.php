@@ -57,6 +57,7 @@
                 ,"dt_apresentacao" => $row["dt_apresentacao"]
                 ,"hr_apresentacao" => $row["hr_apresentacao"]
                 ,"vl_total_pedido_venda" => $row["vl_total_pedido_venda"]
+                ,"ds_nome_base_sql" => $row["ds_nome_base_sql"]
                 ,"uri" => getwhitelabelURI_home($row["uri"])
                 ,"img" => getDefaultMediaHost() . str_replace("{id}", $row["id_evento"],str_replace("{default_card}", getDefaultCardImageName(),$row["cardimage"]))
                 ,"tickets_count" => $row["tickets_count"]
