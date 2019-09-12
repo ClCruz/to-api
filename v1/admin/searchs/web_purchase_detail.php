@@ -4,8 +4,9 @@
 
     function get($id_pedido_venda) {
         $query = "EXEC pr_web_purchase_get ?,?";
-        // $uniquename = "viveringressos";// gethost();
         $uniquename = gethost();
+        // $uniquename = "ingressoparatodos";
+        // $uniquename = "viveringressos";
         $params = array($uniquename, $id_pedido_venda);
         $result = db_exec($query, $params);
 
@@ -17,6 +18,8 @@
         foreach ($result as &$row) {
             if ($gateway_checked == false) {
                 $gateway_info = pagarme_get_transaction($row["cd_numero_transacao"]);
+                $gateway_info_playable = pagarme_get_payables($row["cd_numero_transacao"]);
+
                 $gateway_checked = true;
                 if ($gateway_info == null) $gateway_info = array();
 
@@ -26,6 +29,18 @@
                     $split->recipient_name = $recipient->bank_account->legal_name;
                     $split->recipient_document_type = $recipient->bank_account->document_type;
                     $split->recipient_document_number = $recipient->bank_account->document_number;
+
+                    foreach ($gateway_info_playable as &$playable) {
+                        if ($playable->recipient_id == $split->recipient_id) {
+                            $split->playable_isanticipation = $playable->anticipation_fee != 0;
+                            $split->playable_status = $playable->status;
+                            $split->playable_amount = $playable->amount;
+                            $split->playable_fee = $playable->fee;
+                            $split->playable_anticipation_fee = $playable->anticipation_fee;
+                            $split->playable_payment_date = $playable->payment_date;
+                            $split->playable_original_payment_date = $playable->original_payment_date;
+                        }
+                    }
                 }
             }
 
