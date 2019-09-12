@@ -2,10 +2,10 @@
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
     function get($id_pedido_venda, $client_name, $client_document, $id_evento, $id_apresentacao, $currentPage, $perPage) {
-        $perPage = 1000;
+        $perPage = 50;
         $query = "EXEC pr_web_purchase_list ?,?,?,?,?,?,?,?";
-        // $uniquename = "viveringressos";// gethost();
-        $uniquename = gethost();
+        $uniquename = "viveringressos";// gethost();
+        // $uniquename = gethost();
         $client_document = str_replace('.','', str_replace('-','',$client_document));
         // die(json_encode($client_document));
         $params = array($uniquename, $id_pedido_venda, $client_document, $client_name, $id_evento, $id_apresentacao, $currentPage, $perPage);
