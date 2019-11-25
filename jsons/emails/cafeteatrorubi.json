@@ -13,68 +13,68 @@
     }
   },
   "formto": {
-    "email":"cafeteatrorubi@terra.com.br",
+    "email": "caferubi2013@terra.com.br",
     "from": "formto",
-    "pass":""
+    "pass": ""
   },
   "noreply": {
-    "email":"noreply@caferubi.com.br",
+    "email": "noreply@caferubi.com.br",
     "from": "noreply",
-    "pass":""
+    "pass": ""
   },
   "register": {
-    "email":"cadastro@caferubi.com.br",
+    "email": "cadastro@caferubi.com.br",
     "from": "cadastro",
-    "pass":""
+    "pass": ""
   },
   "shopping": {
-    "email":"cafeteatrorubi@terra.com.br",
+    "email": "caferubi2013@terra.com.br",
     "from": "pedido",
-    "pass":""
+    "pass": ""
   },
   "lembrete": {
-    "email":"cafeteatrorubi@terra.com.br",
+    "email": "caferubi2013@terra.com.br",
     "from": "pedido",
-    "pass":""
+    "pass": ""
   },
   "marketing": {
-    "email":"cafeteatrorubi@terra.com.br",
+    "email": "caferubi2013@terra.com.br",
     "from": "pedido",
-    "pass":""
+    "pass": ""
   },
   "info": {
-    "email":"cafeteatrorubi@terra.com.br",
+    "email": "caferubi2013@terra.com.br",
     "from": "pedido",
-    "pass":""
+    "pass": ""
   },
   "sac": {
-    "email":"cafeteatrorubi@terra.com.br",
+    "email": "caferubi2013@terra.com.br",
     "from": "noreply",
-    "pass":""
+    "pass": ""
   },
   "pedido": {
-    "email":"cafeteatrorubi@terra.com.br",
+    "email": "caferubi2013@terra.com.br",
     "from": "pedido",
-    "pass":""
+    "pass": ""
   },
   "assinantea@siscompre": {
-    "email":"cafeteatrorubi@terra.com.br",
+    "email": "caferubi2013@terra.com.br",
     "from": "pedido",
-    "pass":""
+    "pass": ""
   },
   "compreingressospedidos@hotmail": {
-    "email":"cafeteatrorubi@terra.com.br",
+    "email": "caferubi2013@terra.com.br",
     "from": "pedido",
-    "pass":""
+    "pass": ""
   },
   "compreingressos@siscompre": {
-    "email":"cafeteatrorubi@terra.com.br",
+    "email": "caferubi2013@terra.com.br",
     "from": "pedido",
-    "pass":""
+    "pass": ""
   },
   "compreingressos@gmail": {
-    "email":"cafeteatrorubi@terra.com.br",
+    "email": "caferubi2013@terra.com.br",
     "from": "pedido",
-    "pass":""
+    "pass": ""
   }
 }
