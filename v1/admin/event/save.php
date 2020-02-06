@@ -38,6 +38,8 @@
     ,$in_entrega_ingresso
     ,$external_uri
     ,$mmAmountIsPer
+    ,$qt_hr_anteced
+    ,$descriptionVoucher
     ) {
         $minAmount = intval(round(($minAmount*100), 0, PHP_ROUND_HALF_UP));
         $maxAmount = intval(round(($maxAmount*100), 0, PHP_ROUND_HALF_UP));
@@ -46,7 +48,7 @@
             $maxAmount = 0;
         }
 
-        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
         $params = array($apikey
         ,$id_produtor
         ,$id_to_admin_user
@@ -77,6 +79,8 @@
         ,$in_entrega_ingresso
         ,$external_uri
         ,$mmAmountIsPer
+        ,$qt_hr_anteced
+        ,$descriptionVoucher
     );
         $result = db_exec($query, $params, $id_base);
 
@@ -195,5 +199,7 @@ execute($_REQUEST["apikey"]
 ,$_POST["maxAmount"]
 ,$_POST["in_entrega_ingresso"]
 ,$_POST["external_uri"]
-,$_POST["mmAmountIsPer"]);
+,$_POST["mmAmountIsPer"]
+,$_POST["qt_hr_anteced"]
+,$_POST["descriptionVoucher"]);
 ?>

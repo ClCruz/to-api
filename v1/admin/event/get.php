@@ -58,7 +58,8 @@
                 ,"interest_rate" => $row["interest_rate"]
                 ,"ticketoffice_ticketmodel" => $row["ticketoffice_ticketmodel"]
                 ,"external_uri" => $row["external_uri"]
-                ,"mmAmountIsPer" => $row["mmAmountIsPer"]
+                ,"qt_hr_anteced" => $row["qt_hr_anteced"]
+                ,"descriptionVoucher" => $row["description_voucher"]
             );
         }
 
