@@ -40,6 +40,7 @@
     ,$mmAmountIsPer
     ,$qt_hr_anteced = 0
     ,$descriptionVoucher = ""
+    ,$descriptionVoucher2 = ""
     ) {
         $minAmount = intval(round(($minAmount*100), 0, PHP_ROUND_HALF_UP));
         $maxAmount = intval(round(($maxAmount*100), 0, PHP_ROUND_HALF_UP));
@@ -51,7 +52,7 @@
 
         if($id_base == 289)
         {
-            $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+            $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
         } else {
             $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
         }
@@ -88,6 +89,7 @@
         ,$mmAmountIsPer
         ,$qt_hr_anteced
         ,$descriptionVoucher
+        ,$descriptionVoucher2
     );
         $result = db_exec($query, $params, $id_base);
 
@@ -208,5 +210,6 @@ execute($_REQUEST["apikey"]
 ,$_POST["external_uri"]
 ,$_POST["mmAmountIsPer"]
 ,$_POST["qt_hr_anteced"]
-,$_POST["descriptionVoucher"]);
+,$_POST["descriptionVoucher"]
+,$_POST["descriptionVoucher2"]);
 ?>

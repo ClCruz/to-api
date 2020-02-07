@@ -63,6 +63,7 @@
                 ,"external_uri" => $row["external_uri"]
                 ,"qt_hr_anteced" => $row["qt_hr_anteced"]
                 ,"descriptionVoucher" => $row["description_voucher"]
+                ,"descriptionVoucher2" => $row["description_voucher2"]
             );
         }
 
