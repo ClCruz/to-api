@@ -2,7 +2,7 @@
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
     function listevents($id_base) {
-        $query = "EXEC pr_events";
+        $query = "SET LOCK_TIMEOUT 260000; EXEC pr_events";
         $params = array();
         $result = db_exec($query, $params, $id_base);
 
