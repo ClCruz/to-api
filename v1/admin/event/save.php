@@ -38,8 +38,8 @@
     ,$in_entrega_ingresso
     ,$external_uri
     ,$mmAmountIsPer
-    ,$qt_hr_anteced
-    ,$descriptionVoucher
+    ,$qt_hr_anteced = 0
+    ,$descriptionVoucher = ""
     ) {
         $minAmount = intval(round(($minAmount*100), 0, PHP_ROUND_HALF_UP));
         $maxAmount = intval(round(($maxAmount*100), 0, PHP_ROUND_HALF_UP));
@@ -47,8 +47,15 @@
         if ($mmAmountIsPer == 1) {
             $maxAmount = 0;
         }
+        $query = "";
 
-        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        if($id_base == 289)
+        {
+            $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        } else {
+            $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        }
+        
         $params = array($apikey
         ,$id_produtor
         ,$id_to_admin_user

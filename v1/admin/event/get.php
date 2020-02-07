@@ -2,6 +2,9 @@
     require_once($_SERVER['DOCUMENT_ROOT']."/v1/api_include.php");
 
     function get($id_user, $id_evento, $id_base) {
+
+        
+
         //sleep(5);
         $query = "EXEC pr_admin_event_get ?, ?";
         //die("aaa.".print_r(db_param($startAt),true));
