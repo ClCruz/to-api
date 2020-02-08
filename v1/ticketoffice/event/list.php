@@ -16,10 +16,12 @@
             }
             $aux = array("codPeca"=>$row["CodPeca"]
                     ,"NomPeca"=>$row["NomPeca"]
+                    //,"img" => getDefaultMediaHost() . str_replace("{id}", $row["id_evento"],str_replace("{default_card}", getDefaultCardImageName(),$row["cardimage"]))
                     ,"ValIngresso"=>$row["ValIngresso"]
                     ,"in_vende_site"=>$row["in_vende_site"]
                     ,"days"=>$row["days"]
                     ,"TemDurPeca"=>$row["TemDurPeca"]
+                    ,"splitok"=>$row["splitok"]
                     ,"TipPeca"=>$row["TipPeca"]
                     ,"text"=> $text
                     ,"value"=>$row["CodPeca"]);
