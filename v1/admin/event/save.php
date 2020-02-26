@@ -36,6 +36,7 @@
     ,$minAmount
     ,$maxAmount
     ,$in_entrega_ingresso
+    ,$showPin
     ,$external_uri
     ,$mmAmountIsPer
     ,$qt_hr_anteced = 0
@@ -85,6 +86,7 @@
         ,$minAmount
         ,$maxAmount
         ,$in_entrega_ingresso
+        ,$showPin == "" ? "0" : $showPin
         ,$external_uri
         ,$mmAmountIsPer
         ,$qt_hr_anteced
@@ -207,9 +209,9 @@ execute($_REQUEST["apikey"]
 ,$_POST["minAmount"]
 ,$_POST["maxAmount"]
 ,$_POST["in_entrega_ingresso"]
+,$POST["showPin"]
 ,$_POST["external_uri"]
 ,$_POST["mmAmountIsPer"]
 ,$_POST["qt_hr_anteced"]
 ,$_POST["descriptionVoucher"]
 ,$_POST["descriptionVoucher2"]);
-?>
