@@ -37,12 +37,12 @@ function execute(
     $minAmount,
     $maxAmount,
     $in_entrega_ingresso,
-    $showPin,
     $external_uri,
     $mmAmountIsPer,
     $qt_hr_anteced = 0,
     $descriptionVoucher = "",
-    $descriptionVoucher2 = ""
+    $descriptionVoucher2 = "",
+    $showPin
 ) {
     $minAmount = intval(round(($minAmount * 100), 0, PHP_ROUND_HALF_UP));
     $maxAmount = intval(round(($maxAmount * 100), 0, PHP_ROUND_HALF_UP));
@@ -55,7 +55,7 @@ function execute(
     if ($id_base == 289 || $id_base == 291) {
         $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
     } else {
-        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
     }
 
     $params = array(
@@ -183,5 +183,6 @@ execute(
     $_POST["mmAmountIsPer"],
     $_POST["qt_hr_anteced"],
     $_POST["descriptionVoucher"],
-    $_POST["descriptionVoucher2"]
+    $_POST["descriptionVoucher2"],
+    $_POST["showPin"]
 );
