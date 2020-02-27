@@ -36,6 +36,7 @@
 
                 ,"value"=>$row["id_evento"]
                 ,"text"=>$row["ds_evento"]
+                ,"showPin" => $row["showPin"]
             );
         }
 
@@ -45,4 +46,3 @@
     }
 
 get($_REQUEST["loggedId"],$_REQUEST["id_base"]);
-?>

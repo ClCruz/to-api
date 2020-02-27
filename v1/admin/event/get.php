@@ -64,6 +64,7 @@
                 ,"qt_hr_anteced" => $row["qt_hr_anteced"]
                 ,"descriptionVoucher" => $row["description_voucher"]
                 ,"descriptionVoucher2" => $row["description_voucher2"]
+                ,"showPin" => $row["showPin"]
             );
         }
 
@@ -73,4 +74,3 @@
     }
 
 get($_REQUEST["id_user"], $_REQUEST["id_evento"], $_REQUEST["id_base"]);
-?>

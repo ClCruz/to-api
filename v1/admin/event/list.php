@@ -33,6 +33,7 @@
 
                 ,"totalCount" => $row["totalCount"]
                 ,"currentPage" => $row["currentPage"]
+                ,"showPin" => $row["showPin"]
             );
         }
 
@@ -42,4 +43,3 @@
     }
 
 get($_REQUEST["loggedId"],$_REQUEST["search"], $_REQUEST["__currentPage"], $_REQUEST["__perPage"]);
-?>
