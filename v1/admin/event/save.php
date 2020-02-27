@@ -178,7 +178,6 @@ execute(
     $_POST["minAmount"],
     $_POST["maxAmount"],
     $_POST["in_entrega_ingresso"],
-    $POST["showPin"],
     $_POST["external_uri"],
     $_POST["mmAmountIsPer"],
     $_POST["qt_hr_anteced"],
