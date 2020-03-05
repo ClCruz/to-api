@@ -41,8 +41,7 @@ function execute(
     $mmAmountIsPer,
     $qt_hr_anteced = 0,
     $descriptionVoucher = "",
-    $descriptionVoucher2 = "",
-    $showPin
+    $descriptionVoucher2 = ""
 ) {
     $minAmount = intval(round(($minAmount * 100), 0, PHP_ROUND_HALF_UP));
     $maxAmount = intval(round(($maxAmount * 100), 0, PHP_ROUND_HALF_UP));
@@ -53,14 +52,14 @@ function execute(
     $query = "";
 
     if ($id_base == 289 || $id_base == 291) {
-        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+        $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
     } else {
         $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
     }
 
     // $query = "EXEC pr_event_save ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
     $params = array(
-        $apikey, $id_produtor, $id_to_admin_user, $CodPeca, $NomPeca, $CodTipPeca, $TemDurPeca, $CenPeca, $id_local_evento, $description, $meta_description, $meta_keyword, $opening_time, $insurance_policy, $showInBanner == "" ? "0" : $showInBanner, $bannerDescription, $QtIngrPorPedido, $in_obriga_cpf == "" ? "0" : ($in_obriga_cpf == "false" || $in_obriga_cpf == false ? "0" : "1"), $qt_ingressos_por_cpf, $ticketoffice_askemail == "" ? "0" : $ticketoffice_askemail, $free_installments, $max_installments, $interest_rate, $ticketoffice_ticketmodel, $showonline, $minAmount, $maxAmount, $in_entrega_ingresso, $external_uri, $mmAmountIsPer, $qt_hr_anteced, $descriptionVoucher, $descriptionVoucher2, $showPin == "" ? "0" : $showPin
+        $apikey, $id_produtor, $id_to_admin_user, $CodPeca, $NomPeca, $CodTipPeca, $TemDurPeca, $CenPeca, $id_local_evento, $description, $meta_description, $meta_keyword, $opening_time, $insurance_policy, $showInBanner == "" ? "0" : $showInBanner, $bannerDescription, $QtIngrPorPedido, $in_obriga_cpf == "" ? "0" : ($in_obriga_cpf == "false" || $in_obriga_cpf == false ? "0" : "1"), $qt_ingressos_por_cpf, $ticketoffice_askemail == "" ? "0" : $ticketoffice_askemail, $free_installments, $max_installments, $interest_rate, $ticketoffice_ticketmodel, $showonline, $minAmount, $maxAmount, $in_entrega_ingresso, $external_uri, $mmAmountIsPer, $qt_hr_anteced, $descriptionVoucher, $descriptionVoucher2
     );
     $result = db_exec($query, $params, $id_base);
 
@@ -183,6 +182,5 @@ execute(
     $_POST["mmAmountIsPer"],
     $_POST["qt_hr_anteced"],
     $_POST["descriptionVoucher"],
-    $_POST["descriptionVoucher2"],
-    $_POST["showPin"]
+    $_POST["descriptionVoucher2"]
 );
